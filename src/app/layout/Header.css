@@ -1,0 +1,21 @@
+/* *,
+*:after,
+*:before {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+} */
+.navOffice {
+	background: rgb(1, 79, 151) !important;
+	padding: 2rem;
+	color: rgb(253, 253, 253);
+	font-size: 1.5rem;
+	font-family: 'helvetica',sans serif;
+	box-shadow: 0 4px 2px -2px rgba(0,0,0,.4);
+	position: fixed;
+	z-index: 1;
+}
+
+.navOffice > div > a {
+	color: white
+}

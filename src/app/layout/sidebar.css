@@ -1,0 +1,160 @@
+.sidebar .user-info{
+    border-bottom: 1px solid #444;
+    padding: 1em;
+    text-align: center;
+  }
+  
+  
+  .sidebar .nav{
+    margin-top: .5em;
+  }
+  
+  .sidebar .company-logo{
+    height: 20vh;
+  }
+
+  .company-logo{
+    padding-left: 30%;
+  }
+  
+  .sidebar .nav-item .nav-link:hover{
+    background-color: #ffffff;
+  }
+  
+  .sidebar .nav-link.active{
+    background-color: #ffffff !important;
+    color: white !important;
+    cursor: pointer !important;
+  }
+  
+  .sidebar .nav-item .nav-link.active:hover{
+    background-color: #fdfdfd;
+  }
+
+  .btn-nav{
+    background-color: #fdfdfd;
+    color: black;
+  }
+  
+  .sidebar .nav-link{
+    /* cursor: pointer; */
+    color: #FFF;
+    margin: 0 .5em;
+    cursor: pointer !important;
+  }
+  
+  .sidebar .nav-link svg{
+    /* cursor: pointer; */
+    margin-right: .5em;
+    width: 30px;
+    cursor: pointer !important;
+  }
+  
+  .figure-img{
+    margin-bottom: 0px;
+  }
+  
+  h6{
+    color: rgb(1, 79, 151);
+  }
+
+  h4{
+    color: rgb(1, 79, 151);
+  }
+  
+  .btn-logout{
+    width: 100% !important;
+    text-align: center;
+    font-size: 13px;
+    cursor: pointer !important;
+    background-color: white !important;
+    color: black !important;
+  }
+  
+  .btn-logout:hover{
+    cursor: pointer !important;
+  }
+  
+  .color-icon{
+    color: #ff1065;
+  }
+  
+
+/* .bm-burger-button {
+  position: fixed;
+  width: 36px;
+  height: 30px;
+  left: 36px;
+  top: 36px;
+  z-index: 10;
+}
+
+
+.bm-burger-bars {
+  background: #002fff;
+  padding-top: 50px;
+} */
+
+/* Color/shape of burger icon bars on hover*/
+.bm-burger-bars-hover {
+  background: #d87272;
+}
+
+/* Position and sizing of clickable cross button */
+.bm-cross-button {
+  height: 24px;
+  width: 24px;
+}
+
+/* Color/shape of close button cross */
+.bm-cross {
+  background: #bdc3c7;
+}
+
+/*
+Sidebar wrapper styles
+Note: Beware of modifying this element as it can break the animations - you should not need to touch it in most cases
+*/
+.bm-menu-wrap {
+  position: fixed;
+  height: 100%;
+}
+
+/* General sidebar styles */
+.bm-menu {
+  background: rgb(1, 79, 151);
+  padding: 2.5em 1.5em 0;
+  font-size: 1.15em;
+}
+
+/* Morph shape necessary with bubble or elastic */
+.bm-morph-shape {
+  fill: #373a47;
+}
+
+/* Wrapper for item list */
+.bm-item-list {
+  color: #000000;
+}
+
+/* Individual item */
+.bm-item {
+  display: inline-block;
+}
+
+/* Styling of overlay */
+.bm-overlay {
+  background: rgba(9, 255, 0, 0.3);
+}
+
+.btn-without {
+background: none !important;
+color: inherit !important;
+border: none !important;
+padding: 0 !important;
+font: inherit !important;
+cursor: pointer !important;
+outline: inherit !important;
+}
+  
+  

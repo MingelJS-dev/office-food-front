@@ -1,0 +1,71 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.containerPage {
+  padding-top: 6rem;
+}
+
+.navOffice {
+	background: rgb(1, 79, 151) !important;
+	padding: 2rem;
+	color: rgb(253, 253, 253);
+	font-size: 1.5rem;
+	font-family: 'helvetica',sans serif;
+	box-shadow: 0 4px 2px -2px rgba(0,0,0,.4);
+	position: fixed;
+	z-index: 1;
+}
+
+.navOffice > div > a {
+	color: white
+}
+
+.bm-burger-button {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  left: 16px;
+  top: 16px;
+  z-index: 10;
+}
+
+
+/* .bm-burger-bars {
+  background: #002fff;
+  padding-top: 50px;
+} */
