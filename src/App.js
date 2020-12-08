@@ -23,7 +23,9 @@ import Notification from "./app/shared/Notifications.js";
 
 // Users
 import UsersPage from "./app/users/UserPage.js"
+import * as Permission from "./app/shared/Permission.js"
 
+export const CurrentUserContext = React.createContext({})
 // function SidebarWrapper({ isOpen, setOpen }) {
 //   const winSize = useWindowSize()
 //   const [isMobile, setIsMobile] = useState(winSize.width <= 768)
@@ -59,12 +61,12 @@ function App() {
   const dispatch = useDispatch();
 
   const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
-
+  const currentUser = useSelector(state => state.auth.currentUser)
   useEffect(() => {
     if (isLoggedIn) {
       // dispatch(fetchCurrentUser());
     }
-  }, [isLoggedIn, dispatch]);
+  }, [isLoggedIn, dispatch, currentUser]);
 
   const showSidebar = () => {
     setOpen(true)
@@ -75,34 +77,69 @@ function App() {
       <Router history={history}>
         <Notification></Notification>
         <nav className="navbar navbar-expand-lg fixed-top navbar-expand-md navOffice ">
-          <button   onClick={() => showSidebar()} className="btn btn-create-user" type="button">
-          <FontAwesomeIcon className='fa-2x' icon={faBars} />
+          <button onClick={() => showSidebar()} className="btn btn-create-user" type="button">
+            <FontAwesomeIcon className='fa-2x' icon={faBars} />
           </button>
           <div className="mx-auto order-0">
             <a className="navbar-brand mx-auto">  Back Office Food Regional</a>
           </div>
         </nav>
-        <Container fluid={true} >
-          <div className='row p-0'>
+        <CurrentUserContext.Provider value={currentUser}>
+          <Container fluid={true} >
+            <div className='row p-0'>
 
-            <Sidebar isOpen={isOpen} setOpen={setOpen} pageWrapId={"page-wrap"} outerContainerId={"App"} />
+              <Sidebar isOpen={isOpen} setOpen={setOpen} pageWrapId={"page-wrap"} outerContainerId={"App"} />
 
-            <Col id="page-wrap" className="containerPage" style={{ height: '100vh' }}>
-              <Switch>
-                <Route path="/" exact>
-                  <Redirect to="/list" />
-                </Route>
+              <Col id="page-wrap" className="containerPage" style={{ height: '100vh' }}>
+                <Switch>
+                  <Route path="/" exact>
+                    <Redirect to="/list" />
+                  </Route>
 
-                <Route path="/list" exact component={MainPage} />
-                <Route path="/proforma" exact component={ProformaPage} />
-                <Route path="/users" exact component={UsersPage} />
-                <Route path="*">
-                  <Redirect to="/" />
-                </Route>
-              </Switch>
-            </Col>
-          </div>
-        </Container>
+                  <Route path="/list" exact component={MainPage} />
+                  {
+                    Permission.isAdmin(currentUser.role)
+                    &&
+                    <Switch>
+                      <Route path="/proforma" exact component={ProformaPage} />
+                      <Route path="/users" exact component={UsersPage} />
+                      <Route path="*">
+                        <Redirect to="/" />
+                      </Route>
+                    </Switch>
+                  }
+
+                  {
+                    Permission.isRegionalBuyer(currentUser.role)
+                    &&
+                    <Switch>
+                      <Route path="/proforma" exact component={ProformaPage} />
+                      <Route path="*">
+                        <Redirect to="/" />
+                      </Route>
+                    </Switch>
+                  }
+
+                  {
+                    Permission.isPlanner(currentUser.role)
+                    &&
+                    <Switch>
+                      <Route path="/proforma" exact component={ProformaPage} />
+                      <Route path="*">
+                        <Redirect to="/" />
+                      </Route>
+                    </Switch>
+                  }
+
+                  <Route path="*">
+                    <Redirect to="/" />
+                  </Route>
+                </Switch>
+              </Col>
+            </div>
+          </Container>
+        </CurrentUserContext.Provider>
+
       </Router>
     );
   } else {

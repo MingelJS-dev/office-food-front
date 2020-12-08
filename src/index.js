@@ -48,6 +48,7 @@ function render(){
   }
 
   let sessionData = JSON.parse(sessionStorage.getItem('sessionData')) || false
+  let currentUser = JSON.parse(sessionStorage.getItem('user')) || false
   // let role = JSON.parse(sessionStorage.getItem('role')) || false
 
   IS_RENDERED = true;
@@ -58,7 +59,7 @@ function render(){
       auth: {
         isLoggedIn: !!sessionData.token,
         token: sessionData.token,
-        // currentRole: role
+        currentUser: currentUser
       }
     },
     composeEnhancers(

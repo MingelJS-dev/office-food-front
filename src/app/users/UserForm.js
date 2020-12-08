@@ -177,7 +177,7 @@ export default function UserForm({ user, save }) {
                     className={`form-control ${errors.email ? 'is-invalid' : ''}`}
                     onChange={(x) => setEmail(x.target.value)}
                     value={email.toLowerCase()}
-                    disabled={isLoading || user.id}
+                    disabled={isLoading}
                     autoComplete="false"
                 />
 

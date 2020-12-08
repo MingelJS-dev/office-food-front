@@ -21,12 +21,13 @@ import logoCenco from "../../assets/cencosud_logo.png"
 // Modal Section
 import ModalTemplate from "../proforma/ModalTemplate.js"
 import UserModal from '../users/NewUser.js'
-
+import * as Permission from "../shared/Permission.js"
+import { CurrentUserContext } from '../../App.js'
 
 function ListSidebar() {
     const [modalShow, setModalShow] = useState(false);
     const [modalShowUser, setModalShowUser] = useState(false);
-
+    const currentUser = useContext(CurrentUserContext)
     return (
         <>
             <Accordion defaultActiveKey="0">
@@ -65,89 +66,108 @@ function ListSidebar() {
                         </Card.Body>
                     </Accordion.Collapse>
                 </Card>
-                <Card>
-                    <Accordion.Toggle as={Card.Header} eventKey="2">
-                        Jerarquía
-                </Accordion.Toggle>
-                    <Accordion.Collapse eventKey="2">
-                        <Card.Body className='p-1'>
-                            <ul>
-                                <li>
-                                    <Button
-                                        onClick={() => setModalShow(true)}
-                                        className="btn-without bm-item-list">
-                                        <span>Ver jerarquía</span>
-                                    </Button>
-                                </li>
-                            </ul>
-                        </Card.Body>
-                    </Accordion.Collapse>
-                </Card>
-                <Card>
-                    <Accordion.Toggle as={Card.Header} eventKey="3">
-                        Proveedor
-                </Accordion.Toggle>
-                    <Accordion.Collapse eventKey="3">
-                        <Card.Body className='p-1'>
-                            <ul>
-                                <li>
-                                    <NavLink to="/proforma" className="bm-item-list">
-                                        <span>Descargar Maestra</span>
-                                    </NavLink>
-                                </li>
-                                <li>
-                                    <NavLink to="/proforma" className="bm-item-list">
-                                        <span>Registrar Proveedor</span>
-                                    </NavLink>
-                                </li>
-                            </ul>
-                        </Card.Body>
-                    </Accordion.Collapse>
-                </Card>
-                <Card>
-                    <Accordion.Toggle as={Card.Header} eventKey="4">
-                        Artículos
-                </Accordion.Toggle>
-                    <Accordion.Collapse eventKey="4">
-                        <Card.Body className='p-1'>
-                            <ul>
-                                <li>
-                                    <NavLink to="/proforma" className="bm-item-list">
-                                        <span>Descargar Maestra</span>
-                                    </NavLink>
-                                </li>
-                                <li>
-                                    <NavLink to="/proforma" className="bm-item-list">
-                                        <span>Registrar Artículo</span>
-                                    </NavLink>
-                                </li>
-                            </ul>
-                        </Card.Body>
-                    </Accordion.Collapse>
-                </Card>
-                <Card>
-                    <Accordion.Toggle as={Card.Header} eventKey="5">
-                        Usuarios
-                    </Accordion.Toggle>
-                    <Accordion.Collapse eventKey="5">
-                        <Card.Body className='p-1'>
-                            <ul>
-                                <li>
-                                    <NavLink to="/users" className="bm-item-list">
-                                        <span>Listar Usuarios</span>
-                                    </NavLink>
-                                </li>
-                                <li>
-                                    <Button
-                                        onClick={() => setModalShowUser(true)}
-                                        className="btn-without bm-item-list">
-                                        <span>Crear Usuario</span>
-                                    </Button>
-                                </li>
-                            </ul>
-                        </Card.Body>
-                    </Accordion.Collapse>
-                </Card>
+                {
+                    !Permission.isRegionalBuyer(currentUser.role) ?
+                        <Card>
+                            <Accordion.Toggle as={Card.Header} eventKey="2">
+                                Jerarquía
+                            </Accordion.Toggle>
+                            <Accordion.Collapse eventKey="2">
+                                <Card.Body className='p-1'>
+                                    <ul>
+                                        <li>
+                                            <Button
+                                                onClick={() => setModalShow(true)}
+                                                className="btn-without bm-item-list">
+                                                <span>Ver jerarquía</span>
+                                            </Button>
+                                        </li>
+                                    </ul>
+                                </Card.Body>
+                            </Accordion.Collapse>
+                        </Card>
+                        : ''
+                }
+                {
+                    !Permission.isRegionalBuyer(currentUser.role) ?
+                        <Card>
+                            <Accordion.Toggle as={Card.Header} eventKey="3">
+                                Proveedor
+                            </Accordion.Toggle>
+                            <Accordion.Collapse eventKey="3">
+                                <Card.Body className='p-1'>
+                                    <ul>
+                                        <li>
+                                            <NavLink to="/proforma" className="bm-item-list">
+                                                <span>Descargar Maestra</span>
+                                            </NavLink>
+                                        </li>
+                                        <li>
+                                            <NavLink to="/proforma" className="bm-item-list">
+                                                <span>Registrar Proveedor</span>
+                                            </NavLink>
+                                        </li>
+                                    </ul>
+                                </Card.Body>
+                            </Accordion.Collapse>
+                        </Card>
+                        : ''
+                }
+                {
+                    !Permission.isRegionalBuyer(currentUser.role) ?
+
+                        <Card>
+                            <Accordion.Toggle as={Card.Header} eventKey="4">
+                                Artículos
+                            </Accordion.Toggle>
+                            <Accordion.Collapse eventKey="4">
+                                <Card.Body className='p-1'>
+                                    <ul>
+                                        <li>
+                                            <NavLink to="/proforma" className="bm-item-list">
+                                                <span>Descargar Maestra</span>
+                                            </NavLink>
+                                        </li>
+                                        <li>
+                                            <NavLink to="/proforma" className="bm-item-list">
+                                                <span>Registrar Artículo</span>
+                                            </NavLink>
+                                        </li>
+                                    </ul>
+                                </Card.Body>
+                            </Accordion.Collapse>
+                        </Card>
+                        : ''
+                }
+
+
+                {
+                    Permission.isAdmin(currentUser.role) ?
+                        <Card>
+                            <Accordion.Toggle as={Card.Header} eventKey="5">
+                                Usuarios
+                            </Accordion.Toggle>
+                            <Accordion.Collapse eventKey="5">
+                                <Card.Body className='p-1'>
+                                    <ul>
+                                        <li>
+                                            <NavLink to="/users" className="bm-item-list">
+                                                <span>Listar Usuarios</span>
+                                            </NavLink>
+                                        </li>
+                                        <li>
+                                            <Button
+                                                onClick={() => setModalShowUser(true)}
+                                                className="btn-without bm-item-list">
+                                                <span>Crear Usuario</span>
+                                            </Button>
+                                        </li>
+                                    </ul>
+                                </Card.Body>
+                            </Accordion.Collapse>
+                        </Card> : ''
+                }
+
             </Accordion>
             <ModalTemplate show={modalShow}
                 onHide={() => setModalShow(false)} />
@@ -191,16 +211,16 @@ function Header() {
 
 export default function Sidebar({ isOpen, setOpen }) {
     const dispatch = useDispatch()
- 
+    const currentUser = useContext(CurrentUserContext)
     // useEffect(() => {
-    //     console.log(isOpen)
-    // }, [isOpen])
+    //    console.log(currentUser)
+    // }, [currentUser])
 
-      function logout(e) {
+    function logout(e) {
         setOpen(false)
         e.preventDefault()
         dispatch(startLogout())
-      }
+    }
 
     return (
         <Menu isOpen={isOpen} onClose={() => setOpen(false)}>
@@ -210,7 +230,9 @@ export default function Sidebar({ isOpen, setOpen }) {
                     <div className="user-info">
                         <Dropdown>
                             <Dropdown.Toggle block className="btn-logout" id="dropdown-basic">
-                                {/* {currentUser ? currentUser.name : ''} */} Usuario Role
+                                {currentUser ? currentUser.first_name + ' ' + currentUser.last_name : ''}
+                                <br />
+                                <span>{currentUser ? currentUser.role : '' }</span>
                             </Dropdown.Toggle>
 
                             <Dropdown.Menu className="btn-logout">
