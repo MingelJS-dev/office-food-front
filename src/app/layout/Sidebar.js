@@ -95,16 +95,17 @@ function ListSidebar() {
                             <Accordion.Collapse eventKey="3">
                                 <Card.Body className='p-1'>
                                     <ul>
-                                        <li>
-                                            <NavLink to="/proforma" className="bm-item-list">
-                                                <span>Descargar Maestra</span>
+                                    <li>
+                                            <NavLink to="/providers" className="bm-item-list">
+                                                <span>Listar Proveedores</span>
                                             </NavLink>
                                         </li>
                                         <li>
                                             <NavLink to="/proforma" className="bm-item-list">
-                                                <span>Registrar Proveedor</span>
+                                                <span>Crear Proveedor</span>
                                             </NavLink>
                                         </li>
+                                      
                                     </ul>
                                 </Card.Body>
                             </Accordion.Collapse>

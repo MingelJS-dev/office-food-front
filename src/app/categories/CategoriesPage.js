@@ -78,7 +78,13 @@ function CategoriesPage() {
 
     useEffect(() => {
         setSelectCategoriesN4([])
+        setSelectCategoriesN3([])
+        setSelectCategoriesN2([])
+        setSelectCategoriesN1([])
         setIsSelectN4(false)
+        setIsSelectN3(false)
+        setIsSelectN2(false)
+        setIsSelectN1(false)
     }, [CountryId])
 
       
@@ -97,19 +103,6 @@ function CategoriesPage() {
         setIsSelectN1(false)
     }, [CategoryIdN4, setCategoryIdN4, categories, categories.length])
 
-    useEffect(() => {
-        if ( CategoryIdN4 ) {
-            setSelectCategoriesN3(categories.filter(item => item.ParentId === parseInt(CategoryIdN4)))
-            setIsSelectN3(true)
-        } else {
-            setSelectCategoriesN3([])
-            setIsSelectN3(false)
-        }
-        setSelectCategoriesN2([])
-        setIsSelectN2(false)
-        setSelectCategoriesN1([])
-        setIsSelectN1(false)
-    }, [CategoryIdN4, categories, categories.length])
 
     useEffect(() => {
         if ( CategoryIdN3 ) {
@@ -208,7 +201,8 @@ function CategoriesPage() {
             <Row style={{ height: '70%' }}>
                 <Col>
                     <CategoryList
-                        n={4}
+                        n={2}
+                        nView={4}
                         isSelectN={isSelectN4}
                         ParentId={CategoryId}
                         CountryId={CountryId}
@@ -220,6 +214,7 @@ function CategoriesPage() {
                 <Col>
                     <CategoryList
                         n={3}
+                        nView={3}
                         isSelectN={isSelectN3}
                         ParentId={CategoryIdN4}
                         CountryId={CountryId}
@@ -230,7 +225,8 @@ function CategoriesPage() {
                 </Col>
                 <Col>
                     <CategoryList
-                        n={2}
+                        n={4}
+                        nView={2}
                         isSelectN={isSelectN2}
                         ParentId={CategoryIdN3}
                         CountryId={CountryId}
@@ -241,7 +237,8 @@ function CategoriesPage() {
                 </Col>
                 <Col>
                     <CategoryList
-                        n={1}
+                        n={5}
+                        nView={1}
                         isSelectN={isSelectN1}
                         ParentId={CategoryIdN2}
                         CountryId={CountryId}

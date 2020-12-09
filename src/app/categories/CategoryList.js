@@ -24,7 +24,7 @@ import NewCategoryModal from './NewCategory.js'
 import EditCategoryModal from './EditCategory.js'
 import swal from 'sweetalert';
 
-function CategoryList({ n, isSelectN, ParentId, CountryId, categories, setCategoryIdN, selectId }) {
+function CategoryList({ n, nView, isSelectN, ParentId, CountryId, categories, setCategoryIdN, selectId }) {
     const dispatch = useDispatch()
     const history = useHistory()
     const [modalShow, setModalShow] = useState(false);
@@ -39,7 +39,10 @@ function CategoryList({ n, isSelectN, ParentId, CountryId, categories, setCatego
             setCurrentCategories(categories)
         } else {
             setCurrent({})
+            setCurrentCategories([])
+            
         }
+       
 
     }, [dispatch, history, categories, categories && categories.length, isSelectN])
 
@@ -71,7 +74,7 @@ function CategoryList({ n, isSelectN, ParentId, CountryId, categories, setCatego
         <Card className="cardJC">
             <Card.Header className="card-header-category">
                 <div className="d-flex justify-content-between">
-                    <h5 className="pt-2" >Categoría N{n}</h5>
+                    <h5 className="pt-2" >Categoría N{nView}</h5>
                     <Col lg={5} className="d-flex justify-content-between">
                         <button className="btn btn-category"
                             disabled={current && !current.name}
@@ -102,7 +105,7 @@ function CategoryList({ n, isSelectN, ParentId, CountryId, categories, setCatego
                         {
                             currentCategories.map(x =>
                                 <li key={x.id}
-                                    className={`item-card ${currentId === x.id > 0 ? 'item-card-active' : ''}`}
+                                    className={`item-card ${current && current.id === x.id ? 'item-card-active' : ''}`}
                                     onClick={() => selectCategory(x)}>
                                     <div className="group-name d-flex justify-content-between">
                                         <span>{x.name}</span>
