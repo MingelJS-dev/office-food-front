@@ -19,49 +19,109 @@ import * as CountryReducer from '../../reducers/countries.reducer.js'
 import * as CategoryReducer from '../../reducers/categories.reducer.js'
 import "./CategoryPage.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCog, faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faCog, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons'
+import NewCategoryModal from './NewCategory.js'
+import EditCategoryModal from './EditCategory.js'
+import swal from 'sweetalert';
 
-function CategoryList({ n }) {
+function CategoryList({ n, isSelectN, ParentId, CountryId, categories, setCategoryIdN, selectId }) {
     const dispatch = useDispatch()
     const history = useHistory()
-    // const [modalShow, setModalShow] = useState(false);
-    // let [CountryId, setCountryId] = useState('');
-    // let [CategoryId, setCategoryId] = useState('');
-    // const countries = useSelector(CountryReducer.getCountries)
-    // let categoriesN5 = useSelector(CategoryReducer.getCategoryN5s)
-    // const [selectCategoriesN5, setSelectCategoriesN5] = useState([])
-    // useEffect(() => {
-    //     dispatch(CountryActions.fetchCountries())
-    //     dispatch(CategoryActions.fetchAll())
-    //     setSelectCategoriesN5(categoriesN5.filter(item => item.CountryId === parseInt(CountryId)))
-    // }, [dispatch, history, CountryId])
+    const [modalShow, setModalShow] = useState(false);
+    const [modalEditShow, setEditModalShow] = useState(false);
+
+    let [currentCategories, setCurrentCategories] = useState([]);
+    let [currentId, setCurrentId] = useState('');
+
+    let [current, setCurrent] = useState({})
+    useEffect(() => {
+        if (categories && categories.length) {
+            setCurrentCategories(categories)
+        } else {
+            setCurrent({})
+        }
+
+    }, [dispatch, history, categories, categories && categories.length, isSelectN])
+
+    useEffect(() => {
+        setCurrentId(selectId)
+        // console.log(selectId, currentId, 'asdasdasd')
+    }, [selectId, setCategoryIdN])
+
+    const selectCategory = (data) => {
+        setCategoryIdN(data.id)
+        setCurrent(data)
+    }
+
+    function destroyCategorie(CategoryId) {
+        swal({
+            title: "¿Está seguro que desea eliminar la categoría?",
+            icon: "warning",
+            dangerMode: true,
+            buttons: ["Cancelar", "Eliminar"],
+        })
+            .then(ok => {
+                if (ok) {
+                    dispatch(new CategoryActions.destroyById(CategoryId))
+                }
+            });
+    }
 
     return (
         <Card className="cardJC">
             <Card.Header className="card-header-category">
                 <div className="d-flex justify-content-between">
-                    <h5 className="pt-2" >Categoría N{ n }</h5>
-                    <Col lg={4} className="d-flex justify-content-between">
-                        <button className="btn btn-category" >
+                    <h5 className="pt-2" >Categoría N{n}</h5>
+                    <Col lg={5} className="d-flex justify-content-between">
+                        <button className="btn btn-category"
+                            disabled={current && !current.name}
+                            onClick={() => setEditModalShow(true)
+                            }
+                        >
                             <FontAwesomeIcon icon={faCog} />
                         </button>
-                        <button className="btn btn-category" >
+                        <button className="btn btn-category"
+                         disabled={current && !current.name}
+                         onClick={() => destroyCategorie(current.id)}
+                        ><FontAwesomeIcon icon={faTrash} /></button>
+                        <button className="btn btn-category"
+                            disabled={!isSelectN}
+                            onClick={() => setModalShow(true)}
+                        >
                             <FontAwesomeIcon icon={faPlus} />
                         </button>
                     </Col>
+
                 </div>
             </Card.Header>
-            <Card.Body className="card-body-category card-text-category">
-                <div className="card-container-category">
+            <Card.Body
+                className={`card-body-category card-text-category ${categories && categories.length > 0 ? 'card-body-height-category' : ''}`}>
+                <div
+                    className={`card-container-category ${categories && categories.length > 0 ? 'item-card-height-category' : ''}`}>
                     <ul className="list-group">
-                        <li className="item-card-category">
-                            <div className="group-name d-flex justify-content-between">
-                                <span></span>
-                            </div>
-                        </li>
+                        {
+                            currentCategories.map(x =>
+                                <li key={x.id}
+                                    className={`item-card ${currentId === x.id > 0 ? 'item-card-active' : ''}`}
+                                    onClick={() => selectCategory(x)}>
+                                    <div className="group-name d-flex justify-content-between">
+                                        <span>{x.name}</span>
+                                    </div>
+                                </li>
+                            )
+                        }
                     </ul>
                 </div>
             </Card.Body>
+            <NewCategoryModal show={modalShow}
+                level={n}
+                CountryId={CountryId}
+                ParentId={ParentId}
+                onHide={() => setModalShow(false)} />
+            <EditCategoryModal show={modalEditShow}
+                level={n}
+                category={current}
+                onHide={() => setEditModalShow(false)} />
         </Card>
     );
 }

@@ -61,7 +61,7 @@ export default function Header({ title, items = [], children }){
         }
 
         <div>
-          <h5 className="page-title m-0">{title}</h5>
+          <h5 className="page-title m-0 test">{title}</h5>
           <nav className="d-none d-md-block">
             <ol className="breadcrumb">
               { breadCrumbs }

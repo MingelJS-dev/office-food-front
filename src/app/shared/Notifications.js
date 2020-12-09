@@ -15,7 +15,7 @@ const style = {
   position: 'fixed',
   zIndex: 10,
   right: '3%',
-  top: '10%'
+  top: '15%'
 }
 
 export default function Notification() {

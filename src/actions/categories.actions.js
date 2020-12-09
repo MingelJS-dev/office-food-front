@@ -56,12 +56,12 @@ export function destroy(data){
 }
 
 export const DESTROY_SUCCESS = '[Categories] DESTROY_SUCCESS';
-export function deleteSuccess(category){
+export function destroySuccess(category){
   return { type: DESTROY_SUCCESS, category }
 }
 
 export const DESTROY_FAILED = '[Categories] DESTROY_FAILED';
-export function deleteFailed(error){
+export function destroyFailed(error){
   return { type: DESTROY_FAILED, error }
 }
 
@@ -148,7 +148,7 @@ export function createCategory(data){
 
 export function destroyById(CategoryId) {
   return async function (dispatch, getState) {
-    dispatch(deleteUser(CategoryId))
+    dispatch(destroy(CategoryId))
 
     try {
       const res = await axios.delete(
@@ -159,18 +159,18 @@ export function destroyById(CategoryId) {
       );
 
       if (res.status === 201) {
-        dispatch(deleteSuccess({CategoryId}))
+        dispatch(destroySuccess({CategoryId}))
         // history.push('/products')
         dispatch(updateNotification('Categoria eliminado correctamente', 'success'))
       } else {
-        dispatch(deleteFailed(res, CategoryId))
+        dispatch(destroyFailed(res, CategoryId))
         dispatch(updateNotification('Hubo un error al eliminar la categoria', 'danger'))
       }
 
     } catch (error) {
       console.log('error:', error)
       dispatch(updateNotification('Hubo un error al eliminar la categoria', 'danger'))
-      dispatch(deleteFailed(error, CategoryId))
+      dispatch(destroyFailed(error, CategoryId))
     }
   }
 }

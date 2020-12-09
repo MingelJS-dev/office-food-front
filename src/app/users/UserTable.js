@@ -20,33 +20,6 @@ import swal from 'sweetalert';
 
 import Spinner from '../shared/Spinner.js';
 
-// function StatusCheck({ item }) {
-//   const dispatch = useDispatch()
-//   const isLoading = useSelector(state => UserReducer.getIsLoadingById(state, item.id))
-
-//   function toggle() {
-//     const status = !item.deleted_at ? 'disable' : 'enable'
-//     dispatch(UserActions.updateUserStatus(item.id, status))
-//   }
-
-//   let label = item.deleted_at ? 'Deshabilitado' : 'Habilitado'
-
-//   if (isLoading) {
-//     label = 'Actualizando...'
-//   }
-
-//   return (
-//     <Form.Check
-//       type="switch"
-//       className="user-status-check"
-//       disabled={isLoading}
-//       id={`sw-${item.id}`}
-//       label={label}
-//       checked={!item.deleted_at}
-//       onChange={() => toggle()}
-//     />
-//   )
-// }
 
 export default function UsersTable({ tableSize, input }) {
     let users = useSelector(UserReducer.getUsers)

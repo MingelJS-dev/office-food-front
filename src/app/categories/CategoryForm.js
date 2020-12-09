@@ -3,21 +3,23 @@ import { useSelector } from 'react-redux'
 
 import * as CountryReducer from '../../reducers/countries.reducer.js'
 import Spinner from '../shared/Spinner.js'
+
 // import useFeatureChecker from '../shared/FeatureChecker.js'
 
-export default function UserForm({ category, save, level }) {
+export default function CategoryForm({ category, save, level }) {
     // const CheckFeatures = useFeatureChecker()
     const [name, setName] = useState(category.name || '')
     // const [first_name, setFirstName] = useState(user.first_name || '')
     //   const [repeatPassword, setRepeatPassword] = useState('')
     const [CountryId, setCountryId] = useState(category.CountryId || '');
-    
+
     const [errors, setErrors] = useState({})
     const countries = useSelector(CountryReducer.getCountries)
+    
     // const globalLoading = useSelector(UsersReducer.getIsLoading)
     // const localLoading = useSelector(state => UsersReducer.getIsLoadingById(state, user.id))
 
-
+  
     const isLoading = false
 
     function validate(e) {
@@ -59,6 +61,8 @@ export default function UserForm({ category, save, level }) {
         return (<Spinner />)
     }
 
+
+
     return (
         <form onSubmit={validate} noValidate>
             <div className="form-group">
@@ -74,29 +78,32 @@ export default function UserForm({ category, save, level }) {
 
                 <div className="invalid-feedback">{errors.name}</div>
             </div>
-            <div className="form-group">
-                <label>País</label>
+            {
+                category && !category.CountryId &&
+                <div className="form-group">
+                    <label>País</label>
 
-                <select
-                       className={`form-control ${errors.CountryId ? 'is-invalid' : ''}`}
-                    onChange={(e => setCountryId(e.target.value))}
-                    defaultValue={CountryId}
-                >
-                    <option value="">Seleccione...</option>
-                    {
-                        countries.map(item => (
-                            <option
-                                key={item.id}
-                                value={item.id}
-                            >{item.name}</option>
-                        ))
-                    }
-                </select>
+                    <select
+                        className={`form-control ${errors.CountryId ? 'is-invalid' : ''}`}
+                        onChange={(e => setCountryId(e.target.value))}
+                        defaultValue={CountryId}
+                    >
+                        <option value="">Seleccione...</option>
+                        {
+                            countries.map(item => (
+                                <option
+                                    key={item.id}
+                                    value={item.id}
+                                >{item.name}</option>
+                            ))
+                        }
+                    </select>
 
-                <div className="invalid-feedback">{errors.CountryId}</div>
-            </div>
+                    <div className="invalid-feedback">{errors.CountryId}</div>
+                </div>
+            }
 
-            <div className="form-group">
+            <div className="form-group d-flex justify-content-between">
                 <button className={`btn btn-primary ${isLoading ? 'loading' : ''}`} disabled={isLoading}>
                     <span>Guardar</span>
                     {
@@ -106,6 +113,7 @@ export default function UserForm({ category, save, level }) {
                     }
 
                 </button>
+
             </div>
 
         </form>

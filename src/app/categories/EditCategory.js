@@ -6,15 +6,16 @@ import CategoryForm from './CategoryForm.js'
 import * as CategoryActions from '../../actions/categories.actions.js'
 
 
-export default function NewCategoryModal({ show, onHide, level, ParentId, CountryId }) {
+export default function EditCategoryModal({ show, onHide, level, category }) {
     const dispatch = useDispatch()
 
 
-    function createCategory(data) {
-        if (ParentId) {
-            data['ParentId'] = ParentId
-        }
-        dispatch(CategoryActions.createCategory(data)).then(onHide())
+    function updateCategory(data) {
+        console.log(data)
+        // if (ParentId) {
+        //     data['ParentId'] = ParentId
+        // }
+        dispatch(CategoryActions.updateById(data)).then(onHide())
     }
 
     return (
@@ -27,7 +28,7 @@ export default function NewCategoryModal({ show, onHide, level, ParentId, Countr
         >
             <Modal.Header closeButton>
                 <Modal.Title className='text-center' id="contained-modal-title-vcenter">
-                    Crear Categoría
+                    Editar Categoría
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -35,11 +36,9 @@ export default function NewCategoryModal({ show, onHide, level, ParentId, Countr
                     <Row className='justify-content-center'>
                         <Col lg={5}>
                             <CategoryForm
-                                category={{
-                                    CountryId: CountryId
-                                }}
+                                category={category}
                                 level={level}
-                                save={createCategory} />
+                                save={updateCategory} />
                         </Col>
                     </Row>
                 </Container>

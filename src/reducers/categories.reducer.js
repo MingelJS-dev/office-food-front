@@ -49,7 +49,7 @@ export default function auth(state = INITIAL_STATE, action) {
         },
         loadingById: {
           ...state.loadingById,
-          [action.categories.id]: false
+          [action.category.id]: false
         }
       }
 
@@ -75,7 +75,7 @@ export default function auth(state = INITIAL_STATE, action) {
         },
         ids: [
           ...state.ids,
-          action.user.id
+          action.category.id
         ],
         isLoading: false,
 
@@ -87,8 +87,16 @@ export default function auth(state = INITIAL_STATE, action) {
       }
 
     case CategoryActions.DESTROY_SUCCESS:
-      delete state.entities[action.category.CategoryId]
-      delete state.ids[action.category.CategoryId]
+      // let entities = Object.keys(state.entities).filter(x => x !== action.category.id)
+
+      //   state.entities = state.entities[entities.map(x => x)]
+
+   
+      // let entities = Object.keys(state.entities)
+      // delete state.entities[action.category.CategoryId]
+      // delete state.ids[action.category.CategoryId]
+
+      state.ids = state.ids.filter(x => x !== action.category.CategoryId)
 
       return {
         ...state,
@@ -107,11 +115,14 @@ export default function auth(state = INITIAL_STATE, action) {
 }
 
 export const getCategoryEntities = state => state.categories.entities
-export const getCategories = state => state.categories.ids.map(id => state.categories.entities[id])
+export const getCategories = state => {
+  return state.categories.ids.map(id =>  state.categories.entities[id])
+}
 export const getCategoryById = (state, CategoryId) => state.categories.entities[CategoryId]
 export const getIsLoading = state => state.categories.isLoading
 
 export const getCategoryN5s = state => {
-  const categories = getCategories(state).filter(x => x.level === 1)
+  const categories = getCategories(state).filter(x => { 
+    return x && x.level === 1 })
   return categories
 }
