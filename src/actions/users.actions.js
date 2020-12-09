@@ -1,6 +1,5 @@
 import axios from 'axios'
-import { getAuthHeaders, createAction, toQueryString } from '../utils.js'
-import history from '../history.js'
+import { getAuthHeaders, createAction } from '../utils.js'
 
 import { updateNotification } from './notifications.actions.js'
 
@@ -77,7 +76,7 @@ export function deleteSuccess(user){
 
 export const DELETE_FAILED = '[Users] DELETE_FAILED';
 export function deleteFailed(error){
-  return { type: DELETE_SUCCESS, error }
+  return { type: DELETE_FAILED, error }
 }
 
 

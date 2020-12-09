@@ -76,11 +76,9 @@ function ListSidebar() {
                                 <Card.Body className='p-1'>
                                     <ul>
                                         <li>
-                                            <Button
-                                                onClick={() => setModalShow(true)}
-                                                className="btn-without bm-item-list">
-                                                <span>Ver jerarquía</span>
-                                            </Button>
+                                            <NavLink to="/categories" className="bm-item-list">
+                                            <span>Ver jerarquía</span>
+                                            </NavLink>
                                         </li>
                                     </ul>
                                 </Card.Body>

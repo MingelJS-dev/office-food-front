@@ -57,6 +57,23 @@
     color: white !important;
   }
 
+  .btn-category {
+    border: 2px solid white !important;
+    background-color: white !important;
+    cursor: pointer !important;
+    color: rgb(1, 79, 151);
+    font-weight: bold;
+  }
+  
+  .btn-category:hover {
+    border: 2px solid rgb(1, 79, 151) !important;
+    cursor: pointer;
+    background-color: rgb(2, 38, 72) !important;
+    border-radius: 3px !important;
+    cursor: pointer !important;
+    color: white !important;
+  }
+
   .btn-danger-custom {
     border: 2px solid rgb(165, 9, 3) !important;
     background-color: rgb(175, 8, 2) !important;

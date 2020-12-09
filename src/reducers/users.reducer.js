@@ -44,7 +44,6 @@ export default function auth(state = INITIAL_STATE, action) {
       }
 
     case UsersActions.UPDATE_ONE_SUCCESS:
-      console.log(action)
       return {
         ...state,
         //isLoading: false,

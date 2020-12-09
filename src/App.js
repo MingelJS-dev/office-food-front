@@ -21,8 +21,9 @@ import Sidebar from './app/layout/Sidebar.js'
 import ProformaPage from './app/proforma/ProformaPage.js'
 import Notification from "./app/shared/Notifications.js";
 
-// Users
+
 import UsersPage from "./app/users/UserPage.js"
+import CategoriesPage from "./app/categories/CategoriesPage.js"
 import * as Permission from "./app/shared/Permission.js"
 
 export const CurrentUserContext = React.createContext({})
@@ -103,6 +104,7 @@ function App() {
                     <Switch>
                       <Route path="/proforma" exact component={ProformaPage} />
                       <Route path="/users" exact component={UsersPage} />
+                      <Route path="/categories" exact component={CategoriesPage} />
                       <Route path="*">
                         <Redirect to="/" />
                       </Route>
@@ -125,6 +127,7 @@ function App() {
                     &&
                     <Switch>
                       <Route path="/proforma" exact component={ProformaPage} />
+                      <Route path="/categories" exact component={CategoriesPage} />
                       <Route path="*">
                         <Redirect to="/" />
                       </Route>
