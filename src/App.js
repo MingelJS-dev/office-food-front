@@ -18,13 +18,22 @@ import LoginPage from "./app/login/LoginPage.js";
 import MainPage from './app/main_page/MainPage.js'
 // import Header from './app/layout/Header.js'
 import Sidebar from './app/layout/Sidebar.js'
+
 import ProformaPage from './app/proforma/ProformaPage.js'
+import NewProforma from './app/proforma/NewProforma.js'
 import Notification from "./app/shared/Notifications.js";
 
 
 import UsersPage from "./app/users/UserPage.js"
 import CategoriesPage from "./app/categories/CategoriesPage.js"
+
 import ProvidersPage from "./app/providers/ProvidersPage.js"
+import NewProvider from "./app/providers/NewProvider.js"
+import EditProvider from "./app/providers/EditProvider.js"
+
+import ProductPage from "./app/products/ProductPage.js"
+import NewProduct from "./app/products/NewProduct.js"
+import EditProduct from "./app/products/EditProduct.js"
 
 import * as Permission from "./app/shared/Permission.js"
 
@@ -104,10 +113,15 @@ function App() {
                     Permission.isAdmin(currentUser.role)
                     &&
                     <Switch>
-                      <Route path="/proforma" exact component={ProformaPage} />
+                      <Route path="/proformas/new" exact component={NewProforma} />
                       <Route path="/users" exact component={UsersPage} />
                       <Route path="/categories" exact component={CategoriesPage} />
                       <Route path="/providers" exact component={ProvidersPage} />
+                      <Route path="/providers/new" exact component={NewProvider} />
+                      <Route path="/providers/:ProviderId/edit" exact component={EditProvider} />
+                      <Route path="/products" exact component={ProductPage} />
+                      <Route path="/products/new" exact component={NewProduct} />
+                      <Route path="/products/:ProductId/edit" exact component={EditProduct} />
                       <Route path="*">
                         <Redirect to="/" />
                       </Route>
@@ -129,9 +143,14 @@ function App() {
                     Permission.isPlanner(currentUser.role)
                     &&
                     <Switch>
-                      <Route path="/proforma" exact component={ProformaPage} />
+                      <Route path="/proformas/new" exact component={NewProforma} />
                       <Route path="/categories" exact component={CategoriesPage} />
                       <Route path="/providers" exact component={ProvidersPage} />
+                      <Route path="/providers/new" exact component={NewProvider} />
+                      <Route path="/providers/:ProviderId/edit" exact component={EditProvider} />
+                      <Route path="/products" exact component={ProductPage} />
+                      <Route path="/products/new" exact component={NewProduct} />
+                      <Route path="/products/:ProductId/edit" exact component={EditProduct} />
                       <Route path="*">
                         <Redirect to="/" />
                       </Route>

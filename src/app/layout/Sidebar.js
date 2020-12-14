@@ -39,7 +39,7 @@ function ListSidebar() {
                         <Card.Body className='p-1'>
                             <ul>
                                 <li>
-                                    <NavLink to="/proforma" className="bm-item-list">
+                                    <NavLink to="/proformas/new" className="bm-item-list">
                                         <span>Ingresar Proforma</span>
                                     </NavLink>
                                 </li>
@@ -77,7 +77,7 @@ function ListSidebar() {
                                     <ul>
                                         <li>
                                             <NavLink to="/categories" className="bm-item-list">
-                                            <span>Ver jerarquía</span>
+                                                <span>Ver jerarquía</span>
                                             </NavLink>
                                         </li>
                                     </ul>
@@ -95,17 +95,22 @@ function ListSidebar() {
                             <Accordion.Collapse eventKey="3">
                                 <Card.Body className='p-1'>
                                     <ul>
-                                    <li>
+                                        <li>
                                             <NavLink to="/providers" className="bm-item-list">
-                                                <span>Listar Proveedores</span>
+                                                <span>Ver Proveedores</span>
                                             </NavLink>
                                         </li>
                                         <li>
-                                            <NavLink to="/proforma" className="bm-item-list">
+                                            <NavLink to="/providers/new" className="bm-item-list">
                                                 <span>Crear Proveedor</span>
                                             </NavLink>
                                         </li>
-                                      
+                                        <li>
+                                            <Button
+                                                className="btn-without">
+                                                <span>Descargar Maestra</span>
+                                            </Button>
+                                        </li>
                                     </ul>
                                 </Card.Body>
                             </Accordion.Collapse>
@@ -123,13 +128,13 @@ function ListSidebar() {
                                 <Card.Body className='p-1'>
                                     <ul>
                                         <li>
-                                            <NavLink to="/proforma" className="bm-item-list">
-                                                <span>Descargar Maestra</span>
+                                            <NavLink to="/products" className="bm-item-list">
+                                                <span>Ver artículos</span>
                                             </NavLink>
                                         </li>
                                         <li>
                                             <NavLink to="/proforma" className="bm-item-list">
-                                                <span>Registrar Artículo</span>
+                                                <span>Descargar Maestra</span>
                                             </NavLink>
                                         </li>
                                     </ul>
@@ -151,7 +156,7 @@ function ListSidebar() {
                                     <ul>
                                         <li>
                                             <NavLink to="/users" className="bm-item-list">
-                                                <span>Listar Usuarios</span>
+                                                <span>Ver Usuarios</span>
                                             </NavLink>
                                         </li>
                                         <li>
@@ -231,7 +236,7 @@ export default function Sidebar({ isOpen, setOpen }) {
                             <Dropdown.Toggle block className="btn-logout" id="dropdown-basic">
                                 {currentUser ? currentUser.first_name + ' ' + currentUser.last_name : ''}
                                 <br />
-                                <span>{currentUser ? currentUser.role : '' }</span>
+                                <span>{currentUser ? currentUser.role : ''}</span>
                             </Dropdown.Toggle>
 
                             <Dropdown.Menu className="btn-logout">

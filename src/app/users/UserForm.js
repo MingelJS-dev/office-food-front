@@ -60,14 +60,11 @@ function PasswordWrapper({ user, encrypted_password, setEncrypted_password, setR
 }
 
 export default function UserForm({ user, save }) {
-    // const CheckFeatures = useFeatureChecker()
     const [last_name, setLastName] = useState(user.last_name || '')
     const [first_name, setFirstName] = useState(user.first_name || '')
     const [email, setEmail] = useState(user.email || '')
-    // const [rut, setRut] = useState(user.rut || '')
     const [ RoleId , setRoleId] = useState(user.UserRoles ? user.UserRoles[0].Role.id : '')
     const [encrypted_password, setEncrypted_password] = useState(user.encrypted_password || '')
-    //   const [repeatPassword, setRepeatPassword] = useState('')
     const [errors, setErrors] = useState({})
 
     const roles = useSelector(RolesReducer.getRoles)

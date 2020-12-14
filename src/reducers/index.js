@@ -5,6 +5,9 @@ import roles from './roles.reducer.js'
 import notifications from './notifications.reducer.js'
 import countries from './countries.reducer.js'
 import categories from './categories.reducer.js'
+import providers from './providers.reducer.js'
+import products from './products.reducer.js'
+import brands from './brands.reducer.js'
 
 const reducers = combineReducers({
   auth,
@@ -12,7 +15,10 @@ const reducers = combineReducers({
   roles,
   notifications,
   countries,
-  categories
+  categories,
+  providers,
+  products,
+  brands
 });
 
 export default reducers;

@@ -89,6 +89,28 @@
     border-radius: 3px !important;
     cursor: pointer !important;
     color: white !important;
-
   }
+
+  .not-found-table-items{
+    padding: 20px;
+    font-size: 1.5em;
+    color: rgb(165, 9, 3);
+    text-align: center;
+  }
+
+  .card-header-custom{
+    color: white !important;
+    background-color:  rgb(1, 79, 151) !important;
+  }
+
+  .card-custom {
+    border-radius: 20px !important;
+    box-shadow: 10px 10px 10px rgba(118, 117, 117, 0.5);
+  }
+
+  .card-header-custom {
+    border-top-left-radius: 20px !important;
+    border-top-right-radius: 20px !important;
+  }
+  
   

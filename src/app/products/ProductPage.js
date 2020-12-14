@@ -11,9 +11,12 @@ import Card from 'react-bootstrap/Card';
 // import { usePagination } from '../shared/Pagination.js'
 // import useSearch from '../shared/Search.js'
 import Header, { HeaderActions } from "../shared/SecondHeader.js"
-import ProvidersTable from './ProvidersTable.js';
+import ProductTable from './ProductTable.js';
 
-import * as ProviderActions from '../../actions/provider.actions.js'
+import * as ProductActions from '../../actions/product.actions.js'
+import * as CategoryActions from '../../actions/categories.actions.js'
+import * as CountryActions from '../../actions/countries.actions.js'
+import * as BrandActions from '../../actions/brands.actions.js'
 
 const SearchBar = ({ keyword, setKeyword }) => {
     const BarStyling = { width: "20rem", background: "#F2F1F9", border: "none", padding: "0.5rem" };
@@ -22,13 +25,13 @@ const SearchBar = ({ keyword, setKeyword }) => {
             style={BarStyling}
             key="random1"
             value={keyword}
-            placeholder={"Buscar proveedor..."}
+            placeholder={"Buscar producto..."}
             onChange={(e) => setKeyword(e.target.value)}
         />
     );
 }
 
-function ProvidersPage() {
+function ProductPage() {
     const dispatch = useDispatch()
     const history = useHistory()
     const [modalShowUser, setModalShowUser] = useState(false);
@@ -48,22 +51,25 @@ function ProvidersPage() {
     }
 
     useEffect(() => {
-        dispatch(ProviderActions.fetchAll())
+        dispatch(ProductActions.fetchAll())
+        dispatch(CategoryActions.fetchAll())
+        dispatch(CountryActions.fetchCountries())
+        dispatch(BrandActions.fetchAll())
     }, [dispatch, history])
 
     return (
         <Container fluid={true} className="my-3">
             <Row>
                 <Header
-                    title="Proveedores"
+                    title="Artículo"
                     items={[
-                        { label: "Listado de Proveedores" }
+                        { label: "Listado de Artículos" }
                     ]}
                 >
                     <HeaderActions>
                         <Link
-                            to="/providers/new"
-                            className="btn btn-sm btn-create-user">Crear proveedor</Link>
+                            to="/products/new"
+                            className="btn btn-sm btn-create-user">Crear producto</Link>
                         <button
                             className="btn btn-sm btn-create-user m-1">Descargar Maestra</button>
                         <button
@@ -85,7 +91,7 @@ function ProvidersPage() {
                 <Col className="pt-2 pr-0 pb-0 pl-0">
                     <Card>
                         <Card.Body className="p-0 table-responsive">
-                            <ProvidersTable input={input} />
+                            <ProductTable input={input} />
                         </Card.Body>
                     </Card>
                 </Col>
@@ -95,4 +101,4 @@ function ProvidersPage() {
     );
 }
 
-export default ProvidersPage;
+export default ProductPage;

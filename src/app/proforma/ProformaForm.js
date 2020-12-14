@@ -1,9 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux'
 import { Container, Row, Col } from 'react-bootstrap';
+import * as CategoryReducer from '../../reducers/categories.reducer.js'
+import * as CountryReducer from '../../reducers/countries.reducer.js'
+import * as UserReducer from '../../reducers/users.reducer.js'
+import * as ProviderReducer from '../../reducers/providers.reducer.js'
 
-export default function ProformaForm() {
+export default function ProformaForm({ proforma, save }) {
     const [name, setName] = useState('')
     const [errors, setErrors] = useState({})
+    const [CountryId, setCountryId] = useState(proforma.CountryId || '')
+    const [CategoryId, setCategoryId] = useState(proforma.CategoryId || '')
+    const [ProviderId, setProviderId] = useState(proforma.ProviderId || '')
+    const countries = useSelector(CountryReducer.getCountries)
+    const categoriesN5 = useSelector(CategoryReducer.getCategoryN5s)
+    const users = useSelector(UserReducer.getUsers)
+    const providers = useSelector(ProviderReducer.getProviders)
+
+    const [selectN5s, setN5s] = useState([])
+    const [selectProviders, setSelectProviders] = useState([])
+    let currentProviders = []
+    useEffect(() => {
+        setN5s(categoriesN5.filter(x => x.CountryId === parseInt(CountryId)))
+    }, [CountryId])
+
+    useEffect(() => {
+      
+       providers.map(x => {
+          const item = x.ProviderCategories.filter(pc => pc.CategoryId === parseInt(CategoryId))
+
+          if(item && item.length) {
+              currentProviders.push(x)
+          }
+       })
+  
+        setSelectProviders(currentProviders)
+    }, [CategoryId])
 
     function validate(e) {
         e.preventDefault()
@@ -55,23 +87,44 @@ export default function ProformaForm() {
 
                 <Row className='justify-content-between'>
                     <div className="form-group col-xl-2 p-0">
-                        <label>País de Destino</label>
+                        <label>País</label>
                         <select
-                            className={`form-control form-control-sm`}
+                            className={`form-control form-control-sm ${errors.CountryId ? 'is-invalid' : ''}`}
+                            onChange={(e => setCountryId(e.target.value))}
+                            value={CountryId}
                         >
                             <option value="">Seleccione...</option>
-                            <option>Chile</option>
-                            <option>Argentina</option>
+                            {
+                                countries.map(item => (
+                                    <option
+                                        key={item.id}
+                                        value={item.id}
+                                    >{item.name}</option>
+                                ))
+                            }
                         </select>
+                        <div className="invalid-feedback">{errors.CountryId}</div>
                     </div>
 
                     <div className="form-group col-xl-2">
                         <label>Proveedor Regional</label>
-                        <select
-                            className={`form-control form-control-sm`}
-                        >
-                            <option value="">Seleccione...</option>
-                        </select>
+
+                            <select
+                                className={`form-control form-control-sm ${errors.ProviderId ? 'is-invalid' : ''}`}
+                                onChange={(e => setProviderId(e.target.value))}
+                                value={ProviderId}
+                            >
+                                <option value="">Seleccione...</option>
+                                {
+                                    selectProviders.map(item => (
+                                        <option
+                                            key={item.id}
+                                            value={item.id}
+                                        >{item.name}</option>
+                                    ))
+                                }
+                            </select>
+                     
                     </div>
                     <div className="form-group col-xl-2 p-0">
                         <label>Transporte</label>
@@ -108,15 +161,24 @@ export default function ProformaForm() {
 
                 <Row className='justify-content-between'>
                     <div className="form-group col-xl-2 p-0">
-                        <label>Puerto/Aeropuerto de Destino</label>
+                        <label>Categoría N5</label>
                         <select
-                            className={`form-control form-control-sm`}
+                            className={`form-control form-control-sm ${errors.CategoryId ? 'is-invalid' : ''}`}
+                            onChange={(e => setCategoryId(e.target.value))}
+                            value={CategoryId}
                         >
                             <option value="">Seleccione...</option>
-                            <option>Chile</option>
-                            <option>Argentina</option>
+                            {
+                                selectN5s.map(item => (
+                                    <option
+                                        key={item.id}
+                                        value={item.id}
+                                    >{item.name}</option>
+                                ))
+                            }
                         </select>
                     </div>
+
                     <div className="form-group col-xl-2">
                         <label>País de Origen</label>
                         <select
@@ -163,14 +225,14 @@ export default function ProformaForm() {
                 </Row>
 
                 <Row className='justify-content-center'>
-                    <div className="form-group col-xl-2 ">
-                        <label>Categoría N5</label>
+                    <div className="form-group col-xl-2 p-0">
+                        <label>Puerto/Aeropuerto de Destino</label>
                         <select
                             className={`form-control form-control-sm`}
                         >
                             <option value="">Seleccione...</option>
-                            {/* <option>Chile</option>
-                            <option>Argentina</option> */}
+                            <option>Chile</option>
+                            <option>Argentina</option>
                         </select>
                     </div>
                     <div className="form-group col-xl-2">

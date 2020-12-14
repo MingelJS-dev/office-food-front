@@ -16,8 +16,9 @@ function ProformaPage() {
         <Container fluid={true}>
             <Row>
                 <Col sm={12}>
-                    <Card>
-                        <Card.Header className='text-center'><h4>Formulario Ingreso proforma</h4></Card.Header>
+                    <Card className="card-custom">
+                        <Card.Header className="card-header-custom text-center text-white font-weight-bold bg-dark card-header-custom card-header">
+                            <span>Formulario Ingreso proforma</span></Card.Header>
                         <Card.Body>
                             <ProformaForm />
                         </Card.Body>

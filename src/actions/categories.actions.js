@@ -25,8 +25,8 @@ export function updateOne(data){
 }
 
 export const UPDATE_ONE_FAILED = '[Categories] UPDATE_ONE_FAILED';
-export function updateOneFailed(error, UserId){
-  return { type: UPDATE_ONE_FAILED, error, UserId }
+export function updateOneFailed(error, CategoryId){
+  return { type: UPDATE_ONE_FAILED, error, CategoryId }
 }
 
 export const UPDATE_ONE_SUCCESS = '[Categories] UPDATE_ONE_SUCCESS';
@@ -66,7 +66,7 @@ export function destroyFailed(error){
 }
 
 
-export const [ UPDATE_PAGINATION, updatePagination ] = createAction('[Users] UPDATE_PAGINATION', ['headers'])
+export const [ UPDATE_PAGINATION, updatePagination ] = createAction('[Categories] UPDATE_PAGINATION', ['headers'])
 
 export function fetchAll(){
   return async function(dispatch, getState){
