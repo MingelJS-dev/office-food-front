@@ -35,6 +35,10 @@ import ProductPage from "./app/products/ProductPage.js"
 import NewProduct from "./app/products/NewProduct.js"
 import EditProduct from "./app/products/EditProduct.js"
 
+import PortPage from "./app/ports/PortPage.js"
+import NewPort from "./app/ports/NewPort.js"
+import EditPort from "./app/ports/EditPort.js"
+
 import * as Permission from "./app/shared/Permission.js"
 
 export const CurrentUserContext = React.createContext({})
@@ -105,10 +109,10 @@ function App() {
               <Col id="page-wrap" className="containerPage" style={{ height: '100vh' }}>
                 <Switch>
                   <Route path="/" exact>
-                    <Redirect to="/list" />
+                    <Redirect to="/proformas" />
                   </Route>
 
-                  <Route path="/list" exact component={MainPage} />
+                  <Route path="/proformas" exact component={MainPage} />
                   {
                     Permission.isAdmin(currentUser.role)
                     &&
@@ -122,6 +126,9 @@ function App() {
                       <Route path="/products" exact component={ProductPage} />
                       <Route path="/products/new" exact component={NewProduct} />
                       <Route path="/products/:ProductId/edit" exact component={EditProduct} />
+                      <Route path="/ports" exact component={PortPage} />
+                      <Route path="/ports/new" exact component={NewPort} />
+                      <Route path="/ports/:PortId/edit" exact component={EditPort} />
                       <Route path="*">
                         <Redirect to="/" />
                       </Route>
@@ -151,6 +158,10 @@ function App() {
                       <Route path="/products" exact component={ProductPage} />
                       <Route path="/products/new" exact component={NewProduct} />
                       <Route path="/products/:ProductId/edit" exact component={EditProduct} />
+                      <Route path="/ports" exact component={PortPage} />
+                      <Route path="/ports/new" exact component={NewPort} />
+                      <Route path="/ports/:PortId/edit" exact component={EditPort} />
+                      {/* <Route path="/products/:ProductId/edit" exact component={EditProduct} /> */}
                       <Route path="*">
                         <Redirect to="/" />
                       </Route>

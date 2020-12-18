@@ -43,6 +43,11 @@ function ListSidebar() {
                                         <span>Ingresar Proforma</span>
                                     </NavLink>
                                 </li>
+                                <li>
+                                    <NavLink to="/proformas" className="bm-item-list">
+                                        <span>Ver Proformas</span>
+                                    </NavLink>
+                                </li>
                                 <li >
                                     <Button
                                         onClick={() => setModalShow(true)}
@@ -59,6 +64,33 @@ function ListSidebar() {
                                 <li>
                                     <NavLink to="/proforma" className="bm-item-list">
                                         <span>Enviar Correo</span>
+                                    </NavLink>
+                                </li>
+                            </ul>
+
+                        </Card.Body>
+                    </Accordion.Collapse>
+                </Card>
+                <Card>
+                    <Accordion.Toggle as={Card.Header} eventKey="6">
+                        Puertos
+                    </Accordion.Toggle>
+                    <Accordion.Collapse eventKey="6">
+                        <Card.Body className='p-1'>
+                            <ul>
+                                <li>
+                                    <NavLink to="/ports" className="bm-item-list">
+                                        <span>Ver puertos</span>
+                                    </NavLink>
+                                </li>
+                                <li >
+                                <NavLink to="/ports/new" className="bm-item-list">
+                                        <span>Crear puerto</span>
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink to="/proforma" className="bm-item-list">
+                                        <span>Extraer maestra</span>
                                     </NavLink>
                                 </li>
                             </ul>

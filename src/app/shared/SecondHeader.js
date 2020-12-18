@@ -11,28 +11,28 @@ import history from '../../history.js'
 
 import './SecondHeader.css'
 
-export function HeaderActions({ children }){
-  return(
+export function HeaderActions({ children }) {
+  return (
     <div>{children}</div>
   )
 }
 
-export default function Header({ title, items = [], children }){
+export default function Header({ title, items = [], children }) {
   const dispatch = useDispatch()
   children = React.Children.toArray(children)
 
   const breadCrumbs = items.map((item, idx) => {
-    if( items.length - 1 === idx ){
+    if (items.length - 1 === idx) {
       return (
         <li
           key={item.label}
           className="breadcrumb-item active"
-        >{ item.label }</li>
+        >{item.label}</li>
       )
-    }else{
+    } else {
       return (
         <li key={item.label} className="breadcrumb-item">
-          <Link to={item.to}>{ item.label }</Link>
+          <Link to={item.to}>{item.label}</Link>
         </li>
       )
     }
@@ -40,7 +40,7 @@ export default function Header({ title, items = [], children }){
 
   let Actions;
 
-  if( children.length ){
+  if (children.length) {
     Actions = children.find(x => x.type === HeaderActions)
   }
 
@@ -57,14 +57,14 @@ export default function Header({ title, items = [], children }){
                 <FontAwesomeIcon icon={faArrowLeft} />
               </button>
             </div>
-          : null
+            : null
         }
 
         <div>
           <h5 className="page-title m-0 test">{title}</h5>
           <nav className="d-none d-md-block">
             <ol className="breadcrumb">
-              { breadCrumbs }
+              {breadCrumbs}
             </ol>
           </nav>
         </div>
@@ -74,7 +74,7 @@ export default function Header({ title, items = [], children }){
         }
       </div>
 
-      <hr style={{marginTop: '0px'}} />
+      <hr style={{ marginTop: '0px' }} />
     </Col>
   )
 }

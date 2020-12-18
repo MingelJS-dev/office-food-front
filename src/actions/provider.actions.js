@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { getAuthHeaders, createAction, toQueryString } from '../utils.js'
 import history from '../history.js'
-
+import { saveAs } from 'file-saver';
 import { updateNotification } from './notifications.actions.js'
 
 export const LOAD = '[Providers] LOAD';
@@ -63,6 +63,21 @@ export function destroySuccess(provider){
 export const DESTROY_FAILED = '[Providers] DESTROY_FAILED';
 export function destroyFailed(error){
   return { type: DESTROY_FAILED, error }
+}
+
+export const EXPORT = '[Providers] LOAD';
+export function exportProvider() {
+    return { type: EXPORT }
+}
+
+export const EXPORT_SUCCESS = '[Providers] LOAD_SUCCESS';
+export function exportSuccess(file) {
+    return { type: EXPORT_SUCCESS, file }
+}
+
+export const EXPORT_FAILED = '[Providers] LOAD_FAILED';
+export function exportFailed(error) {
+    return { type: EXPORT_FAILED, error }
 }
 
 
@@ -172,6 +187,29 @@ export function destroyById(ProviderId) {
       dispatch(updateNotification('Hubo un error al eliminar el proveedor', 'danger'))
       dispatch(destroyFailed(error, ProviderId))
     }
+  }
+}
+
+export function exportFile() {
+  return async function (dispatch, getState) {
+      dispatch(exportProvider())
+
+      try {
+          let url = `${window.config.API_URL}providers/export`
+
+          const res = await axios.get(url, {
+              headers: getAuthHeaders(getState())
+          });
+
+          if (res.status === 200) {
+              saveAs(res.config.url, 'Maestra_Proveedores')
+              dispatch(exportSuccess(res.data.data))
+          } else {
+              dispatch(exportFailed(res.data.message))
+          }
+      } catch (err) {
+          dispatch(exportFailed(err))
+      }
   }
 }
 

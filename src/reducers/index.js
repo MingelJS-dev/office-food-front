@@ -8,6 +8,11 @@ import categories from './categories.reducer.js'
 import providers from './providers.reducer.js'
 import products from './products.reducer.js'
 import brands from './brands.reducer.js'
+import ports from './ports.reducer.js'
+import destinations from './destinations.reducer.js'
+import proformas from './proformas.reducer.js'
+import recipients from './recipients.reducer.js'
+
 
 const reducers = combineReducers({
   auth,
@@ -18,7 +23,11 @@ const reducers = combineReducers({
   categories,
   providers,
   products,
-  brands
+  brands,
+  ports,
+  destinations,
+  proformas,
+  recipients
 });
 
 export default reducers;

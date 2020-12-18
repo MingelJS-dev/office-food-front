@@ -87,15 +87,6 @@ export default function auth(state = INITIAL_STATE, action) {
       }
 
     case ProviderActions.DESTROY_SUCCESS:
-      // let entities = Object.keys(state.entities).filter(x => x !== action.category.id)
-
-      //   state.entities = state.entities[entities.map(x => x)]
-
-   
-      // let entities = Object.keys(state.entities)
-      // delete state.entities[action.category.CategoryId]
-      // delete state.ids[action.category.CategoryId]
-
       state.ids = state.ids.filter(x => x !== action.provider.ProviderId)
 
       return {

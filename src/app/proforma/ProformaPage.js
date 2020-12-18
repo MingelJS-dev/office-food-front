@@ -11,7 +11,6 @@ import ProformaForm from './ProformaForm'
 
 
 function ProformaPage() {
-    console.log('llega')
     return (
         <Container fluid={true}>
             <Row>

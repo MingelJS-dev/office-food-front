@@ -7,13 +7,15 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
+import Dropdown from 'react-bootstrap/Dropdown';
+import Button from 'react-bootstrap/Button';
+import ButtonGroup from 'react-bootstrap/ButtonGroup'
 
-// import { usePagination } from '../shared/Pagination.js'
-// import useSearch from '../shared/Search.js'
 import Header, { HeaderActions } from "../shared/SecondHeader.js"
-import ProvidersTable from './ProvidersTable.js';
 
-import * as ProviderActions from '../../actions/provider.actions.js'
+import ProformaListItem from './ProformaListItem.js';
+// import * as ProformaActions from '../../reducers/proformas.actions.js'
+
 
 const SearchBar = ({ keyword, setKeyword }) => {
     const BarStyling = { width: "20rem", background: "#F2F1F9", border: "none", padding: "0.5rem" };
@@ -22,16 +24,15 @@ const SearchBar = ({ keyword, setKeyword }) => {
             style={BarStyling}
             key="random1"
             value={keyword}
-            placeholder={"Buscar proveedor..."}
+            placeholder={"Buscar proforma..."}
             onChange={(e) => setKeyword(e.target.value)}
         />
     );
 }
 
-function ProvidersPage() {
+function ProformaList({proformas}) {
     const dispatch = useDispatch()
     const history = useHistory()
-    const [modalShowUser, setModalShowUser] = useState(false);
     const [input, setInput] = useState('');
     // const [searchItem, setSearchItem] = useState({});
     //   const paginationInfo = useSelector(UserReducer.getPagination)
@@ -47,31 +48,40 @@ function ProvidersPage() {
         setInput(input)
     }
 
-    const exportTemplate = () => {
-        dispatch(ProviderActions.exportFile())
-    }
-
     useEffect(() => {
-        dispatch(ProviderActions.fetchAll())
+
     }, [dispatch, history])
+
 
     return (
         <Container fluid={true} className="my-3">
             <Row>
                 <Header
-                    title="Proveedores"
+                    title="Proformas"
                     items={[
-                        { label: "Listado de Proveedores" }
+                        { label: "Listado de Proformas" }
                     ]}
                 >
                     <HeaderActions>
-                        <Link
-                            to="/providers/new"
-                            className="btn btn-sm btn-create-user">Crear proveedor</Link>
-                        <button
-                            className="btn btn-sm btn-create-user m-1" onClick={() => exportTemplate()}>Descargar Maestra</button>
-                        <button
-                            className="btn btn-sm btn-create-user">Actualizar Maestra</button>
+                        <Row>
+
+                            <Link
+                                to="/proformas/new"
+                                className="btn btn-sm btn-create-user m-2">Crear proforma</Link>
+                                  <button  className="btn btn-sm btn-create-user m-2">
+                                Enviar Correo Masivo
+                            </button>
+                            <Dropdown>
+                                <Dropdown.Toggle className="btn btn-sm btn-create-user m-2" id="dropdown-basic">
+                                    Maestra Proformas
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu>
+                                    <Dropdown.Item href="#/action-1">Descargar</Dropdown.Item>
+                                    <Dropdown.Item href="#/action-2">Actualizar</Dropdown.Item>
+                                </Dropdown.Menu>
+                            </Dropdown>
+                          
+                        </Row>
                     </HeaderActions>
                 </Header>
             </Row>
@@ -83,20 +93,17 @@ function ProvidersPage() {
                     />
                 </Col>
             </Row>
-            {/* <UserModal show={modalShowUser}
-                onHide={() => setModalShowUser(false)} /> */}
             <Row>
                 <Col className="pt-2 pr-0 pb-0 pl-0">
                     <Card>
                         <Card.Body className="p-0 table-responsive">
-                            <ProvidersTable input={input} />
+                            <ProformaListItem proformas={proformas} input={input} />
                         </Card.Body>
                     </Card>
                 </Col>
             </Row>
-
         </Container>
     );
 }
 
-export default ProvidersPage;
+export default ProformaList;

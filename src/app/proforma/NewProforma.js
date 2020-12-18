@@ -13,6 +13,10 @@ import * as CategoryActions from '../../actions/categories.actions.js'
 import * as CountryActions from '../../actions/countries.actions.js'
 import * as UserActions from '../../actions/users.actions.js'
 import * as ProviderActions from '../../actions/provider.actions.js'
+import * as PortActions from '../../actions/ports.actions.js'
+import * as DestinationActions from '../../actions/destinations.actions.js'
+
+import * as ProformaActions from '../../actions/proformas.actions.js'
 
 import Header from "../shared/SecondHeader.js"
 
@@ -24,17 +28,20 @@ export default function NewProduct() {
         dispatch(CountryActions.fetchCountries());
         dispatch(UserActions.fetchUsers());
         dispatch(ProviderActions.fetchAll());
+        dispatch(PortActions.fetchAll());
+        dispatch(DestinationActions.fetchAll());
     }, [dispatch]);
 
     function createProforma(data) {
-        // dispatch(ProductActions.createProduct(data))
+        // console.log(data)
+        dispatch(ProformaActions.createProforma(data))
     }
 
     return (
         <Container fluid={true} className="my-3">
             <Row>
                 <Header title="Nueva Proformas" items={[
-                    { label: "Listado de proformas", to: "/products" },
+                    { label: "Listado de proformas", to: "/proformas" },
                     { label: "Nueva Proforma" },
                 ]} />
             </Row>

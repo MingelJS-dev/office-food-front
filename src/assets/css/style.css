@@ -113,4 +113,24 @@
     border-top-right-radius: 20px !important;
   }
   
+  .btn-file {
+    border: 2px solid rgb(255, 255, 255) !important;
+    background-color: rgb(255, 255, 255) !important;
+    cursor: pointer !important;
+    color: rgb(1, 79, 151) !important;
+    font-weight: bold;
+  }
+  
+  .btn-file:hover {
+    border: 2px solid rgb(220, 234, 248) !important;
+    cursor: pointer;
+    background-color: rgb(199, 217, 235) !important;
+    border-radius: 3px !important;
+    cursor: pointer !important;
+    color: rgb(1, 79, 151) !important;
+  }
+
+  h5 {
+    color: rgb(16, 69, 118);
+  }
   
