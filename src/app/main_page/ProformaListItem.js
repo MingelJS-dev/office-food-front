@@ -38,6 +38,9 @@ function ProformaListItem({ proformas, input }) {
                                     <div>
                                         <h6>Status Email: Pendiente</h6>
                                         <h6>Status Comex: Pendiente</h6>
+                                        <button
+                                            onClick={() => history.push(`/proformas/${item.id}/articles`)}
+                                            className="btn btn-sm btn-create-user m-2">Ver Proforma</button>
                                     </div>
                                 </Card.Body>
                             </Card>

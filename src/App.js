@@ -39,6 +39,9 @@ import PortPage from "./app/ports/PortPage.js"
 import NewPort from "./app/ports/NewPort.js"
 import EditPort from "./app/ports/EditPort.js"
 
+import ProformaProductsPage from './app/proforma/ProformaProductsPage.js'
+import NewArticlePage from './app/proforma/NewArticlePage.js'
+
 import * as Permission from "./app/shared/Permission.js"
 
 export const CurrentUserContext = React.createContext({})
@@ -118,6 +121,8 @@ function App() {
                     &&
                     <Switch>
                       <Route path="/proformas/new" exact component={NewProforma} />
+                      <Route path="/proformas/:ProformaId/articles" exact component={ProformaProductsPage} />
+                      <Route path="/proformas/:ProformaId/articles/new" exact component={NewArticlePage} />
                       <Route path="/users" exact component={UsersPage} />
                       <Route path="/categories" exact component={CategoriesPage} />
                       <Route path="/providers" exact component={ProvidersPage} />
@@ -140,6 +145,8 @@ function App() {
                     &&
                     <Switch>
                       <Route path="/proforma" exact component={ProformaPage} />
+                      <Route path="/proformas/:ProformaId/articles" exact component={ProformaProductsPage} />
+                      <Route path="/proformas/:ProformaId/articles/new" exact component={NewArticlePage} />
                       <Route path="*">
                         <Redirect to="/" />
                       </Route>
@@ -151,6 +158,8 @@ function App() {
                     &&
                     <Switch>
                       <Route path="/proformas/new" exact component={NewProforma} />
+                      <Route path="/proformas/:ProformaId/articles" exact component={ProformaProductsPage} />
+                      <Route path="/proformas/:ProformaId/articles/new" exact component={NewArticlePage} />
                       <Route path="/categories" exact component={CategoriesPage} />
                       <Route path="/providers" exact component={ProvidersPage} />
                       <Route path="/providers/new" exact component={NewProvider} />
@@ -161,6 +170,7 @@ function App() {
                       <Route path="/ports" exact component={PortPage} />
                       <Route path="/ports/new" exact component={NewPort} />
                       <Route path="/ports/:PortId/edit" exact component={EditPort} />
+
                       {/* <Route path="/products/:ProductId/edit" exact component={EditProduct} /> */}
                       <Route path="*">
                         <Redirect to="/" />

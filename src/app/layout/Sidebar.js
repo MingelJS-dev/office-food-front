@@ -38,16 +38,17 @@ function ListSidebar() {
                     <Accordion.Collapse eventKey="1">
                         <Card.Body className='p-1'>
                             <ul>
+                            <li>
+                                    <NavLink to="/proformas" className="bm-item-list">
+                                        <span>Ver Proformas</span>
+                                    </NavLink>
+                                </li>
                                 <li>
                                     <NavLink to="/proformas/new" className="bm-item-list">
                                         <span>Ingresar Proforma</span>
                                     </NavLink>
                                 </li>
-                                <li>
-                                    <NavLink to="/proformas" className="bm-item-list">
-                                        <span>Ver Proformas</span>
-                                    </NavLink>
-                                </li>
+                            
                                 <li >
                                     <Button
                                         onClick={() => setModalShow(true)}

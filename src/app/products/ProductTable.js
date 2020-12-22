@@ -106,10 +106,10 @@ export default function ProvidersTable({ tableSize, input }) {
                                     {item.name}
                                 </td>
                                 <td>
-                                    {countries.length > 0 && countries.filter(x => item.CountryId === x.id)[0].name}
+                                    {countries.length > 0 && countries.filter(x => parseInt(item.CountryId) === x.id)[0].name}
                                 </td>
                                 <td>
-                                    {categories.length > 0 && categories.filter(x => item.CategoryId === x.id)[0].name}
+                                    {categories.length > 0 && categories.filter(x => parseInt(item.CategoryId) === x.id)[0].name}
                                 </td>
                                 <td>
                                     {item.ean}
@@ -118,7 +118,7 @@ export default function ProvidersTable({ tableSize, input }) {
                                     {item.sku}
                                 </td>
                                 <td>
-                                    {brands.length > 0 && brands.filter(x => item.BrandId === x.id)[0].name}
+                                    {brands.length > 0 && brands.filter(x => parseInt(item.BrandId) === x.id)[0].name}
                                 </td>
                                 <td>
                                     {item.pvp}

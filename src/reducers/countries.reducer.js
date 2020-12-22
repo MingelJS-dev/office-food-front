@@ -37,4 +37,10 @@ export const getCountryById = (state, CountryId) => state.countries.entities[Cou
 
 export const getIsLoading = state => state.countries.isLoading
 
+export const getFeaturedCountries = state => {
+  const countries = getCountries(state).filter(x => x.featured)
+
+  return countries;
+}
+
 

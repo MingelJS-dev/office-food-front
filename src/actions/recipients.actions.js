@@ -161,7 +161,7 @@ export function fetchAll(){
 
   export function destroyById(RecipientId) {
     return async function (dispatch, getState) {
-      dispatch(destroy(PortId))
+      dispatch(destroy(RecipientId))
   
       try {
         const res = await axios.delete(
@@ -183,7 +183,7 @@ export function fetchAll(){
       } catch (error) {
         console.log('error:', error)
         dispatch(updateNotification('Hubo un error al eliminar el Destinatario', 'danger'))
-        dispatch(destroyFailed(error, PortId))
+        dispatch(destroyFailed(error, RecipientId))
       }
     }
   }

@@ -1,4 +1,4 @@
-import * as ProformaActions from '../actions/proformas.actions.js'
+import * as ProformaProductActions from '../actions/proforma_product.actions.js'
 
 const INITIAL_STATE = {
     entities: {},
@@ -10,25 +10,25 @@ const INITIAL_STATE = {
 
 export default function auth(state = INITIAL_STATE, action) {
     switch (action.type) {
-        case ProformaActions.LOAD:
-        case ProformaActions.CREATE:
+        case ProformaProductActions.LOAD:
+        case ProformaProductActions.CREATE:
             return {
                 ...state,
                 isLoading: true
             }
 
-        case ProformaActions.LOAD_SUCCESS:
+        case ProformaProductActions.LOAD_SUCCESS:
             return {
                 ...state,
                 isLoading: false,
-                entities: action.proformas.reduce((acc, item) => {
+                entities: action.articles.reduce((acc, item) => {
                     acc[item.id] = item
                     return acc
                 }, {}),
-                ids: action.proformas.map(x => x.id)
+                ids: action.articles.map(x => x.id)
             }
 
-        case ProformaActions.UPDATE_ONE:
+        case ProformaProductActions.UPDATE_ONE:
             return {
                 ...state,
                 loadingById: {
@@ -37,57 +37,57 @@ export default function auth(state = INITIAL_STATE, action) {
                 }
             }
 
-        case ProformaActions.UPDATE_ONE_SUCCESS:
+        case ProformaProductActions.UPDATE_ONE_SUCCESS:
             return {
                 ...state,
                 //isLoading: false,
                 entities: {
                     ...state.entities,
-                    [action.proforma.id]: {
-                        ...state.entities[action.proforma.id],
-                        ...action.proforma
+                    [action.article.id]: {
+                        ...state.entities[action.article.id],
+                        ...action.article
                     }
                 },
                 loadingById: {
                     ...state.loadingById,
-                    [action.proforma.id]: false
+                    [action.article.id]: false
                 }
             }
 
-        case ProformaActions.UPDATE_ONE_FAILED:
+        case ProformaProductActions.UPDATE_ONE_FAILED:
             return {
                 ...state,
                 loadingById: {
                     ...state.loadingById,
-                    [action.ProformaId]: false
+                    [action.ArticleId]: false
                 }
             }
 
-        case ProformaActions.CREATE_SUCCESS:
+        case ProformaProductActions.CREATE_SUCCESS:
             return {
                 ...state,
                 entities: {
                     ...state.entities,
-                    [action.proforma.id]: {
-                        ...state.entities[action.proforma.id],
-                        ...action.proforma
+                    [action.article.id]: {
+                        ...state.entities[action.article.id],
+                        ...action.article
                     }
                 },
                 ids: [
                     ...state.ids,
-                    action.proforma.id
+                    action.article.id
                 ],
                 isLoading: false,
 
             }
-        case ProformaActions.CREATE_FAILED:
+        case ProformaProductActions.CREATE_FAILED:
             return {
                 ...state,
                 isLoading: false
             }
 
-        case ProformaActions.DESTROY_SUCCESS:
-            state.ids = state.ids.filter(x => x !== action.proforma.ProformaId)
+        case ProformaProductActions.DESTROY_SUCCESS:
+            state.ids = state.ids.filter(x => x !== action.article.ArticleId)
 
             return {
                 ...state,
@@ -100,14 +100,14 @@ export default function auth(state = INITIAL_STATE, action) {
                 ],
             }
 
-            case ProformaActions.EXPORT:
+            case ProformaProductActions.EXPORT:
                 return {
                     ...state,
                     isLoading: true
                 }
     
-            case ProformaActions.EXPORT_SUCCESS:
-            case ProformaActions.EXPORT_FAILED:
+            case ProformaProductActions.EXPORT_SUCCESS:
+            case ProformaProductActions.EXPORT_FAILED:
                 return {
                     ...state,
                     exporting: false
@@ -118,11 +118,11 @@ export default function auth(state = INITIAL_STATE, action) {
     }
 }
 
-export const getProformaEntities = state => state.proformas.entities
-export const getProformas = state => state.proformas.ids.map(id => state.proformas.entities[id])
-export const getProformaById = (state, ProformaId) => state.proformas.entities[ProformaId]
+export const getArticleEntities = state => state.articles.entities
+export const getArticles = state => state.articles.ids.map(id => state.articles.entities[id])
+export const getArticleById = (state, ArticleId) => state.articles.entities[ArticleId]
 
-export const getIsLoading = state => state.proformas.isLoading
-export const getIsExporting = state => state.proformas.exporting
+export const getIsLoading = state => state.articles.isLoading
+export const getIsExporting = state => state.articles.exporting
 
 

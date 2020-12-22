@@ -51,7 +51,7 @@ export default function DestinationForm({ destinations, port }) {
     }, [dest, dest.length]);
 
     const selectCountry = (id) => {
-        console.log(Ids)
+
         setCurrentPort(ports.filter(x => x.CountryId === parseInt(id) && x.type === port.type
             && x.id !== port.id && !Ids.includes(x.PortId)))
         // console.log(ports.filter(x => x.CountryId === parseInt(id) && x.type === port.type
@@ -120,7 +120,6 @@ export default function DestinationForm({ destinations, port }) {
                                 Agregar destino
                             </button> : ''
                     }
-
                 </div>
             </Row>
             <Row>
@@ -141,7 +140,12 @@ export default function DestinationForm({ destinations, port }) {
 function DestinationTable({ destinations, portDestination, port }) {
     const dispatch = useDispatch();
     const [tt, setTT] = useState('')
+    const [currentDestinations, setCurrentDestinations] = useState([])
 
+    useEffect(() => {
+        setCurrentDestinations(destinations)
+        console.log(currentDestinations)
+    }, [destinations, destinations.length])
     const getTransition = (id) => {
         return portDestination.filter(x => x.OriginId === port.id && x.PortId === id)[0].trantitionDays
     }
@@ -187,7 +191,7 @@ function DestinationTable({ destinations, portDestination, port }) {
             </thead>
             <tbody>
                 {
-                    destinations.map((item) => {
+                    currentDestinations.map((item) => {
                         return (
                             <tr key={item.id}>
                                 <td>
