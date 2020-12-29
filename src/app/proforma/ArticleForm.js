@@ -7,6 +7,8 @@ import * as CountryReducer from '../../reducers/countries.reducer.js'
 import * as BrandReducer from '../../reducers/brands.reducer.js'
 import * as ProductReducer from '../../reducers/products.reducer.js'
 
+import * as ArticleActions from '../../actions/proforma_product.actions.js'
+
 import Table from 'react-bootstrap/Table';
 import { parse } from '@fortawesome/fontawesome-svg-core';
 
@@ -99,9 +101,9 @@ export default function ArticleForm({ product, currentProforma, save }) {
 
     const selectProduct = (id) => {
         let aux = [...ids, id]
-       if(!ids.includes(id)) {
-           setCurrentProduct(products.filter(x => x.id === parseInt(id)))
-           setIds(aux)
+        if (!ids.includes(id)) {
+            setCurrentProduct(products.filter(x => x.id === parseInt(id)))
+            setIds(aux)
         }
 
     }
@@ -189,15 +191,11 @@ export default function ArticleForm({ product, currentProforma, save }) {
                         </div>
 
                     </Col>
-                    <div className="form-group pt-4">
-                        <button className={`btn btn-primary`}>
-                            <span>Guardar</span>
-                        </button>
-                    </div>
+
                 </Row>
 
-                <Row className='justify-content-center pt-5'>
-                    <ArticleTable currentProduct={currentProduct} />
+                <Row className='justify-content-center'>
+                    <ArticleTable currentProduct={currentProduct} currentProforma={currentProforma} />
                 </Row>
 
 
@@ -206,7 +204,7 @@ export default function ArticleForm({ product, currentProforma, save }) {
     )
 }
 
-function ArticleTable({ currentProduct }) {
+function ArticleTable({ currentProduct, currentProforma }) {
     const dispatch = useDispatch();
     const [articles, setArticles] = useState([])
     const getTransition = (id) => {
@@ -217,69 +215,155 @@ function ArticleTable({ currentProduct }) {
         let aux = [...currentProduct, ...articles]
         setArticles(aux)
     }, [currentProduct])
-    const updateDestination = (value, id) => {
+
+    // useEffect(() => {
+    //     let aux = [...currentProduct, ...articles]
+    //     setArticles(aux)
+    // }, [article])
+
+    const updateDataAux = (label, data, id) => {
+
+        setArticles(articles.map(x => {
+            if (x.id !== id) return x
+
+            x[label] = data
+            return { ...x }
+        }))
+
     }
 
-    return (
-        <Table
-            striped
-            bordered
-            hover
-            className={`mb-0 table-sm`}
-        >
-            <thead>
-                <tr>
-                    <th>Artículo</th>
-                    <th>Cantidad</th>
-                    <th>Unidad de medida</th>
-                    <th>Costo Pactado Unitario</th>
-                    <th>Costo Pactado Total</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                {
-                    articles && articles.length > 0 && articles.map((item) => {
-                        return (
-                            <tr key={item.id}>
-                                <td>
-                                    {item.name}
-                                </td>
-                                <td>
-                                    <input
-                                        type="number"
-                                        className={`form-control}`}
-                                        autoComplete="false"
-                                    />
-                                </td>
-                                <td>
-                                    <input
-                                        type="number"
-                                        className={`form-control}`}
-                                        autoComplete="false"
-                                    />
-                                </td>
-                                <td>
-                                    <input
-                                        type="number"
-                                        className={`form-control}`}
-                                        autoComplete="false"
-                                    />
-                                </td>
-                                <td>
-                                    <input
-                                        type="number"
-                                        className={`form-control}`}
-                                        autoComplete="false"
-                                    />
-                                </td>
+    const getTotal = (id) => {
+        const [article] = articles.filter(x => x.id === parseInt(id))
 
-                            </tr>
-                        )
-                    })
-                }
-            </tbody>
-        </Table>
+        if (article && article.units && article.unitAgreedCost) {
+            return parseInt(article.units) * parseInt(article.unitAgreedCost)
+        }
+
+
+        return 0;
+    }
+
+    const getSku = (id) => {
+        const [article] = articles.filter(x => x.id === parseInt(id))
+
+        if (article && article.sku) {
+            return article.sku
+        }
+
+
+        return '';
+    }
+
+    const updateArticle = () => {
+        const arrayData = articles.map(x => {
+            return {
+                units: x.units,
+                measurement: x.measurement,
+                ProductId: x.id,
+                ProformaId: currentProforma.id,
+                unitAgreedCost: x.unitAgreedCost,
+                name: x.name
+            }
+        })
+        dispatch(ArticleActions.createArticle(arrayData))
+    }
+
+
+
+    return (
+        <Container fluid={true}>
+            <Row className='pt-0 justify-content-end'>
+                <div className="form-group pr-3">
+                    <button
+                        onClick={() => updateArticle()}
+                        className={`btn btn-primary`}>
+                        <span>Guardar</span>
+                    </button>
+                </div>
+            </Row>
+            <Table
+                striped
+                bordered
+                hover
+                className={`mb-0 table-sm`}
+            >
+                <thead>
+                    <tr>
+                        <th>Artículo</th>
+                        <th>Sku</th>
+                        <th>Cantidad</th>
+                        <th>Unidad de medida</th>
+                        <th>Costo Pactado Unitario</th>
+                        <th>Costo Pactado Total</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        articles && articles.length > 0 && articles.map((item) => {
+                            return (
+                                <tr key={item.id}>
+                                    <td>
+                                        {item.name}
+                                    </td>
+                                    <td>
+                                        {getSku(item.id)}
+                                    </td>
+                                    <td>
+                                        <input
+                                            type="number"
+                                            className={`form-control}`}
+                                            onChange={(x) => updateDataAux('units', x.target.value, item.id)}
+                                            defaultValue={item.units}
+                                            autoComplete="false"
+                                        />
+                                    </td>
+                                    <td>
+                                        <select
+                                            onChange={(x) => updateDataAux('measurement', x.target.value, item.id)}
+                                            className={`form-control form-control-sm`}
+                                        >
+                                            <option value="">Seleccione...</option>
+                                            <option value="Unid">Unid</option>
+                                            <option value="Cajas">Cajas</option>
+                                            <option value="kg">kg</option>
+                                            <option value="lb">lb</option>
+                                        </select>
+                                        {/* <input
+                                        type="number"
+                                        className={`form-control}`}
+                                        autoComplete="false"
+                                        onChange={(x) => updateDataAux('measurement', x.target.value, item.id)}
+                                        defaultValue={item.measurement}
+                                    /> */}
+                                    </td>
+                                    <td>
+                                        <input
+                                            type="number"
+                                            className={`form-control}`}
+                                            autoComplete="false"
+                                            onChange={(x) => updateDataAux('unitAgreedCost', x.target.value, item.id)}
+                                            defaultValue={item.unitAgreedCost}
+                                        />
+                                    </td>
+                                    <td>
+                                        <input
+                                            type="number"
+                                            className={`form-control}`}
+                                            autoComplete="false"
+                                            value={getTotal(item.id)}
+                                            disabled={true}
+                                        />
+                                    </td>
+
+                                </tr>
+                            )
+                        })
+                    }
+                </tbody>
+            </Table>
+        </Container>
+
     )
 
 

@@ -30,7 +30,7 @@ export default function ProductForm({ product, save }) {
 
     const categoriesN5 = useSelector(CategoryReducer.getCategoryN5s)
     const categories = useSelector(CategoryReducer.getCategories)
-    const countries = useSelector(CountryReducer.getCountries)
+    const countries = useSelector(CountryReducer.getFeaturedCountries)
     const brands = useSelector(BrandReducer.getBrands)
 
     const [selectType, setType] = useState('')

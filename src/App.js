@@ -44,6 +44,8 @@ import NewArticlePage from './app/proforma/NewArticlePage.js'
 
 import * as Permission from "./app/shared/Permission.js"
 
+import RecipientPage from "./app/recipients/RecipientPage.js"
+
 export const CurrentUserContext = React.createContext({})
 // function SidebarWrapper({ isOpen, setOpen }) {
 //   const winSize = useWindowSize()
@@ -134,6 +136,7 @@ function App() {
                       <Route path="/ports" exact component={PortPage} />
                       <Route path="/ports/new" exact component={NewPort} />
                       <Route path="/ports/:PortId/edit" exact component={EditPort} />
+                      <Route path="/recipients" exact component={RecipientPage} />
                       <Route path="*">
                         <Redirect to="/" />
                       </Route>
@@ -170,7 +173,7 @@ function App() {
                       <Route path="/ports" exact component={PortPage} />
                       <Route path="/ports/new" exact component={NewPort} />
                       <Route path="/ports/:PortId/edit" exact component={EditPort} />
-
+                      <Route path="/recipients" exact component={RecipientPage} />
                       {/* <Route path="/products/:ProductId/edit" exact component={EditProduct} /> */}
                       <Route path="*">
                         <Redirect to="/" />

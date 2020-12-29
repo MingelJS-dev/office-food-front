@@ -72,7 +72,7 @@ return (
             <Col sm={7} className="p-0">
                 <Card className="mb-3 card-custom">
                     <Card.Header className="card-header-custom text-center text-white font-weight-bold bg-dark card-header-custom card-header">
-                        <span>Editar Product</span>
+                        <span>Editar Producto</span>
                     </Card.Header>
                     <Card.Body>
                         {

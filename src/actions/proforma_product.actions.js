@@ -154,10 +154,11 @@ export function updateById(data) {
     }
 }
 
-export function createRecipient(data) {
+export function createArticle(data) {
     return async function (dispatch, getState) {
         dispatch(create(data))
         try {
+            const path = `/proformas/${data[0].ProformaId}/articles`
             const res = await axios.post(window.config.API_URL + `articles`,
                 data,
                 {
@@ -167,7 +168,7 @@ export function createRecipient(data) {
 
             if (res.status === 201) {
                 dispatch(createSuccess(res.data.data))
-                //   history.push('/recipients')
+                  history.push(path)
                 dispatch(updateNotification('Artículo creado correctamente', 'success'))
             } else {
                 dispatch(createFailed(res))
@@ -187,7 +188,7 @@ export function destroyById(ArticleId) {
 
         try {
             const res = await axios.delete(
-                `${window.config.API_URL}articles/${RecipientId}`,
+                `${window.config.API_URL}articles/${ArticleId}`,
                 {
                     headers: getAuthHeaders(getState())
                 }

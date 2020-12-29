@@ -6,7 +6,7 @@ import { saveAs } from 'file-saver';
 import { updateNotification } from './notifications.actions.js'
 
 export const EXPORT = '[Recipients] LOAD';
-export function exportPorts() {
+export function exportRecipient() {
     return { type: EXPORT }
 }
 

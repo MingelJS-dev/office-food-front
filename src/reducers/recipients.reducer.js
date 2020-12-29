@@ -36,11 +36,17 @@ export default function auth(state = INITIAL_STATE, action) {
       return {
         ...state,
         isLoading: false,
-        entities: action.reciepients.reduce((acc, item) => {
+        entities: action.recipients.reduce((acc, item) => {
           acc[item.id] = item
           return acc
         }, {}),
-        ids: action.reciepients.map(x => x.id)
+        ids: action.recipients.map(x => x.id)
+      }
+
+    case RecipientActions.LOAD_FAILED:
+      return {
+        ...state,
+        isLoading: false
       }
 
     case RecipientActions.UPDATE_ONE_SUCCESS:
@@ -49,14 +55,14 @@ export default function auth(state = INITIAL_STATE, action) {
         //isLoading: false,
         entities: {
           ...state.entities,
-          [action.reciepient.id]: {
-            ...state.entities[action.reciepient.id],
-            ...action.reciepient
+          [action.recipient.id]: {
+            ...state.entities[action.recipient.id],
+            ...action.recipient
           }
         },
         loadingById: {
           ...state.loadingById,
-          [action.reciepient.id]: false
+          [action.recipient.id]: false
         }
       }
 
@@ -65,7 +71,7 @@ export default function auth(state = INITIAL_STATE, action) {
         ...state,
         loadingById: {
           ...state.loadingById,
-          [action.ReciepientId]: false
+          [action.RecipientId]: false
         }
       }
 
@@ -75,14 +81,14 @@ export default function auth(state = INITIAL_STATE, action) {
         ...state,
         entities: {
           ...state.entities,
-          [action.reciepient.id]: {
-            ...state.entities[action.reciepient.id],
-            ...action.reciepient
+          [action.recipient.id]: {
+            ...state.entities[action.recipient.id],
+            ...action.recipient
           }
         },
         ids: [
           ...state.ids,
-          action.reciepient.id
+          action.recipient.id
         ],
         isLoading: false,
 
@@ -94,8 +100,8 @@ export default function auth(state = INITIAL_STATE, action) {
       }
 
     case RecipientActions.DESTROY_SUCCESS:
-      delete state.entities[action.reciepient.UserId]
-      delete state.ids[action.reciepient.UserId]
+      delete state.entities[action.recipient.RecipientId]
+      delete state.ids[action.recipient.RecipientId]
 
       return {
         ...state,
@@ -113,11 +119,11 @@ export default function auth(state = INITIAL_STATE, action) {
   }
 }
 
-export const getRecipientsEntities = state => state.reciepients.entities
-export const getRecipients = state => state.reciepients.ids.map(id => state.reciepients.entities[id])
-export const getRecipientById = (state, ReciepientId) => state.reciepients.entities[ReciepientId]
+export const getRecipientsEntities = state => state.recipients.entities
+export const getRecipients = state => state.recipients.ids.map(id => state.recipients.entities[id])
+export const getRecipientById = (state, ReciepientId) => state.recipients.entities[ReciepientId]
 
 
-export const getIsLoading = state => state.reciepients.isLoading
+export const getIsLoading = state => state.recipients.isLoading
 
 

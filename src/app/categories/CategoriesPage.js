@@ -25,7 +25,7 @@ import CategoryList from "./CategoryList.js"
 function CategoriesPage() {
     const dispatch = useDispatch()
     const history = useHistory()
-    const countries = useSelector(CountryReducer.getCountries)
+    const countries = useSelector(CountryReducer.getFeaturedCountries)
     let categoriesN5 = useSelector(CategoryReducer.getCategoryN5s)
     let categories = useSelector(CategoryReducer.getCategories)
 

@@ -38,7 +38,7 @@ function ListSidebar() {
                     <Accordion.Collapse eventKey="1">
                         <Card.Body className='p-1'>
                             <ul>
-                            <li>
+                                <li>
                                     <NavLink to="/proformas" className="bm-item-list">
                                         <span>Ver Proformas</span>
                                     </NavLink>
@@ -48,7 +48,7 @@ function ListSidebar() {
                                         <span>Ingresar Proforma</span>
                                     </NavLink>
                                 </li>
-                            
+
                                 <li >
                                     <Button
                                         onClick={() => setModalShow(true)}
@@ -85,7 +85,7 @@ function ListSidebar() {
                                     </NavLink>
                                 </li>
                                 <li >
-                                <NavLink to="/ports/new" className="bm-item-list">
+                                    <NavLink to="/ports/new" className="bm-item-list">
                                         <span>Crear puerto</span>
                                     </NavLink>
                                 </li>
@@ -204,6 +204,50 @@ function ListSidebar() {
                             </Accordion.Collapse>
                         </Card> : ''
                 }
+                <Card>
+                    <Accordion.Toggle as={Card.Header} eventKey="7">
+                        Destinatarios
+                    </Accordion.Toggle>
+                    <Accordion.Collapse eventKey="7">
+                        <Card.Body className='p-1'>
+                            <ul>
+                                <li>
+                                    <NavLink to="/recipients" className="bm-item-list">
+                                        <span>Ver destinatarios</span>
+                                    </NavLink>
+                                </li>
+                                {/* <li>
+                                    <NavLink to="/proforma" className="bm-item-list">
+                                        <span>Extraer maestra</span>
+                                    </NavLink>
+                                </li> */}
+                            </ul>
+
+                        </Card.Body>
+                    </Accordion.Collapse>
+                </Card>
+                <Card>
+                    <Accordion.Toggle as={Card.Header} eventKey="8">
+                        Contenedores
+                    </Accordion.Toggle>
+                    <Accordion.Collapse eventKey="8">
+                        <Card.Body className='p-1'>
+                            <ul>
+                                <li>
+                                    <NavLink to="/ports" className="bm-item-list">
+                                        <span>Ver contenedores</span>
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink to="/proforma" className="bm-item-list">
+                                        <span>Extraer maestra</span>
+                                    </NavLink>
+                                </li>
+                            </ul>
+
+                        </Card.Body>
+                    </Accordion.Collapse>
+                </Card>
 
             </Accordion>
             <ModalTemplate show={modalShow}
