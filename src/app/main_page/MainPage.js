@@ -11,6 +11,10 @@ import { Link, useHistory } from 'react-router-dom'
 import Spinner from '../shared/Spinner.js';
 
 import * as ProformaActions from '../../actions/proformas.actions.js'
+import * as CountryActions from '../../actions/countries.actions.js'
+import * as CategoryActions from '../../actions/categories.actions.js'
+import * as ProviderActions from '../../actions/provider.actions.js'
+
 import * as ProformaReducer from '../../reducers/proformas.reducer.js'
 
 import ProformaList from './ProformaList.js';
@@ -22,6 +26,9 @@ export default function MainPage() {
 
     useEffect(() => {
         dispatch(ProformaActions.fetchAll());
+        dispatch(CountryActions.fetchCountries());
+        dispatch(CategoryActions.fetchAll());
+        dispatch(ProviderActions.fetchAll());
     }, [dispatch]);
 
     if (isLoading && proformas.length === 0) {

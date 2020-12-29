@@ -34,7 +34,7 @@ export default function UserForm({ recipient, save }) {
         }
 
         if (!CategoryId) {
-            validations.push(['last_name', 'Apellido es requerido'])
+            validations.push(['CategoryId', 'Categoría es requerido'])
         }
 
         if (!recipient.id && !email) {

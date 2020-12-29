@@ -32,11 +32,11 @@ function ProformaListItem({ proformas, input }) {
                                             {item.name}
                                         </h5>
                                         <h5>
-                                            {item.Category.name}
+                                            {item.Category.name} - {item.Provider.name}
                                         </h5>
                                     </div>
                                     <div>
-                                        <h6>Status Email: Pendiente</h6>
+                                        <h6>Status Email: {item.statusEmail ? 'Enviado' : 'Pendiente'} </h6>
                                         <h6>Status Comex: Pendiente</h6>
                                         <button
                                             onClick={() => history.push(`/proformas/${item.id}/articles`)}

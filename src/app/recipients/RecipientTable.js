@@ -103,10 +103,10 @@ export default function RecipientsTable({ tableSize, input }) {
                         return (
                             <tr key={item.id}>
                                 <td>
-                                    {countries.filter(x => x.id === parseInt(item.CountryId))[0].name}
+                                    {item.Country.name}
                                 </td>
                                 <td>
-                                    {categoriesN5.filter(x => x.id === parseInt(item.CategoryId))[0].name}
+                                    {item.Category.name}
                                 </td>
                                 <td>
                                     {item.email.toLowerCase()}

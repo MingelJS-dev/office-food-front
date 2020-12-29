@@ -14,6 +14,7 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import Header, { HeaderActions } from "../shared/SecondHeader.js"
 
 import ProformaListItem from './ProformaListItem.js';
+import EmailMassiveModal from './EmailMassiveModal.js';
 // import * as ProformaActions from '../../reducers/proformas.actions.js'
 
 
@@ -30,10 +31,11 @@ const SearchBar = ({ keyword, setKeyword }) => {
     );
 }
 
-function ProformaList({proformas}) {
+function ProformaList({ proformas }) {
     const dispatch = useDispatch()
     const history = useHistory()
     const [input, setInput] = useState('');
+    const [modalShow, setModalShow] = useState(false);
     // const [searchItem, setSearchItem] = useState({});
     //   const paginationInfo = useSelector(UserReducer.getPagination)
 
@@ -68,7 +70,8 @@ function ProformaList({proformas}) {
                             <Link
                                 to="/proformas/new"
                                 className="btn btn-sm btn-create-user m-2">Crear proforma</Link>
-                                  <button  className="btn btn-sm btn-create-user m-2">
+                            <button className="btn btn-sm btn-create-user m-2"
+                                onClick={() => setModalShow(true)}>
                                 Enviar Correo Masivo
                             </button>
                             <Dropdown>
@@ -80,7 +83,7 @@ function ProformaList({proformas}) {
                                     <Dropdown.Item href="#/action-2">Actualizar</Dropdown.Item>
                                 </Dropdown.Menu>
                             </Dropdown>
-                          
+
                         </Row>
                     </HeaderActions>
                 </Header>
@@ -93,6 +96,8 @@ function ProformaList({proformas}) {
                     />
                 </Col>
             </Row>
+            <EmailMassiveModal show={modalShow}
+                onHide={() => setModalShow(false)} />
             <Row>
                 <Col className="pt-2 pr-0 pb-0 pl-0">
                     <Card>
