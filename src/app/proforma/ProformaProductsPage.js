@@ -14,6 +14,7 @@ import Spinner from '../shared/Spinner.js';
 import * as ProformaActions from '../../actions/proformas.actions.js'
 import * as ProformaReducer from '../../reducers/proformas.reducer.js'
 
+import * as ArticleReducer from '../../reducers/proforma_products.reducer.js'
 import * as ArticleActions from '../../actions/proforma_product.actions.js'
 
 import ArticleList from './ArticleList.js';
@@ -21,6 +22,7 @@ import ArticleList from './ArticleList.js';
 export default function ProformaProductsPage() {
     const dispatch = useDispatch();
     const isLoading = useSelector(ProformaReducer.getIsLoading)
+    const isLoadingArticle = useSelector(ArticleReducer.getIsLoading)
     const params = useParams()
 
     useEffect(() => {
@@ -30,7 +32,7 @@ export default function ProformaProductsPage() {
 
     let currentProforma = useSelector(state => ProformaReducer.getProformaById(state, params.ProformaId))
 
-    if (isLoading && currentProforma) {
+    if (isLoadingArticle && isLoading && currentProforma) {
         return (
             <div className="container-lg py-4 p-0 text-center">
                 <Spinner />

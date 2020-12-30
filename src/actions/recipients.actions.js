@@ -215,7 +215,7 @@ export function sendEmails(data) {
           headers: getAuthHeaders(getState())
         });
 
-       console.log('-----')
+
       if (res.status === 201) {
         dispatch(sendSuccess(res.data.data))
         dispatch(updateNotification(res.data.message, res.data.style))
@@ -226,7 +226,7 @@ export function sendEmails(data) {
       }
     } catch (err) {
       dispatch(sendFailed(err))
-      console.log('dsasaddsa' , err)
+
     }
   }
 }

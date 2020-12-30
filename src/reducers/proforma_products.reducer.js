@@ -66,17 +66,17 @@ export default function auth(state = INITIAL_STATE, action) {
         case ProformaProductActions.CREATE_SUCCESS:
             return {
                 ...state,
-                entities: {
-                    ...state.entities,
-                    [action.article.id]: {
-                        ...state.entities[action.article.id],
-                        ...action.article
-                    }
-                },
-                ids: [
-                    ...state.ids,
-                    action.article.id
-                ],
+                // entities: {
+                //     ...state.entities,
+                //     [action.article.id]: {
+                //         ...state.entities[action.article.id],
+                //         ...action.article
+                //     }
+                // },
+                // ids: [
+                //     ...state.ids,
+                //     action.article.id
+                // ],
                 isLoading: false,
 
             }

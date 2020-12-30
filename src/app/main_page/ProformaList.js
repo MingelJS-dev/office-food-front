@@ -15,7 +15,7 @@ import Header, { HeaderActions } from "../shared/SecondHeader.js"
 
 import ProformaListItem from './ProformaListItem.js';
 import EmailMassiveModal from './EmailMassiveModal.js';
-// import * as ProformaActions from '../../reducers/proformas.actions.js'
+import * as ProformaActions from '../../actions/proformas.actions.js'
 
 
 const SearchBar = ({ keyword, setKeyword }) => {
@@ -54,7 +54,9 @@ function ProformaList({ proformas }) {
 
     }, [dispatch, history])
 
-
+    function exportBase() {
+        dispatch(ProformaActions.exportBase())
+    }
     return (
         <Container fluid={true} className="my-3">
             <Row>
@@ -74,7 +76,11 @@ function ProformaList({ proformas }) {
                                 onClick={() => setModalShow(true)}>
                                 Enviar Correo Masivo
                             </button>
-                            <Dropdown>
+                            <button className="btn btn-sm btn-create-user m-2"
+                                onClick={() => exportBase()}>
+                                Descargar base
+                            </button>
+                            {/* <Dropdown>
                                 <Dropdown.Toggle className="btn btn-sm btn-create-user m-2" id="dropdown-basic">
                                     Maestra Proformas
                                 </Dropdown.Toggle>
@@ -82,7 +88,7 @@ function ProformaList({ proformas }) {
                                     <Dropdown.Item href="#/action-1">Descargar</Dropdown.Item>
                                     <Dropdown.Item href="#/action-2">Actualizar</Dropdown.Item>
                                 </Dropdown.Menu>
-                            </Dropdown>
+                            </Dropdown> */}
 
                         </Row>
                     </HeaderActions>
@@ -98,8 +104,8 @@ function ProformaList({ proformas }) {
             </Row>
             <EmailMassiveModal show={modalShow}
                 onHide={() => setModalShow(false)} />
-            <Row>
-                <Col className="pt-2 pr-0 pb-0 pl-0">
+            <Row  className="pt-2">
+                <Col className="pr-0 pb-0 pl-0 scrollbar" id='style-8'>
                     <Card>
                         <Card.Body className="p-0 table-responsive">
                             <ProformaListItem proformas={proformas} input={input} />

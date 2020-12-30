@@ -81,19 +81,19 @@ export function destroyFailed(error){
   return { type: DESTROY_FAILED, error }
 }
 
-export function exportPortFile() {
+export function exportBase() {
     return async function (dispatch, getState) {
         dispatch(exportPorts())
 
         try {
-            let url = `${window.config.API_URL}ports/export`
+            let url = `${window.config.API_URL}proformas/base_export`
 
             const res = await axios.get(url, {
                 headers: getAuthHeaders(getState())
             });
 
             if (res.status === 200) {
-                saveAs(res.config.url, 'Maestra_Puertos')
+                saveAs(res.config.url, 'Base')
                 dispatch(exportSuccess(res.data.data))
             } else {
                 dispatch(exportFailed(res.data.message))

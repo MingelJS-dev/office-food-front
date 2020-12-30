@@ -19,10 +19,24 @@ function ProformaListItem({ proformas, input }) {
     const dispatch = useDispatch()
     const history = useHistory()
 
+    const [filterProformas, setFilterProformas] = useState(proformas)
+
+    
+    useEffect(() => {
+        if (input) {
+            let filtered = filterProformas.filter(item =>
+                item.name.toLowerCase().includes(input.toLowerCase())
+            )
+            setFilterProformas(filtered.filter(x => x !== undefined))
+        } else {
+            setFilterProformas(proformas.filter(x => x !== undefined))
+        }
+    }, [input, proformas, proformas.length])
+
     return (
         <Container fluid={true} className="my-3">
             {
-                proformas.map(item =>
+                filterProformas.map(item =>
                     <Row key={item.id} className="pb-2">
                         <Col lg={12}>
                             <Card>
@@ -36,8 +50,13 @@ function ProformaListItem({ proformas, input }) {
                                         </h5>
                                     </div>
                                     <div>
-                                        <h6>Status Email: {item.statusEmail ? 'Enviado' : 'Pendiente'} </h6>
-                                        <h6>Status Comex: Pendiente</h6>
+                                        <h6>Estado Email: {item.statusEmail ? 
+                                        <span  className='success-span'>Enviado</span> : 
+                                        <span className='warning-span'>Pendiente</span>} </h6>
+
+                                        <h6>Estado Comex: {item.statusComex ? 
+                                        <span  className='success-span'>Enviado</span> : 
+                                        <span className='warning-span'>Pendiente</span> }</h6>
                                         <button
                                             onClick={() => history.push(`/proformas/${item.id}/articles`)}
                                             className="btn btn-sm btn-create-user m-2">Ver Proforma</button>

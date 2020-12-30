@@ -57,8 +57,8 @@ export function create(data) {
 }
 
 export const CREATE_SUCCESS = '[Articles] CREATE_SUCCESS';
-export function createSuccess(article) {
-    return { type: CREATE_SUCCESS, article }
+export function createSuccess(articles) {
+    return { type: CREATE_SUCCESS, articles }
 }
 
 export const CREATE_FAILED = '[Articles] CREATE_FAILED';

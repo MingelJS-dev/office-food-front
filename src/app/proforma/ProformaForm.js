@@ -35,7 +35,8 @@ export default function ProformaForm({ proforma, save }) {
     const [portOrigins, setPortOrigins] = useState([])
 
 
-    const countries = useSelector(CountryReducer.getCountries)
+    const countries = useSelector(CountryReducer.getFeaturedCountries)
+    const allCountries = useSelector(CountryReducer.getCountries)
     const categoriesN5 = useSelector(CategoryReducer.getCategoryN5s)
     const ports = useSelector(PortReducer.getPorts)
     const destinations = useSelector(DestinationReducer.getDestinations)
@@ -62,7 +63,7 @@ export default function ProformaForm({ proforma, save }) {
     useEffect(() => {
         let OriginIds = destinations.filter(x => x.PortId === parseInt(DestinationId)).map(x => x.OriginId)
         let CountryIds = ports.filter(x => OriginIds.includes(x.id)).map(x => x.CountryId)
-        setCountryOrigins(countries.filter(x => CountryIds.includes(x.id)))
+        setCountryOrigins(allCountries.filter(x => CountryIds.includes(x.id)))
     }, [DestinationId])
 
     useEffect(() => {
