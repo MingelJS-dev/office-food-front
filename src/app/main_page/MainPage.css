@@ -1,0 +1,9 @@
+.category-card {
+    border-radius: 15px !important;
+    border: solid rgb(1, 79, 151) !important;
+    cursor: pointer;
+}
+
+.category-card:hover {
+    /* background-color: rgb(197, 214, 230) !important; */
+}

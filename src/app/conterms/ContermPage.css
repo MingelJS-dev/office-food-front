@@ -1,0 +1,18 @@
+.item-card-conterm {
+    margin-right: 15px;
+    width: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.2) !important;
+    margin-bottom: 5px;
+    box-shadow: var(--boxShadowLight) ;
+    box-sizing: border-box;
+    padding: 1px;
+    border-radius: 15px !important;
+    cursor: pointer;
+    border-left: 6px rgb(1, 79, 151) solid;
+  }
+  
+  .item-card-conterm:hover {
+    box-shadow: rgb(1, 79, 151) !important;
+    color: white !important;
+    background-color: rgb(92, 148, 197) !important;
+  }

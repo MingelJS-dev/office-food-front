@@ -12,6 +12,8 @@ import ports from './ports.reducer.js'
 import destinations from './destinations.reducer.js'
 import proformas from './proformas.reducer.js'
 import recipients from './recipients.reducer.js'
+import incoterms from './incoterms.reducer.js'
+import containers from './containers.reducer.js'
 import articles from './proforma_products.reducer.js'
 
 
@@ -29,6 +31,8 @@ const reducers = combineReducers({
   destinations,
   proformas,
   recipients,
+  incoterms,
+  containers,
   articles
 });
 

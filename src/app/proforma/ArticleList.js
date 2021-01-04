@@ -16,7 +16,7 @@ import history from '../../history.js'
 
 import Header, { HeaderActions } from "../shared/SecondHeader.js"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faUser, faPlane, faMoneyBill, faSquare } from '@fortawesome/free-solid-svg-icons';
 import swal from 'sweetalert';
 
 import * as ArticleReducer from '../../reducers/proforma_products.reducer.js'
@@ -40,6 +40,7 @@ function ArticleList({ proforma }) {
     const dispatch = useDispatch()
     const history = useHistory()
     const [input, setInput] = useState('');
+    const [total, setTotal] = useState(0)
     let articles = useSelector(ArticleReducer.getArticles)
     // const [searchItem, setSearchItem] = useState({});
     //   const paginationInfo = useSelector(UserReducer.getPagination)
@@ -56,8 +57,11 @@ function ArticleList({ proforma }) {
     }
 
     useEffect(() => {
+        let cost = 0;
+        articles.map(x => cost += x.units * x.unitAgreedCost)
 
-    }, [dispatch, history])
+        setTotal(cost)
+    }, [dispatch, history, articles, articles && articles.length])
 
     let title = `${proforma.name} - Artículos`
 
@@ -73,7 +77,6 @@ function ArticleList({ proforma }) {
                 >
                     <HeaderActions>
                         <Row>
-
                             <button
                                 onClick={() => history.push(`/proformas/${proforma.id}/articles/new`)}
                                 className="btn btn-sm btn-create-user m-2">Agregar Artículo</button>
@@ -91,11 +94,48 @@ function ArticleList({ proforma }) {
                 </Header>
             </Row>
             <Row>
-                <Col>
-                    <SearchBar
-                        input={input}
-                        setKeyword={updateSearch}
-                    />
+                <Col className="d-flex justify-content-end">
+                    <Col className="pt-3">
+                        <SearchBar
+                            input={input}
+                            setKeyword={updateSearch}
+                        />
+                    </Col>
+                    <Card className="ml-2 text-center">
+                        <Card.Body>
+                            <h6 className="m-0">
+                                {/* <FontAwesomeIcon className="mr-2" icon={faSquare} /> */}
+                             Contenedor: {proforma.Container.name} </h6>
+                        </Card.Body>
+                    </Card>
+                    <Card className="ml-2 m-0 text-center">
+                        <Card.Body>
+                            <h6 className="m-0">
+                                {/* <FontAwesomeIcon className="mr-2" icon={faPlane} /> */}
+                             Incoterm: {proforma.Incoterm.name} </h6>
+                        </Card.Body>
+                    </Card>
+                    <Card className="ml-2 m-0 text-center" >
+                        <Card.Body>
+                            <h6 className="m-0">
+                                <FontAwesomeIcon className="mr-2" icon={faMoneyBill} />
+                             Costo Total: {total} </h6>
+                        </Card.Body>
+                    </Card>
+                    <Card className="ml-2 text-center">
+                        <Card.Body>
+                            <h6 className="m-0">
+                                <FontAwesomeIcon className="mr-2" icon={faPlane} />
+                             Destino: {proforma.Destination.name} </h6>
+                        </Card.Body>
+                    </Card>
+                    <Card className="ml-2 text-center">
+                        <Card.Body>
+                            <h6 className="m-0">
+                                <FontAwesomeIcon className="mr-2" icon={faUser} />
+                              Proveedor: {proforma.Provider.name} </h6>
+                        </Card.Body>
+                    </Card>
                 </Col>
             </Row>
             <Row>
@@ -402,12 +442,12 @@ function ArticleForm({ article }) {
                     <Col>
                         <div className="form-group">
                             <label htmlFor="comment">Observaciones:</label>
-                            <textarea 
-                            className="form-control" 
-                            rows="5" 
-                            onChange={(x) => setObservation(x.target.value)}
-                            value={observation}
-                            id="comment"></textarea>
+                            <textarea
+                                className="form-control"
+                                rows="5"
+                                onChange={(x) => setObservation(x.target.value)}
+                                value={observation}
+                                id="comment"></textarea>
                         </div>
                     </Col>
                 </Row>

@@ -15,7 +15,8 @@ import * as UserActions from '../../actions/users.actions.js'
 import * as ProviderActions from '../../actions/provider.actions.js'
 import * as PortActions from '../../actions/ports.actions.js'
 import * as DestinationActions from '../../actions/destinations.actions.js'
-
+import * as IncotermActions from '../../actions/incoterms.actions.js'
+import * as ContainerActions from '../../actions/containers.actions.js'
 import * as ProformaActions from '../../actions/proformas.actions.js'
 
 import Header from "../shared/SecondHeader.js"
@@ -30,6 +31,8 @@ export default function NewProduct() {
         dispatch(ProviderActions.fetchAll());
         dispatch(PortActions.fetchAll());
         dispatch(DestinationActions.fetchAll());
+        dispatch(IncotermActions.fetchAll());
+        dispatch(ContainerActions.fetchAll());
     }, [dispatch]);
 
     function createProforma(data) {

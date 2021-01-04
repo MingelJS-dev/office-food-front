@@ -228,23 +228,17 @@ function ListSidebar() {
                 </Card>
                 <Card>
                     <Accordion.Toggle as={Card.Header} eventKey="8">
-                        Contenedores
+                        Contenedores & Incoterm
                     </Accordion.Toggle>
                     <Accordion.Collapse eventKey="8">
                         <Card.Body className='p-1'>
                             <ul>
                                 <li>
-                                    <NavLink to="/ports" className="bm-item-list">
-                                        <span>Ver contenedores</span>
-                                    </NavLink>
-                                </li>
-                                <li>
-                                    <NavLink to="/proforma" className="bm-item-list">
-                                        <span>Extraer maestra</span>
+                                    <NavLink to="/conterms" className="bm-item-list">
+                                        <span>Mantenedor</span>
                                     </NavLink>
                                 </li>
                             </ul>
-
                         </Card.Body>
                     </Accordion.Collapse>
                 </Card>

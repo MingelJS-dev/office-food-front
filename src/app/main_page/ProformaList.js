@@ -10,13 +10,42 @@ import Card from 'react-bootstrap/Card';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
-
+import Form from 'react-bootstrap/Form';
+import { Alert } from 'react-bootstrap';
 import Header, { HeaderActions } from "../shared/SecondHeader.js"
 
 import ProformaListItem from './ProformaListItem.js';
 import EmailMassiveModal from './EmailMassiveModal.js';
+import * as CountryReducer from '../../reducers/countries.reducer.js'
 import * as ProformaActions from '../../actions/proformas.actions.js'
 
+function StatusCheck({ item, CountryIds, selectCountry }) {
+    const dispatch = useDispatch()
+    const [statusCheck, setStatusCheck] = useState(false)
+    let label = item.name
+
+
+    function toggle() {
+        selectCountry(item.id)
+        // const status = item.status ? 'No disponible' : 'Disponible'
+    }
+    useEffect(() => {
+        setStatusCheck(CountryIds.includes(item.id))
+    }, [dispatch, CountryIds, CountryIds.length])
+
+
+
+    return (
+        <Form.Check
+            type="switch"
+            className="user-status-check pr-4 pl-4"
+            id={`sw-${item.id}`}
+            label={label}
+            checked={statusCheck}
+            onChange={() => toggle()}
+        />
+    )
+}
 
 const SearchBar = ({ keyword, setKeyword }) => {
     const BarStyling = { width: "20rem", background: "#F2F1F9", border: "none", padding: "0.5rem" };
@@ -36,15 +65,10 @@ function ProformaList({ proformas }) {
     const history = useHistory()
     const [input, setInput] = useState('');
     const [modalShow, setModalShow] = useState(false);
-    // const [searchItem, setSearchItem] = useState({});
-    //   const paginationInfo = useSelector(UserReducer.getPagination)
+    const [CountryIds, setCountryIds] = useState([])
+    const [filterProformas, setFilterProformas] = useState([])
 
-
-    //   const Pagination = usePagination(paginationInfo, page => {
-    //     if (currentFilters.page !== page) {
-    //       setCurrentFilters({ ...currentFilters, page })
-    //     }
-    //   })
+    const countries = useSelector(CountryReducer.getFeaturedCountries)
 
     const updateSearch = async (input) => {
         setInput(input)
@@ -54,9 +78,22 @@ function ProformaList({ proformas }) {
 
     }, [dispatch, history])
 
+    useEffect(() => {
+        if (CountryIds.length > 0) {
+            setFilterProformas(proformas.filter(item => CountryIds.includes(item.Destination.Country.id)))
+        } else {
+            setFilterProformas([])
+        }
+    }, [CountryIds])
+
     function exportBase() {
         dispatch(ProformaActions.exportBase())
     }
+
+    const selectCountry = (id) => {
+        setCountryIds([id])
+    }
+
     return (
         <Container fluid={true} className="my-3">
             <Row>
@@ -80,16 +117,6 @@ function ProformaList({ proformas }) {
                                 onClick={() => exportBase()}>
                                 Descargar base
                             </button>
-                            {/* <Dropdown>
-                                <Dropdown.Toggle className="btn btn-sm btn-create-user m-2" id="dropdown-basic">
-                                    Maestra Proformas
-                                </Dropdown.Toggle>
-                                <Dropdown.Menu>
-                                    <Dropdown.Item href="#/action-1">Descargar</Dropdown.Item>
-                                    <Dropdown.Item href="#/action-2">Actualizar</Dropdown.Item>
-                                </Dropdown.Menu>
-                            </Dropdown> */}
-
                         </Row>
                     </HeaderActions>
                 </Header>
@@ -101,17 +128,41 @@ function ProformaList({ proformas }) {
                         setKeyword={updateSearch}
                     />
                 </Col>
+                <Col lg={9} className="d-flex justify-content-start pt-2">
+                    {countries && countries.map(item =>
+                        <StatusCheck key={item.id} item={item} CountryIds={CountryIds} selectCountry={selectCountry} />
+                    )}
+                </Col>
+
             </Row>
             <EmailMassiveModal show={modalShow}
                 onHide={() => setModalShow(false)} />
-            <Row  className="pt-2">
-                <Col className="pr-0 pb-0 pl-0 scrollbar" id='style-8'>
-                    <Card>
-                        <Card.Body className="p-0 table-responsive">
-                            <ProformaListItem proformas={proformas} input={input} />
-                        </Card.Body>
-                    </Card>
-                </Col>
+            <Row>
+
+            </Row>
+            <Row className="pt-2  justify-content-center">
+
+                {
+                    filterProformas && filterProformas.length > 0 ?
+                        <Col className="pr-0 pb-0 pl-0" id='style-8'>
+                            {/* <Card>
+                                <Card.Body className="p-0 table-responsive"> */}
+                                    <ProformaListItem proformas={filterProformas} input={input} />
+                                {/* </Card.Body>
+                            </Card> */}
+                        </Col>
+                        :
+
+                        <Col className="" id='style-8'>
+                            <Alert className='text-center' variant='warning'>
+                                Seleccione un país
+                                         <hr />
+                            </Alert>
+                        </Col>
+
+                }
+
+
             </Row>
         </Container>
     );

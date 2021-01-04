@@ -7,6 +7,8 @@ import * as UserReducer from '../../reducers/users.reducer.js'
 import * as ProviderReducer from '../../reducers/providers.reducer.js'
 import * as PortReducer from '../../reducers/ports.reducer.js'
 import * as DestinationReducer from '../../reducers/destinations.reducer.js'
+import * as IncotermReducer from '../../reducers/incoterms.reducer.js'
+import * as ContianerReducer from '../../reducers/containers.reducer.js'
 
 export default function ProformaForm({ proforma, save }) {
     const [name, setName] = useState('')
@@ -20,8 +22,8 @@ export default function ProformaForm({ proforma, save }) {
     const [eta, setEta] = useState(proforma.eta || '')
     const [cd, setCd] = useState(proforma.cd || '')
     const [stretch, setStretch] = useState(proforma.stretch || '')
-    const [incoterm, setIncoterm] = useState(proforma.incoterm || '')
-    const [container, setContainer] = useState(proforma.container || '')
+    const [IncotermId, setIncotermId] = useState(proforma.IncotermId || '')
+    const [ContainerId, setContainerId] = useState(proforma.ContainerId || '')
     const [money, setMoney] = useState(proforma.money || '')
 
     const [regionalUsers, setRegionalUsers] = useState([])
@@ -42,6 +44,8 @@ export default function ProformaForm({ proforma, save }) {
     const destinations = useSelector(DestinationReducer.getDestinations)
     const users = useSelector(UserReducer.getUsers)
     const providers = useSelector(ProviderReducer.getProviders)
+    const incoterms = useSelector(IncotermReducer.getIncoterms)
+    const containers = useSelector(ContianerReducer.getContainers)
 
 
     const [selectN5s, setN5s] = useState([])
@@ -118,8 +122,8 @@ export default function ProformaForm({ proforma, save }) {
                 eta,
                 cd,
                 // stretch,
-                incoterm,
-                container,
+                IncotermId,
+                ContainerId,
                 money
             }
 
@@ -229,12 +233,22 @@ export default function ProformaForm({ proforma, save }) {
                     </div>
                     <div className="form-group col-xl-2 p-0">
                         <label>Incoterm</label>
-                        <input
-                            type="text"
-                            onChange={(x) => setIncoterm(x.target.value)}
-                            value={incoterm}
-                            className={`form-control form-control-sm`}
-                        />
+
+                        <select
+                            className={`form-control form-control-sm ${errors.IncotermId ? 'is-invalid' : ''}`}
+                            onChange={(e => setIncotermId(e.target.value))}
+                            value={IncotermId}
+                        >
+                            <option value="">Seleccione...</option>
+                            {
+                                incoterms.map(item => (
+                                    <option
+                                        key={item.id}
+                                        value={item.id}
+                                    >{item.name}</option>
+                                ))
+                            }
+                        </select>
                     </div>
                 </Row>
                 <Row className='justify-content-between'>
@@ -305,13 +319,19 @@ export default function ProformaForm({ proforma, save }) {
                     <div className="form-group col-xl-2 p-0">
                         <label>Tipo de Contenedor</label>
                         <select
-                            onChange={(x) => setContainer(x.target.value)}
-                            value={container}
-                            className={`form-control form-control-sm`}
+                            className={`form-control form-control-sm ${errors.ContainerId ? 'is-invalid' : ''}`}
+                            onChange={(e => setContainerId(e.target.value))}
+                            value={ContainerId}
                         >
                             <option value="">Seleccione...</option>
-                            <option value='40HC'>40HC</option>
-                            <option value='20RH'>20RH</option>
+                            {
+                                containers.map(item => (
+                                    <option
+                                        key={item.id}
+                                        value={item.id}
+                                    >{item.name}</option>
+                                ))
+                            }
                         </select>
                     </div>
                 </Row>
