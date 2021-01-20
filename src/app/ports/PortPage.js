@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { Link, useHistory } from 'react-router-dom'
 import { useQuery, toQueryString } from '../../utils.js'
@@ -20,6 +20,7 @@ import * as ProductActions from '../../actions/product.actions.js'
 import * as CategoryActions from '../../actions/categories.actions.js'
 import * as PortActions from '../../actions/ports.actions.js'
 import * as BrandActions from '../../actions/brands.actions.js'
+import { CurrentUserContext } from '../../App.js'
 
 const SearchBar = ({ keyword, setKeyword }) => {
     const BarStyling = { width: "20rem", background: "#F2F1F9", border: "none", padding: "0.5rem" };
@@ -38,6 +39,7 @@ function PortPage() {
     const dispatch = useDispatch()
     const history = useHistory()
     const [input, setInput] = useState('');
+    const currentUser = useContext(CurrentUserContext)
     // const [searchItem, setSearchItem] = useState({});
     //   const paginationInfo = useSelector(UserReducer.getPagination)
 
@@ -76,7 +78,9 @@ function PortPage() {
     };
     const handleChange = event => {
         const fileUploaded = event.target.files[0];
+    
 
+        dispatch(PortActions.getUploadLinkAction(fileUploaded, currentUser.id))
     };
 
 

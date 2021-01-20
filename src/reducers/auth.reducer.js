@@ -29,6 +29,7 @@ export default function auth(state = INITIAL_STATE, action){
         isLoggedIn: true,
         token: action.data.token,
         currentUser: {
+          id: action.data.id,
           role: action.data.role,
           first_name: action.data.first_name,
           last_name: action.data.last_name
