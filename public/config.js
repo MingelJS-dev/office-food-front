@@ -4,7 +4,7 @@ window["config"] = {
 
 const getURL = () => {
     if(process.env === "production") {
-        return 
+        return "http://foodapiback-env.eba-ymfgjehm.us-west-2.elasticbeanstalk.com/"
     } else {
         return "http://localhost:5000/" 
     }
