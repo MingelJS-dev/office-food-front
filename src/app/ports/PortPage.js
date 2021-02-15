@@ -14,12 +14,8 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup'
 // import { usePagination } from '../shared/Pagination.js'
 // import useSearch from '../shared/Search.js'
 import Header, { HeaderActions } from "../shared/SecondHeader.js"
-// import PortTable from './PortTable.js';
 import PortsTable from './PortTable.js';
-import * as ProductActions from '../../actions/product.actions.js'
-import * as CategoryActions from '../../actions/categories.actions.js'
 import * as PortActions from '../../actions/ports.actions.js'
-import * as BrandActions from '../../actions/brands.actions.js'
 import { CurrentUserContext } from '../../App.js'
 
 const SearchBar = ({ keyword, setKeyword }) => {

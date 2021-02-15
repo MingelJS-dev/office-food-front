@@ -3,9 +3,6 @@ import { getAuthHeaders, createAction, toQueryString } from '../utils.js'
 import history from '../history.js'
 import { saveAs } from 'file-saver';
 
-import S3 from "react-aws-s3";
-import { configAWS } from "../environment/environment.js"
-
 import { updateNotification } from './notifications.actions.js'
 
 export const GET_UPLOAD_LINK = '[Ports] GET_UPLOAD_LINK';
@@ -299,7 +296,6 @@ export function uploadFileAction(data, file) {
       const res = await axios.put(signedUrl, file);
 
       if (res.status === 200) {
-        console.log(file)
         dispatch(uploadFileDataAction(data.id))
       } else {
         dispatch(uploadFileFail(res.data.message))

@@ -15,7 +15,7 @@ import recipients from './recipients.reducer.js'
 import incoterms from './incoterms.reducer.js'
 import containers from './containers.reducer.js'
 import articles from './proforma_products.reducer.js'
-
+import files from './files.reducer.js'
 
 const reducers = combineReducers({
   auth,
@@ -33,7 +33,8 @@ const reducers = combineReducers({
   recipients,
   incoterms,
   containers,
-  articles
+  articles,
+  files
 });
 
 export default reducers;

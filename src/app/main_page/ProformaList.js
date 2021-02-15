@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { Link, useHistory } from 'react-router-dom'
 import { useQuery, toQueryString } from '../../utils.js'
@@ -9,15 +9,22 @@ import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Button from 'react-bootstrap/Button';
-import ButtonGroup from 'react-bootstrap/ButtonGroup'
+
 import Form from 'react-bootstrap/Form';
 import { Alert } from 'react-bootstrap';
 import Header, { HeaderActions } from "../shared/SecondHeader.js"
 
+import { CurrentUserContext } from '../../App.js'
+
 import ProformaListItem from './ProformaListItem.js';
 import EmailMassiveModal from './EmailMassiveModal.js';
+import ModalTemplate from '../proforma/ModalTemplate.js'
+
 import * as CountryReducer from '../../reducers/countries.reducer.js'
+
 import * as ProformaActions from '../../actions/proformas.actions.js'
+import * as FileActions from '../../actions/files.actions.js'
+
 
 function StatusCheck({ item, CountryIds, selectCountry }) {
     const dispatch = useDispatch()
@@ -64,10 +71,12 @@ function ProformaList({ proformas }) {
     const dispatch = useDispatch()
     const history = useHistory()
     const [input, setInput] = useState('');
-    const [modalShow, setModalShow] = useState(false);
+    const [modalShowEmail, setModalShowEmail] = useState(false);
     const [CountryIds, setCountryIds] = useState([])
     const [filterProformas, setFilterProformas] = useState([])
+    const [modalShow, setModalShow] = useState(false);
 
+    const currentUser = useContext(CurrentUserContext)
     const countries = useSelector(CountryReducer.getFeaturedCountries)
 
     const updateSearch = async (input) => {
@@ -94,8 +103,25 @@ function ProformaList({ proformas }) {
         setCountryIds([id])
     }
 
+    const hiddenFileInput = React.useRef(null);
+
+    const handleClick = event => {
+        if (hiddenFileInput) {
+            hiddenFileInput.current.click();
+        }
+    };
+    const handleChange = event => {
+        const fileUploaded = event.target.files[0];
+    
+
+        dispatch(FileActions.getUploadLinkAction(fileUploaded, currentUser.id))
+    };
+
+
     return (
         <Container fluid={true} className="my-3">
+            <ModalTemplate show={modalShow}
+                onHide={() => setModalShow(false)} />
             <Row>
                 <Header
                     title="Proformas"
@@ -110,13 +136,29 @@ function ProformaList({ proformas }) {
                                 to="/proformas/new"
                                 className="btn btn-sm btn-create-user m-2">Crear proforma</Link>
                             <button className="btn btn-sm btn-create-user m-2"
-                                onClick={() => setModalShow(true)}>
+                                onClick={() => setModalShowEmail(true)}>
                                 Enviar Correo Masivo
                             </button>
                             <button className="btn btn-sm btn-create-user m-2"
                                 onClick={() => exportBase()}>
                                 Descargar base
                             </button>
+                            <Dropdown>
+                                <Dropdown.Toggle className="btn btn-sm btn-create-user m-2" id="dropdown-basic">
+                                    Template Masivo
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu>
+                                    <Button className="btn btn-sm btn-file m-2" onClick={() => setModalShow(true)} >Descargar</Button>
+                                    <Button className="btn btn-sm btn-file m-2" onClick={handleClick}>
+                                        Actualizar
+                                    </Button>
+                                    <input type="file"
+                                        ref={hiddenFileInput}
+                                        onChange={handleChange}
+                                        style={{ display: 'none' }}
+                                    />
+                                </Dropdown.Menu>
+                            </Dropdown>
                         </Row>
                     </HeaderActions>
                 </Header>
@@ -135,8 +177,8 @@ function ProformaList({ proformas }) {
                 </Col>
 
             </Row>
-            <EmailMassiveModal show={modalShow}
-                onHide={() => setModalShow(false)} />
+            <EmailMassiveModal show={modalShowEmail}
+                onHide={() => setModalShowEmail(false)} />
             <Row>
 
             </Row>
@@ -147,8 +189,8 @@ function ProformaList({ proformas }) {
                         <Col className="pr-0 pb-0 pl-0" id='style-8'>
                             {/* <Card>
                                 <Card.Body className="p-0 table-responsive"> */}
-                                    <ProformaListItem proformas={filterProformas} input={input} />
-                                {/* </Card.Body>
+                            <ProformaListItem proformas={filterProformas} input={input} />
+                            {/* </Card.Body>
                             </Card> */}
                         </Col>
                         :

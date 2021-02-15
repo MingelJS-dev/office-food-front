@@ -54,7 +54,7 @@ function LoginPage() {
     e.preventDefault()
     dispatch(startLogin(email, password))
   }
-
+  console.log(window.config)
   return (
     <div className="background-login">
       <div className="auth-wrapper mx-2">

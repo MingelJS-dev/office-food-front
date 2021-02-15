@@ -49,14 +49,14 @@ function ListSidebar() {
                                     </NavLink>
                                 </li>
 
-                                <li >
+                                {/* <li >
                                     <Button
                                         onClick={() => setModalShow(true)}
                                         className="btn-without bm-item-list">
                                         <span>Extraer template</span>
                                     </Button>
 
-                                </li>
+                                </li> */}
                                 <li>
                                     <NavLink to="/proforma" className="bm-item-list">
                                         <span>Carga masiva</span>
