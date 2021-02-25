@@ -65,6 +65,22 @@ function ArticleList({ proforma }) {
 
     let title = `${proforma.name} - Artículos`
 
+    const parseDate = (data) => {
+        const value =  new Date(data)
+        let month = value.getMonth() + 1
+        let date = value.getDate()
+
+        if (month < 10) {
+            month = `0${month}`
+        }
+        if (date < 10) {
+            date = `0${date}`
+        }
+
+
+
+        return date + "/" + month + "/" + value.getFullYear();
+    }
     return (
         <Container fluid={true} className="my-3">
             <Row>
@@ -101,18 +117,18 @@ function ArticleList({ proforma }) {
                             setKeyword={updateSearch}
                         />
                     </Col>
-                    <Card className="ml-2 text-center">
-                        <Card.Body>
-                            <h6 className="m-0">
-                                {/* <FontAwesomeIcon className="mr-2" icon={faSquare} /> */}
-                             Contenedor: {proforma.Container.name} </h6>
-                        </Card.Body>
-                    </Card>
                     <Card className="ml-2 m-0 text-center">
                         <Card.Body>
                             <h6 className="m-0">
                                 {/* <FontAwesomeIcon className="mr-2" icon={faPlane} /> */}
-                             Incoterm: {proforma.Incoterm.name} </h6>
+                             ETA: {parseDate(proforma.eta)} </h6>
+                        </Card.Body>
+                    </Card>
+                    <Card className="ml-2 text-center">
+                        <Card.Body>
+                            <h6 className="m-0">
+                                {/* <FontAwesomeIcon className="mr-2" icon={faSquare} /> */}
+                             CD: {parseDate(proforma.cd)} </h6>
                         </Card.Body>
                     </Card>
                     <Card className="ml-2 m-0 text-center" >

@@ -19,12 +19,12 @@ import { CurrentUserContext } from '../../App.js'
 import ProformaListItem from './ProformaListItem.js';
 import EmailMassiveModal from './EmailMassiveModal.js';
 import ModalTemplate from '../proforma/ModalTemplate.js'
-
+import SpinnerFile from '../shared/SpinnerFile.js'
 import * as CountryReducer from '../../reducers/countries.reducer.js'
 
 import * as ProformaActions from '../../actions/proformas.actions.js'
 import * as FileActions from '../../actions/files.actions.js'
-
+import * as FileReducer from '../../reducers/files.reducer.js'
 
 function StatusCheck({ item, CountryIds, selectCountry }) {
     const dispatch = useDispatch()
@@ -78,6 +78,7 @@ function ProformaList({ proformas }) {
 
     const currentUser = useContext(CurrentUserContext)
     const countries = useSelector(CountryReducer.getFeaturedCountries)
+    const isLoading = useSelector(FileReducer.getIsLoading)
 
     const updateSearch = async (input) => {
         setInput(input)
@@ -112,14 +113,13 @@ function ProformaList({ proformas }) {
     };
     const handleChange = event => {
         const fileUploaded = event.target.files[0];
-    
-
         dispatch(FileActions.getUploadLinkAction(fileUploaded, currentUser.id))
     };
 
 
     return (
         <Container fluid={true} className="my-3">
+            {isLoading && <SpinnerFile isLoading={isLoading} /> }
             <ModalTemplate show={modalShow}
                 onHide={() => setModalShow(false)} />
             <Row>
@@ -164,6 +164,7 @@ function ProformaList({ proformas }) {
                 </Header>
             </Row>
             <Row>
+         
                 <Col>
                     <SearchBar
                         input={input}
@@ -180,15 +181,17 @@ function ProformaList({ proformas }) {
             <EmailMassiveModal show={modalShowEmail}
                 onHide={() => setModalShowEmail(false)} />
             <Row>
-
+           
             </Row>
             <Row className="pt-2  justify-content-center">
-
+           
                 {
                     filterProformas && filterProformas.length > 0 ?
                         <Col className="pr-0 pb-0 pl-0" id='style-8'>
+                            
                             {/* <Card>
                                 <Card.Body className="p-0 table-responsive"> */}
+                                
                             <ProformaListItem proformas={filterProformas} input={input} />
                             {/* </Card.Body>
                             </Card> */}

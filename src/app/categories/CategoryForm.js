@@ -14,7 +14,7 @@ export default function CategoryForm({ category, save, level }) {
     const [CountryId, setCountryId] = useState(category.CountryId || '');
 
     const [errors, setErrors] = useState({})
-    const countries = useSelector(CountryReducer.getCountries)
+    const countries = useSelector(CountryReducer.getFeaturedCountries)
     
     // const globalLoading = useSelector(UsersReducer.getIsLoading)
     // const localLoading = useSelector(state => UsersReducer.getIsLoadingById(state, user.id))
