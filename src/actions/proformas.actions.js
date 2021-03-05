@@ -131,7 +131,7 @@ export function fetchAll(){
       dispatch(updateOne(data))
   
       try{
-        const res = await axios.put( `${window.config.API_URL}ports/${data.id}`,
+        const res = await axios.put( `${window.config.API_URL}proformas/${data.id}`,
           data,
           {
             headers: getAuthHeaders(getState())
@@ -140,15 +140,15 @@ export function fetchAll(){
   
         if( res.status === 201 ){
           dispatch(updateOneSucess(res.data.data))
-          dispatch(updateNotification('Puerto actualizado correctamente', 'success'))
+          dispatch(updateNotification('Proforma actualizado correctamente', 'success'))
         }else{
           dispatch(updateOneFailed(res, data.id))
-          dispatch(updateNotification('Hubo un error al actualizar el puerto', 'danger'))
+          dispatch(updateNotification('Hubo un error al actualizar la proforma', 'danger'))
         }
   
       }catch(error){
         console.log('error:', error)
-        dispatch(updateNotification('Hubo un error al actualizar el puerto', 'danger'))
+        dispatch(updateNotification('Hubo un error al actualizar la proforma', 'danger'))
         dispatch(updateOneFailed(error, data.id))
       }
     }

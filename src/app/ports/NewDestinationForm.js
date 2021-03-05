@@ -27,13 +27,14 @@ const SearchBar = ({ keyword, setKeyword }) => {
     );
 }
 
-export default function DestinationForm({ destinations, port }) {
+export default function NewDestinationForm({ destinations, port }) {
     const dispatch = useDispatch();
 
     const [errors, setErrors] = useState({})
     const [currentPort, setCurrentPort] = useState([])
     const [Ids, setIds] = useState([])
-    const [destination, setDestination] = useState(null)
+    const [destination, setDestination] = useState([])
+    const [destinationss, setDestinations] = useState([])
     const [currentDestination, setCD] = useState([])
     const [input, setInput] = useState('');
     const countries = useSelector(CountryReducer.getCountries)
@@ -60,16 +61,21 @@ export default function DestinationForm({ destinations, port }) {
 
     const selectDestination = (id) => {
         let [data] = ports.filter(x => x.id === parseInt(id))
+        
+        const arrayData = [ ...destination, 
+            {
+                ...data,
+                OriginId: port.id,
+                PortId: data.id,
+                trantitionDays: 0
+            }
+        ]
 
-        setDestination({
-            OriginId: port.id,
-            PortId: data.id,
-            trantitionDays: 0
-        })
+        setDestination(arrayData)
     }
 
     const createDestination = () => {
-        dispatch(DestinationActions.createDestination(destination))
+        // dispatch(DestinationActions.createDestination(destination))
     }
 
 
@@ -110,26 +116,26 @@ export default function DestinationForm({ destinations, port }) {
                         }
                     </select>
                 </div>
-                <div className="pt-5 pl-5">
+                {/* <div className="pt-5 pl-5">
                     {
                         destination ?
                             <button className="btn btn-create-user btn-sm"
-                                onClick={() => createDestination()}>
+                                onClick={() => saveDestination()}>
                                 Agregar destino
                             </button> : ''
                     }
-                </div>
+                </div> */}
             </Row>
-            <Row>
+            {/* <Row>
                 <Col>
                     <SearchBar
                         input={input}
                         setKeyword={updateSearch}
                     />
                 </Col>
-            </Row>
+            </Row> */}
             <Row className="pt-2">
-                <DestinationTable destinations={currentDestination} portDestination={dest} port={port} />
+                <DestinationTable destinations={destination} portDestination={dest} port={port} />
             </Row>
         </Container>
     )
@@ -143,32 +149,28 @@ function DestinationTable({ destinations, portDestination, port }) {
     useEffect(() => {
         setCurrentDestinations(destinations)
     }, [destinations, destinations.length])
+
     const getTransition = (id) => {
-        return portDestination.filter(x => x.OriginId === port.id && x.PortId === id)[0].trantitionDays
+        return destinations.filter(x => x.OriginId === port.id && x.PortId === id)[0].trantitionDays
     }
 
-    const destroyDestination = (id) => {
-        let DestId = portDestination.filter(x => x.OriginId === port.id && x.PortId === id)[0].id
-        swal({
-            title: "¿Está seguro que desea eliminar el destino?",
-            icon: "warning",
-            dangerMode: true,
-            buttons: ["Cancelar", "Eliminar"],
-        })
-            .then(ok => {
-                if (ok) {
-                    dispatch(DestinationActions.destroyById(DestId))
-                }
-            });
-    }
+    // const destroyDestination = (id) => {
+    //     let DestId = portDestination.filter(x => x.OriginId === port.id && x.PortId === id)[0].id
+    //     swal({
+    //         title: "¿Está seguro que desea eliminar el destino?",
+    //         icon: "warning",
+    //         dangerMode: true,
+    //         buttons: ["Cancelar", "Eliminar"],
+    //     })
+    //         .then(ok => {
+    //             if (ok) {
+    //                 dispatch(DestinationActions.destroyById(DestId))
+    //             }
+    //         });
+    // }
 
     const updateDestination = (value, id) => {
-        let DestId = portDestination.filter(x => x.OriginId === port.id && x.PortId === id)[0].id
-
-        dispatch(DestinationActions.updateById({
-            id: DestId,
-            trantitionDays: value
-        }))
+        destinations.filter(x => x.OriginId === port.id && x.PortId === id)[0].trantitionDays = value
     }
 
     return (
@@ -188,7 +190,7 @@ function DestinationTable({ destinations, portDestination, port }) {
             </thead>
             <tbody>
                 {
-                    currentDestinations.map((item) => {
+                    currentDestinations.length > 0 && currentDestinations.map((item) => {
                         return (
                             <tr key={item.id}>
                                 <td>
@@ -205,18 +207,6 @@ function DestinationTable({ destinations, portDestination, port }) {
                                         defaultValue={getTransition(item.id)}
                                         autoComplete="false"
                                     />
-                                </td>
-                                <td className='d-flex justify-content-center'>
-                                    {/* <button className='btn btn-primary mr-2'
-                                        onClick={() => updateDestination(item.id)}
-                                    >
-                                        Guardar
-                                    </button> */}
-                                    <button className='btn btn-danger-custom'
-                                        onClick={() => destroyDestination(item.id)}
-                                    >
-                                        <FontAwesomeIcon icon={faTrash} />
-                                    </button>
                                 </td>
                             </tr>
                         )

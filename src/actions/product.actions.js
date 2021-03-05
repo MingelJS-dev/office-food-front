@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { getAuthHeaders, createAction, toQueryString } from '../utils.js'
 import history from '../history.js'
+import { saveAs } from 'file-saver';
 
 import { updateNotification } from './notifications.actions.js'
 
@@ -63,6 +64,21 @@ export function destroySuccess(product){
 export const DESTROY_FAILED = '[Products] DESTROY_FAILED';
 export function destroyFailed(error){
   return { type: DESTROY_FAILED, error }
+}
+
+export const EXPORT = '[Products] EXPORT';
+export function exportProduct() {
+  return { type: EXPORT }
+}
+
+export const EXPORT_SUCCESS = '[Products] EXPORT_SUCCESS';
+export function exportSuccess(file) {
+  return { type: EXPORT_SUCCESS, file }
+}
+
+export const EXPORT_FAILED = '[Products] EXPORT_FAILED';
+export function exportFailed(error) {
+  return { type: EXPORT_FAILED, error }
 }
 
 
@@ -174,5 +190,29 @@ export function destroyById(ProductId) {
     }
   }
 }
+
+export function exportProductFile() {
+  return async function (dispatch, getState) {
+    dispatch(exportProduct())
+
+    try {
+      let url = `${window.config.API_URL}products/export`
+
+      const res = await axios.get(url, {
+        headers: getAuthHeaders(getState())
+      });
+
+      if (res.status === 200) {
+        saveAs(res.config.url, 'Maestra_Artículos')
+        dispatch(exportSuccess(res.data.data))
+      } else {
+        dispatch(exportFailed(res.data.message))
+      }
+    } catch (err) {
+      dispatch(exportFailed(err))
+    }
+  }
+}
+
 
 

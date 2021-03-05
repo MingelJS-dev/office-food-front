@@ -22,6 +22,7 @@ export default function EditPort() {
     const dispatch = useDispatch();
     const countries = useSelector(CountryReducer.getCountries)
     const params = useParams()
+    
     useEffect(() => {
         dispatch(PortActions.fetchAll());
         dispatch(DestinationActions.fetchAll());
@@ -55,6 +56,7 @@ export default function EditPort() {
                                     <PortForm
                                         port={currentPort}
                                         save={editPort}
+                                        editPort={true}
                                     />
                                     : ''
                             }

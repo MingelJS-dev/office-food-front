@@ -191,3 +191,20 @@
 {
 	background-color:  rgb(1, 79, 151) !important;	
 }
+
+.btn-second-blue {
+  border: 2px solid #21476B !important;
+  background-color: #4A9FEE !important;
+  cursor: pointer !important;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.btn-second-blue:hover {
+  border: 2px solid rgb(1, 79, 151) !important;
+  cursor: pointer;
+  background-color: #21476B !important;
+  border-radius: 3px !important;
+  cursor: pointer !important;
+  color: white !important;
+}

@@ -143,7 +143,7 @@ function ProformaList({ proformas }) {
                                 onClick={() => exportBase()}>
                                 Descargar base
                             </button>
-                            <Dropdown>
+                            {/* <Dropdown>
                                 <Dropdown.Toggle className="btn btn-sm btn-create-user m-2" id="dropdown-basic">
                                     Template Masivo
                                 </Dropdown.Toggle>
@@ -158,7 +158,7 @@ function ProformaList({ proformas }) {
                                         style={{ display: 'none' }}
                                     />
                                 </Dropdown.Menu>
-                            </Dropdown>
+                            </Dropdown> */}
                         </Row>
                     </HeaderActions>
                 </Header>

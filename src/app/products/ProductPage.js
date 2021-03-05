@@ -57,6 +57,10 @@ function ProductPage() {
         dispatch(BrandActions.fetchAll())
     }, [dispatch, history])
 
+    function exportProduct() {
+        dispatch(ProductActions.exportProductFile())
+    }
+
     return (
         <Container fluid={true} className="my-3">
             <Row>
@@ -71,9 +75,9 @@ function ProductPage() {
                             to="/products/new"
                             className="btn btn-sm btn-create-user">Crear producto</Link>
                         <button
-                            className="btn btn-sm btn-create-user m-1">Descargar Maestra</button>
-                        <button
-                            className="btn btn-sm btn-create-user">Actualizar Maestra</button>
+                            className="btn btn-sm btn-create-user m-1" onClick={() => exportProduct()}>Descargar Maestra</button>
+                        {/* <button
+                            className="btn btn-sm btn-create-user">Actualizar Maestra</button> */}
                     </HeaderActions>
                 </Header>
             </Row>

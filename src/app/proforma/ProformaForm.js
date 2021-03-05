@@ -10,15 +10,16 @@ import * as DestinationReducer from '../../reducers/destinations.reducer.js'
 import * as IncotermReducer from '../../reducers/incoterms.reducer.js'
 import * as ContianerReducer from '../../reducers/containers.reducer.js'
 
-export default function ProformaForm({ proforma, save }) {
-    const [name, setName] = useState('')
+export default function ProformaForm({ proforma, previous, save }) {
+
+    const [name, setName] = useState(proforma.name || '')
     const [errors, setErrors] = useState({})
     const [DestinationId, setDestinationId] = useState(proforma.DestinationId || '')
     const [OriginId, setOriginId] = useState(proforma.OriginId || '')
     const [BuyerId, setBuyerId] = useState(proforma.BuyerId || '')
     const [CategoryId, setCategoryId] = useState(proforma.CategoryId || '')
     const [ProviderId, setProviderId] = useState(proforma.ProviderId || '')
-    const [transport, setTransport] = useState(proforma.transport || '')
+    const [transport, setTransport] = useState(proforma.transport || (proforma.Destination && proforma.Destination.type) || '')
     const [eta, setEta] = useState(proforma.eta || '')
     const [cd, setCd] = useState(proforma.cd || '')
     const [stretch, setStretch] = useState(proforma.stretch || '')
@@ -27,13 +28,13 @@ export default function ProformaForm({ proforma, save }) {
     const [money, setMoney] = useState(proforma.money || '')
 
     const [regionalUsers, setRegionalUsers] = useState([])
-    const [CountryDestinationId, setCountryDestinationId] = useState(null)
+    const [CountryDestinationId, setCountryDestinationId] = useState(proforma.CountryDestinationId || (proforma.Destination && proforma.Destination.CountryId) || null)
     const [portDestination, setPortDestination] = useState([])
     const [providerRut, setProviderRut] = useState(null)
     const [providerSocial, setProviderSocial] = useState(null)
 
     const [CountryOrigins, setCountryOrigins] = useState([])
-    const [CountryOriginId, setCountryOriginId] = useState(null)
+    const [CountryOriginId, setCountryOriginId] = useState(proforma.CountryOriginId || (proforma.Origin && proforma.Origin.CountryId) || null)
     const [portOrigins, setPortOrigins] = useState([])
 
 
@@ -71,13 +72,13 @@ export default function ProformaForm({ proforma, save }) {
     }, [DestinationId])
 
     useEffect(() => {
-        if (ProviderId) {
+        if (ProviderId && providers.length > 0) {
             let [provider] = providers.filter(x => x.id === parseInt(ProviderId))
             setProviderRut(provider.ProviderCategories.filter(x => x.CountryId === parseInt(CountryDestinationId))[0].rut)
             setProviderSocial(provider.ProviderCategories.filter(x => x.CountryId === parseInt(CountryDestinationId))[0].businessName)
         }
 
-    }, [ProviderId])
+    }, [ProviderId, providers, providers.length])
 
     useEffect(() => {
         setPortOrigins(ports.filter(x => x.CountryId === parseInt(CountryOriginId)))
@@ -96,8 +97,8 @@ export default function ProformaForm({ proforma, save }) {
         setSelectProviders(currentProviders)
     }, [CategoryId])
 
-    function validate(e) {
-        e.preventDefault()
+    function validate() {
+        // e.preventDefault()
 
         // TODO: Validate required data and format
         const validations = []
@@ -124,11 +125,32 @@ export default function ProformaForm({ proforma, save }) {
                 // stretch,
                 IncotermId,
                 ContainerId,
-                money
+                money,
+                CountryDestinationId,
+                CountryOriginId
+            }
+
+            if (proforma.id) {
+                data.id = proforma.id
             }
 
             save(data)
         }
+    }
+
+    const parseDate = (data) => {
+        const value = new Date(data)
+        let month = value.getMonth() + 1
+        let date = value.getDate()
+
+        if (month < 10) {
+            month = `0${month}`
+        }
+        if (date < 10) {
+            date = `0${date}`
+        }
+
+        return value.getFullYear() + "-" + month + "-" + date;
     }
 
     return (
@@ -226,6 +248,7 @@ export default function ProformaForm({ proforma, save }) {
                         <div className='d-flex'>
                             <input type="date" id="start" name="trip-start"
                                 onChange={(e => setEta(e.target.value))}
+                                value={parseDate(eta)}
                                 className={`form-control form-control-sm`}
                             ></input>
                         </div>
@@ -309,7 +332,7 @@ export default function ProformaForm({ proforma, save }) {
                             /> */}
                             <input type="date" id="start" name="trip-start"
                                 onChange={(x) => setCd(x.target.value)}
-                                value={cd}
+                                value={parseDate(cd)}
                                 className={`form-control form-control-sm`}
                             ></input>
                         </div>
@@ -400,6 +423,7 @@ export default function ProformaForm({ proforma, save }) {
                         <select
                             className={`form-control form-control-sm`}
                             onChange={(x) => setMoney(x.target.value)}
+                            value={money}
                         >
                             <option value="">Seleccione...</option>
                             <option value='USD'>USD</option>
@@ -408,13 +432,29 @@ export default function ProformaForm({ proforma, save }) {
                         </select>
                     </div>
                 </Row>
+            </form>
 
-                <div className="form-group d-flex justify-content-center">
-                    <button className={`btn btn-primary`}>
+            {
+                previous &&
+                <Row className="form-group d-flex justify-content-center">
+                    <Col>
+                        <button onClick={() => previous()} className={`btn btn-block btn-second-blue`}>
+                            <span>Atras</span>
+                        </button>
+                    </Col>
+                    <Col>
+                        <button onClick={() => validate()} className={`btn btn-block btn-second-blue`}>
+                            <span>Siguiente</span>
+                        </button>
+                    </Col>
+                </Row> ||
+                <Col>
+                    <button onClick={() => validate()} className={`btn btn-block btn-second-blue`}>
                         <span>Guardar</span>
                     </button>
-                </div>
-            </form>
+                </Col>
+            }
+            
         </Container>
     )
 

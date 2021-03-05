@@ -275,9 +275,9 @@ function Header() {
             <Link to="/">
                 <Figure>
                     {logo}
-                    <Figure.Caption>
-                        <h6 className="pl-3">Maqueta</h6>
-                    </Figure.Caption>
+                    {/* <Figure.Caption> */}
+                        <h5 style={{ color: 'white', fontFamily:'Courier New' }} className="p-2"><a>Prealpha</a></h5>
+                    {/* </Figure.Caption> */}
                 </Figure>
             </Link>
         </div>

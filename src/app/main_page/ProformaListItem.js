@@ -7,6 +7,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
+
 import Form from 'react-bootstrap/Form';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Button from 'react-bootstrap/Button';
@@ -14,6 +15,7 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import * as CategoryReducer from '../../reducers/categories.reducer.js'
 
 import "./MainPage.css"
+import CurrencyFormat from 'react-currency-format';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowDown, faArrowUp } from '@fortawesome/free-solid-svg-icons'
 
@@ -49,6 +51,13 @@ function ProformaListItem({ proformas, input }) {
         return proformas.filter(x => x.CategoryId === parseInt(id))
     }
 
+    function geTotalByCategory(id) {
+        let result = 0
+        proformas.filter(x => x.CategoryId === parseInt(id)).map(item => result += item.total)
+
+        return result
+    }
+
     const selectCategory = (id) => {
         if (CategoryId === id) {
             setCategoryId(null)
@@ -70,6 +79,7 @@ function ProformaListItem({ proformas, input }) {
                                 <div>
                                     <h5>
                                         {item.name}
+                                        <CurrencyFormat className="pl-3" value={geTotalByCategory(item.id)} displayType={'text'} thousandSeparator={true} prefix={'$'} />
                                     </h5>
                                 </div>
                                 <div>
@@ -77,8 +87,8 @@ function ProformaListItem({ proformas, input }) {
                                         {
                                             CategoryId === item.id ?
                                                 <FontAwesomeIcon icon={faArrowUp} /> :
-                                                <FontAwesomeIcon icon={faArrowDown} /> 
-                                    }
+                                                <FontAwesomeIcon icon={faArrowDown} />
+                                        }
                                     </h3>
                                 </div>
                             </Card.Body>
@@ -100,7 +110,6 @@ function ProformaItem({ proformas, input }) {
     const [filterProformas, setFilterProformas] = useState(proformas)
 
     useEffect(() => {
-        console.log(proformas)
         if (input) {
             let filtered = filterProformas.filter(item =>
                 item.name.toLowerCase().includes(input.toLowerCase())
@@ -125,6 +134,11 @@ function ProformaItem({ proformas, input }) {
                                         </h5>
                                         <h5>
                                             {item.Category.name} - {item.Provider.name}
+                                        </h5>
+                                        <h5>
+                                            <span className="badge badge-primary">
+                                                <CurrencyFormat value={item.total || 0} displayType={'text'} thousandSeparator={true} prefix={'$'} />
+                                                </span>
                                         </h5>
                                     </div>
                                     <div>

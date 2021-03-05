@@ -21,6 +21,7 @@ import Sidebar from './app/layout/Sidebar.js'
 
 import ProformaPage from './app/proforma/ProformaPage.js'
 import NewProforma from './app/proforma/NewProforma.js'
+import EditProforma from "./app/proforma/EditProforma.js"
 import Notification from "./app/shared/Notifications.js";
 
 
@@ -126,6 +127,7 @@ function App() {
                     <Switch>
                       <Route path="/proformas/new" exact component={NewProforma} />
                       <Route path="/proformas/:ProformaId/articles" exact component={ProformaProductsPage} />
+                      <Route path="/proformas/:ProformaId" exact component={EditProforma} />
                       <Route path="/proformas/:ProformaId/articles/new" exact component={NewArticlePage} />
                       <Route path="/users" exact component={UsersPage} />
                       <Route path="/categories" exact component={CategoriesPage} />

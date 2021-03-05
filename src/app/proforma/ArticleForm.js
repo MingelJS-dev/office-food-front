@@ -12,7 +12,7 @@ import * as ArticleActions from '../../actions/proforma_product.actions.js'
 import Table from 'react-bootstrap/Table';
 import { parse } from '@fortawesome/fontawesome-svg-core';
 
-export default function ArticleForm({ product, currentProforma, save }) {
+export default function ArticleForm({ product, currentProforma, previous, save, currentProducts }) {
     const [name, setName] = useState(product.name || '')
     const [sku, setSku] = useState(product.sku || '')
     const [units, setUnits] = useState(product.units || '')
@@ -28,6 +28,7 @@ export default function ArticleForm({ product, currentProforma, save }) {
     const [selectBrands, setSelectBrands] = useState([])
 
     const [ids, setIds] = useState([])
+    const [ProductIds, setProductIds] = useState(currentProducts && currentProducts.length > 0 && currentProducts.map(x => x.ProductId) || [])
 
     let [CategoryIdN2, setCategoryIdN2] = useState('');
     let [CategoryIdN1, setCategoryIdN1] = useState('');
@@ -49,7 +50,7 @@ export default function ArticleForm({ product, currentProforma, save }) {
     useEffect(() => {
         // categories.filter(x => currentProforma.CatetoryId)
         if (currentProforma && currentProforma.CategoryId) {
-            let N4 = categories.filter(x => x.ParentId === currentProforma.CategoryId).map(x => x.id)
+            let N4 = categories.filter(x => x.ParentId === parseInt(currentProforma.CategoryId)).map(x => x.id)
             let N3 = categories.filter(x => N4.includes(x.ParentId)).map(x => x.id)
             setN2s(categories.filter(x => N3.includes(x.ParentId)))
         }
@@ -68,11 +69,19 @@ export default function ArticleForm({ product, currentProforma, save }) {
     }, [CategoryIdN1])
 
     useEffect(() => {
+
         setSelectArticles(products.filter(x => x.CategoryId === parseInt(CategoryIdN1) &&
-            x.BrandId === parseInt(BrandId)
+            x.BrandId === parseInt(BrandId) && !ProductIds.includes(x.id)
         ))
 
     }, [BrandId])
+
+    // useEffect(() => {
+    //     setSelectArticles(products.filter(x => x.CategoryId === parseInt(CategoryIdN1) &&
+    //         x.BrandId === parseInt(BrandId)
+    //     ))
+
+    // }, [currentProduct])
 
     function validate(e) {
         e.preventDefault()
@@ -195,7 +204,12 @@ export default function ArticleForm({ product, currentProforma, save }) {
                 </Row>
 
                 <Row className='justify-content-center'>
-                    <ArticleTable currentProduct={currentProduct} currentProforma={currentProforma} />
+                    <ArticleTable previous={previous}
+                        currentProduct={currentProduct}
+                        currentProforma={currentProforma}
+                        save={save}
+                        currentProducts={currentProducts}
+                    />
                 </Row>
 
 
@@ -204,9 +218,9 @@ export default function ArticleForm({ product, currentProforma, save }) {
     )
 }
 
-function ArticleTable({ currentProduct, currentProforma }) {
+function ArticleTable({ previous, currentProduct, currentProforma, save, currentProducts }) {
     const dispatch = useDispatch();
-    const [articles, setArticles] = useState([])
+    const [articles, setArticles] = useState(currentProducts && currentProducts.length > 0 && currentProducts || [])
     const getTransition = (id) => {
         // return portDestination.filter(x => x.OriginId === port.id && x.PortId === id)[0].trantitionDays
     }
@@ -233,7 +247,7 @@ function ArticleTable({ currentProduct, currentProforma }) {
     }
 
     const getTotal = (id) => {
-        const [article] = articles.filter(x => x.id === parseInt(id))
+        const [article] = articles.filter(x => x.id || x.ProductId === parseInt(id))
 
         if (article && article.units && article.unitAgreedCost) {
             return parseInt(article.units) * parseInt(article.unitAgreedCost)
@@ -244,8 +258,7 @@ function ArticleTable({ currentProduct, currentProforma }) {
     }
 
     const getSku = (id) => {
-        const [article] = articles.filter(x => x.id === parseInt(id))
-
+        const [article] = articles.filter(x => (x.id || x.ProductId) === parseInt(id))
         if (article && article.sku) {
             return article.sku
         }
@@ -259,13 +272,31 @@ function ArticleTable({ currentProduct, currentProforma }) {
             return {
                 units: x.units,
                 measurement: x.measurement,
-                ProductId: x.id,
-                ProformaId: currentProforma.id,
+                ProductId: x.id || x.ProductId,
+                ProformaId: currentProforma.id || x.ProformaId,
                 unitAgreedCost: x.unitAgreedCost,
-                name: x.name
+                name: x.name,
+                sku: x.sku
+            }
+        })
+        // dispatch(ArticleActions.createArticle(arrayData))
+        save(arrayData)
+    }
+
+    const saveArticle = () => {
+        const arrayData = articles.map(x => {
+            return {
+                units: x.units,
+                measurement: x.measurement,
+                ProductId: x.id || x.ProductId,
+                ProformaId: currentProforma.id || x.ProformaId,
+                unitAgreedCost: x.unitAgreedCost,
+                name: x.name,
+                sku: x.sku
             }
         })
         dispatch(ArticleActions.createArticle(arrayData))
+        // save(arrayData)
     }
 
 
@@ -273,13 +304,30 @@ function ArticleTable({ currentProduct, currentProforma }) {
     return (
         <Container fluid={true}>
             <Row className='pt-0 justify-content-end'>
-                <div className="form-group pr-3">
-                    <button
-                        onClick={() => updateArticle()}
-                        className={`btn btn-primary`}>
-                        <span>Guardar</span>
-                    </button>
-                </div>
+
+                {
+                    previous &&
+                    <div className="form-group pr-3">
+                        <button
+                            onClick={() => previous()}
+                            className={`btn mr-5 btn-second-blue`}>
+                            <span>Atras</span>
+                        </button>
+                        <button
+                            onClick={() => updateArticle()}
+                            className={`btn btn-second-blue `}>
+                            <span>Siguiente</span>
+                        </button>
+                    </div> ||
+                    <div className="form-group pr-3">
+                        <button
+                            onClick={() => saveArticle()}
+                            className={`btn btn-second-blue `}>
+                            <span>Guardar</span>
+                        </button>
+                    </div>
+                }
+
             </Row>
             <Table
                 striped
@@ -307,7 +355,7 @@ function ArticleTable({ currentProduct, currentProforma }) {
                                         {item.name}
                                     </td>
                                     <td>
-                                        {getSku(item.id)}
+                                        {getSku(item.id || item.ProductId)}
                                     </td>
                                     <td>
                                         <input
@@ -322,6 +370,7 @@ function ArticleTable({ currentProduct, currentProforma }) {
                                         <select
                                             onChange={(x) => updateDataAux('measurement', x.target.value, item.id)}
                                             className={`form-control form-control-sm`}
+                                            value={item.measurement}
                                         >
                                             <option value="">Seleccione...</option>
                                             <option value="Unid">Unid</option>
@@ -351,7 +400,7 @@ function ArticleTable({ currentProduct, currentProforma }) {
                                             type="number"
                                             className={`form-control}`}
                                             autoComplete="false"
-                                            value={getTotal(item.id)}
+                                            value={getTotal(item.id || item.ProductId)}
                                             disabled={true}
                                         />
                                     </td>

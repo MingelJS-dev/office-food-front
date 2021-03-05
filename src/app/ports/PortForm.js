@@ -6,7 +6,7 @@ import * as CountryReducer from '../../reducers/countries.reducer.js'
 import Spinner from '../shared/Spinner.js'
 // import useFeatureChecker from '../shared/FeatureChecker.js'
 
-export default function PortForm({ port, save }) {
+export default function PortForm({ port, save, editPort }) {
     const [name, setName] = useState(port.name || '')
     const [CountryId, setCountryId] = useState(port.CountryId || '')
     const [type, setType] = useState(port.type || '')
@@ -115,8 +115,11 @@ export default function PortForm({ port, save }) {
             </div>
 
             <div className="form-group">
-                <button className={`btn btn-primary ${isLoading ? 'loading' : ''}`} disabled={isLoading}>
-                    <span>Guardar</span>
+                <button className={`btn btn-block btn-second-blue ${isLoading ? 'loading' : ''}`} disabled={isLoading}>
+                    {
+                        !editPort && <span>Validar datos</span> || <span>Guardar</span>
+                    }
+                    
                     {
                         isLoading ?
                             <div className='spinner-border' role='status'></div>

@@ -66,7 +66,7 @@ function ArticleList({ proforma }) {
     let title = `${proforma.name} - Artículos`
 
     const parseDate = (data) => {
-        const value =  new Date(data)
+        const value = new Date(data)
         let month = value.getMonth() + 1
         let date = value.getDate()
 
@@ -96,7 +96,10 @@ function ArticleList({ proforma }) {
                             <button
                                 onClick={() => history.push(`/proformas/${proforma.id}/articles/new`)}
                                 className="btn btn-sm btn-create-user m-2">Agregar Artículo</button>
-                            <Dropdown>
+                            <button
+                                onClick={() => history.push(`/proformas/${proforma.id}`)}
+                                className="btn btn-sm btn-create-user m-2">Modificar proforma</button>
+                            {/* <Dropdown>
                                 <Dropdown.Toggle className="btn btn-sm btn-create-user m-2" id="dropdown-basic">
                                     Maestra Artículos
                                 </Dropdown.Toggle>
@@ -104,7 +107,7 @@ function ArticleList({ proforma }) {
                                     <Dropdown.Item href="#/action-1">Descargar</Dropdown.Item>
                                     <Dropdown.Item href="#/action-2">Actualizar</Dropdown.Item>
                                 </Dropdown.Menu>
-                            </Dropdown>
+                            </Dropdown> */}
                         </Row>
                     </HeaderActions>
                 </Header>
