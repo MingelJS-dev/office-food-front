@@ -14,27 +14,15 @@ import * as DestinationActions from '../../actions/destinations.actions.js'
 
 import Table from 'react-bootstrap/Table';
 
-const SearchBar = ({ keyword, setKeyword }) => {
-    const BarStyling = { width: "20rem", background: "#F2F1F9", border: "none", padding: "0.5rem" };
-    return (
-        <input
-            style={BarStyling}
-            key="random1"
-            value={keyword}
-            placeholder={"Buscar destino..."}
-            onChange={(e) => setKeyword(e.target.value)}
-        />
-    );
-}
-
-export default function NewDestinationForm({ destinations, port }) {
+export default function NewDestinationForm({ destinations, port, saveDestination}) {
     const dispatch = useDispatch();
 
     const [errors, setErrors] = useState({})
     const [currentPort, setCurrentPort] = useState([])
     const [Ids, setIds] = useState([])
     const [destination, setDestination] = useState([])
-    const [destinationss, setDestinations] = useState([])
+    const [DestinationsIds, setDestinationIds] = useState([])
+    const [CountryId, setCountryId] = useState([])
     const [currentDestination, setCD] = useState([])
     const [input, setInput] = useState('');
     const countries = useSelector(CountryReducer.getCountries)
@@ -51,27 +39,39 @@ export default function NewDestinationForm({ destinations, port }) {
         setCD(ports.filter(x => ids.includes(x.id)))
     }, [dest, dest.length]);
 
-    const selectCountry = (id) => {
+    useEffect(() => {
+        setCurrentPort(ports.filter(x => x.CountryId === parseInt(CountryId)
+            && x.id !== port.id && !DestinationsIds.includes(x.id)))
+    }, [DestinationsIds, DestinationsIds.length]);
 
-        setCurrentPort(ports.filter(x => x.CountryId === parseInt(id) && x.type === port.type
+    const selectCountry = (id) => {
+        setCurrentPort(ports.filter(x => x.CountryId === parseInt(id)
             && x.id !== port.id && !Ids.includes(x.PortId)))
-        // console.log(ports.filter(x => x.CountryId === parseInt(id) && x.type === port.type
-        // && x.id !== port.id && !Ids.includes(x.id)))
+        setCountryId(id)
     }
 
     const selectDestination = (id) => {
         let [data] = ports.filter(x => x.id === parseInt(id))
-        
-        const arrayData = [ ...destination, 
-            {
-                ...data,
-                OriginId: port.id,
-                PortId: data.id,
-                trantitionDays: 0
-            }
+        let PortIds = [...DestinationsIds, parseInt(id)]
+
+        const arrayData = [...destination,
+        {
+            ...data,
+            // OriginId: port.id,
+            PortId: data.id,
+            trantitionDays: 0
+        }
         ]
 
+        setDestinationIds(PortIds)
         setDestination(arrayData)
+    }
+
+    const updateDestination = (id) => {
+        let  PortIds = DestinationsIds.filter(item => item !== id)
+         let data = destination.filter(x => x.id !== parseInt(id))
+        setDestinationIds(PortIds)
+        setDestination(data)
     }
 
     const createDestination = () => {
@@ -116,61 +116,36 @@ export default function NewDestinationForm({ destinations, port }) {
                         }
                     </select>
                 </div>
-                {/* <div className="pt-5 pl-5">
-                    {
-                        destination ?
-                            <button className="btn btn-create-user btn-sm"
-                                onClick={() => saveDestination()}>
-                                Agregar destino
-                            </button> : ''
-                    }
-                </div> */}
             </Row>
-            {/* <Row>
-                <Col>
-                    <SearchBar
-                        input={input}
-                        setKeyword={updateSearch}
-                    />
-                </Col>
-            </Row> */}
             <Row className="pt-2">
-                <DestinationTable destinations={destination} portDestination={dest} port={port} />
+                <DestinationTable destinations={destination} portDestination={dest} port={port} updateDestination={updateDestination} saveDestination={saveDestination} />
             </Row>
         </Container>
     )
 }
 
-function DestinationTable({ destinations, portDestination, port }) {
-    const dispatch = useDispatch();
-    const [tt, setTT] = useState('')
+function DestinationTable({ destinations, portDestination, port, updateDestination, saveDestination}) {
     const [currentDestinations, setCurrentDestinations] = useState([])
 
     useEffect(() => {
         setCurrentDestinations(destinations)
+
     }, [destinations, destinations.length])
 
     const getTransition = (id) => {
         return destinations.filter(x => x.OriginId === port.id && x.PortId === id)[0].trantitionDays
     }
 
-    // const destroyDestination = (id) => {
-    //     let DestId = portDestination.filter(x => x.OriginId === port.id && x.PortId === id)[0].id
-    //     swal({
-    //         title: "¿Está seguro que desea eliminar el destino?",
-    //         icon: "warning",
-    //         dangerMode: true,
-    //         buttons: ["Cancelar", "Eliminar"],
-    //     })
-    //         .then(ok => {
-    //             if (ok) {
-    //                 dispatch(DestinationActions.destroyById(DestId))
-    //             }
-    //         });
-    // }
+    const destroyDestination = (id) => {
+        let data = currentDestinations.filter(item => item.id !== parseInt(id))
+       
+        setCurrentDestinations(data)
+        updateDestination(id)
+    }
 
-    const updateDestination = (value, id) => {
+    const updateTransitionDays = (value, id) => {
         destinations.filter(x => x.OriginId === port.id && x.PortId === id)[0].trantitionDays = value
+        saveDestination(destinations)
     }
 
     return (
@@ -184,6 +159,7 @@ function DestinationTable({ destinations, portDestination, port }) {
                 <tr>
                     <th>País</th>
                     <th>Puerto Destino</th>
+                    <th>Tipo</th>
                     <th>TT (Días)</th>
                     <th></th>
                 </tr>
@@ -200,13 +176,28 @@ function DestinationTable({ destinations, portDestination, port }) {
                                     {item.name}
                                 </td>
                                 <td>
+                                    {item.type}
+                                </td>
+                                <td>
                                     <input
                                         type="number"
                                         className={`form-control}`}
-                                        onChange={(x) => updateDestination(x.target.value, item.id)}
+                                        onChange={(x) => updateTransitionDays(x.target.value, item.id)}
                                         defaultValue={getTransition(item.id)}
                                         autoComplete="false"
                                     />
+                                </td>
+                                <td className='d-flex justify-content-center'>
+                                    {/* <button className='btn btn-primary mr-2'
+                                        onClick={() => updateDestination(item.id)}
+                                    >
+                                        Guardar
+                                    </button> */}
+                                    <button className='btn btn-danger-custom'
+                                        onClick={() => destroyDestination(item.id)}
+                                    >
+                                        <FontAwesomeIcon icon={faTrash} />
+                                    </button>
                                 </td>
                             </tr>
                         )

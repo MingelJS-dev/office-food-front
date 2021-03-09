@@ -112,6 +112,19 @@ export default function auth(state = INITIAL_STATE, action) {
                     ...state,
                     exporting: false
                 }
+            
+            case ProformaActions.GET_LINK_PDF:
+                return {
+                    ...state,
+                    exporting: true
+                }
+            
+            case ProformaActions.GET_FILE_PDF_SUCCESS:
+            case ProformaActions.GET_FILE_PDF_FAIL:
+                return {
+                    ...state,
+                    exporting: false
+                }
 
         default:
             return state;

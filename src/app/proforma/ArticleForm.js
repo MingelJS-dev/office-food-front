@@ -96,9 +96,7 @@ export default function ArticleForm({ product, currentProforma, previous, save, 
         } else {
             setErrors([])
 
-            const data = {
-
-            }
+            const data = []
 
             if (product.id) {
                 data.id = product.id
@@ -247,9 +245,9 @@ function ArticleTable({ previous, currentProduct, currentProforma, save, current
     }
 
     const getTotal = (id) => {
-        const [article] = articles.filter(x => x.id || x.ProductId === parseInt(id))
-
-        if (article && article.units && article.unitAgreedCost) {
+        const [article] = articles.filter(x => x.id === parseInt(id) || x.ProductId === parseInt(id))
+ 
+        if (article && article.units && article.unitAgreedCost && (article.id === parseInt(id))) {
             return parseInt(article.units) * parseInt(article.unitAgreedCost)
         }
 

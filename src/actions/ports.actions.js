@@ -275,17 +275,6 @@ export function getUploadLinkAction(file, UserId) {
   }
 }
 
-// configAWS['dirName'] = data.filePath
-// const ReactS3Client = new S3(configAWS)
-// const res = await ReactS3Client.uploadFile(file)
-// let fileParts = file.name.split('.');
-// let fileType = fileParts[1]
-// let options = {
-//   headers: {
-//     'Content-Type': fileType
-//   }
-// };
-
 export function uploadFileAction(data, file) {
   return async function (dispatch, getState) {
     dispatch(uploadFile())

@@ -64,9 +64,9 @@ export default function ProformaForm({ proforma, previous, save }) {
     useEffect(() => {
         setPortDestination(ports.filter(x => x.CountryId === parseInt(CountryDestinationId)))
     }, [CountryDestinationId])
-
+ 
     useEffect(() => {
-        let OriginIds = destinations.filter(x => x.PortId === parseInt(DestinationId)).map(x => x.OriginId)
+        let OriginIds = destinations.filter(x => x.OriginId === parseInt(DestinationId)).map(x => x.PortId)
         let CountryIds = ports.filter(x => OriginIds.includes(x.id)).map(x => x.CountryId)
         setCountryOrigins(allCountries.filter(x => CountryIds.includes(x.id)))
     }, [DestinationId])
@@ -81,7 +81,9 @@ export default function ProformaForm({ proforma, previous, save }) {
     }, [ProviderId, providers, providers.length])
 
     useEffect(() => {
-        setPortOrigins(ports.filter(x => x.CountryId === parseInt(CountryOriginId)))
+        let OriginIds = destinations.filter(x => x.OriginId === parseInt(DestinationId)).map(x => x.PortId)
+        let portsByDestination = ports.filter(x => OriginIds.includes(x.id))
+        setPortOrigins(portsByDestination)
     }, [CountryOriginId])
 
     useEffect(() => {
@@ -106,6 +108,59 @@ export default function ProformaForm({ proforma, previous, save }) {
         if (!name) {
             validations.push(['name', 'Proforma es requerida.'])
         }
+
+        if (!BuyerId) {
+            validations.push(['BuyerId', 'Comprador regional es requerido.'])
+        }
+
+        if (!DestinationId) {
+            validations.push(['DestinationId', 'Destino es requerido.'])
+        }
+
+        if (!OriginId) {
+            validations.push(['OriginId', 'Origen es requerido.'])
+        }
+
+        if (!CategoryId) {
+            validations.push(['CategoryId', 'Categoría es requerida.'])
+        }
+
+        if (!ProviderId) {
+            validations.push(['ProviderId', 'Proveedor es requerido.'])
+        }
+
+        if (!transport) {
+            validations.push(['transport', 'Transporte es requerido.'])
+        }
+
+        if (!eta) {
+            validations.push(['eta', 'ETA es requerida.'])
+        }
+
+        if (!cd) {
+            validations.push(['cd', 'CD es requerida.'])
+        }
+
+        if (!IncotermId) {
+            validations.push(['IncotermId', 'Incoterm es requerido.'])
+        }
+
+        if (!ContainerId) {
+            validations.push(['ContainerId', 'Contenedor es requerido.'])
+        }
+
+        if (!money) {
+            validations.push(['money', 'Moneda es requerida.'])
+        }
+
+        if (!CountryDestinationId) {
+            validations.push(['CountryDestinationId', 'País de destino es requerido.'])
+        }
+
+        if (!CountryOriginId) {
+            validations.push(['CountryOriginId', 'País de origen es requerido.'])
+        }
+
 
         if (validations.length > 0) {
             setErrors(validations.reduce((acc, item) => ({ ...acc, [item[0]]: item[1] }), {}))
@@ -186,7 +241,11 @@ export default function ProformaForm({ proforma, previous, save }) {
                                 ))
                             }
                         </select>
+
+                        <div className="invalid-feedback">{errors.BuyerId}</div>
                     </div>
+
+
                 </Row>
                 <Row className='justify-content-between'>
                     <div className="form-group col-xl-2 p-0">
@@ -227,12 +286,12 @@ export default function ProformaForm({ proforma, previous, save }) {
                                 ))
                             }
                         </select>
-
+                        <div className="invalid-feedback">{errors.ProviderId}</div>
                     </div>
                     <div className="form-group col-xl-2 p-0">
                         <label>Transporte</label>
                         <select
-                            className={`form-control form-control-sm`}
+                            className={`form-control form-control-sm ${errors.transport ? 'is-invalid' : ''}`}
                             onChange={(e => setTransport(e.target.value))}
                             defaultValue={transport}
                         >
@@ -241,6 +300,8 @@ export default function ProformaForm({ proforma, previous, save }) {
                             <option value="Maritimo">Maritimo</option>
                             <option value="Terrestre">Terrestre</option>
                         </select>
+
+                        <div className="invalid-feedback">{errors.transport}</div>
                     </div>
 
                     <div className="form-group">
@@ -249,10 +310,11 @@ export default function ProformaForm({ proforma, previous, save }) {
                             <input type="date" id="start" name="trip-start"
                                 onChange={(e => setEta(e.target.value))}
                                 value={parseDate(eta)}
-                                className={`form-control form-control-sm`}
+                                className={`form-control form-control-sm ${errors.eta ? 'is-invalid' : ''}`}
                             ></input>
                         </div>
 
+                        <div className="invalid-feedback">{errors.eta}</div>
                     </div>
                     <div className="form-group col-xl-2 p-0">
                         <label>Incoterm</label>
@@ -272,6 +334,8 @@ export default function ProformaForm({ proforma, previous, save }) {
                                 ))
                             }
                         </select>
+
+                        <div className="invalid-feedback">{errors.IncotermId}</div>
                     </div>
                 </Row>
                 <Row className='justify-content-between'>
@@ -279,7 +343,7 @@ export default function ProformaForm({ proforma, previous, save }) {
                     <div className="form-group col-xl-2 p-0">
                         <label>Puerto/Aeropuerto de Destino</label>
                         <select
-                            className={`form-control form-control-sm`}
+                            className={`form-control form-control-sm ${errors.DestinationId ? 'is-invalid' : ''}`}
                             onChange={(e => setDestinationId(e.target.value))}
                             value={DestinationId}
                         >
@@ -293,6 +357,8 @@ export default function ProformaForm({ proforma, previous, save }) {
                                 ))
                             }
                         </select>
+
+                        <div className="invalid-feedback">{errors.DestinationId}</div>
                     </div>
 
                     <div className="form-group col-xl-2 p-0">
@@ -321,6 +387,8 @@ export default function ProformaForm({ proforma, previous, save }) {
                                 ))
                             }
                         </select>
+
+                        <div className="invalid-feedback">{errors.CountryOriginId}</div>
                     </div>
 
                     <div className="form-group">
@@ -333,10 +401,11 @@ export default function ProformaForm({ proforma, previous, save }) {
                             <input type="date" id="start" name="trip-start"
                                 onChange={(x) => setCd(x.target.value)}
                                 value={parseDate(cd)}
-                                className={`form-control form-control-sm`}
+                                className={`form-control form-control-sm  ${errors.cd ? 'is-invalid' : ''}`}
                             ></input>
                         </div>
 
+                        <div className="invalid-feedback">{errors.cd}</div>
                     </div>
 
                     <div className="form-group col-xl-2 p-0">
@@ -356,6 +425,8 @@ export default function ProformaForm({ proforma, previous, save }) {
                                 ))
                             }
                         </select>
+
+                        <div className="invalid-feedback">{errors.ContainerId}</div>
                     </div>
                 </Row>
                 <Row className='justify-content-between'>
@@ -377,6 +448,8 @@ export default function ProformaForm({ proforma, previous, save }) {
                                 ))
                             }
                         </select>
+
+                        <div className="invalid-feedback">{errors.CategoryId}</div>
                     </div>
 
                     <div className="form-group col-xl-2 p-0">
@@ -406,6 +479,8 @@ export default function ProformaForm({ proforma, previous, save }) {
                                 ))
                             }
                         </select>
+
+                        <div className="invalid-feedback">{errors.OriginId}</div>
                     </div>
 
                     {/* <div className="form-group col-xl-1">
@@ -421,7 +496,7 @@ export default function ProformaForm({ proforma, previous, save }) {
                     <div className="form-group col-xl-2 p-0">
                         <label>Moneda</label>
                         <select
-                            className={`form-control form-control-sm`}
+                            className={`form-control form-control-sm ${errors.money ? 'is-invalid' : ''}`}
                             onChange={(x) => setMoney(x.target.value)}
                             value={money}
                         >
@@ -430,6 +505,8 @@ export default function ProformaForm({ proforma, previous, save }) {
                             <option value='EUR'>EUR</option>
                             <option value='CLP'>CLP</option>
                         </select>
+
+                        <div className="invalid-feedback">{errors.money}</div>
                     </div>
                 </Row>
             </form>

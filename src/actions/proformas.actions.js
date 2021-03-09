@@ -81,6 +81,35 @@ export function destroyFailed(error){
   return { type: DESTROY_FAILED, error }
 }
 
+export const UPLOAD_FILE = '[Proformas] UPLOAD_FILE';
+export function uploadFile() {
+  return { type: UPLOAD_FILE }
+}
+
+export const GET_LINK_PDF = '[Proformas] GET_LINK_PDF';
+export function getLinkPDF() {
+  return { type: GET_LINK_PDF }
+}
+
+export const GET_FILE_PDF = '[Proformas] GET_FILE_PDF';
+export function getFilePDF() {
+  return { type: GET_FILE_PDF }
+}
+
+export const GET_FILE_PDF_SUCCESS = '[Proformas] GET_FILE_PDF_SUCCESS';
+export function getFilePDFSuccess() {
+  return { type: GET_FILE_PDF_SUCCESS }
+}
+
+export const GET_FILE_PDF_FAIL = '[Proformas] GET_FILE_PDF_FAIL';
+export function getFilePDFFail() {
+  return { type: GET_FILE_PDF_FAIL }
+}
+
+
+
+
+
 export function exportBase() {
     return async function (dispatch, getState) {
         dispatch(exportPorts())
@@ -155,9 +184,13 @@ export function fetchAll(){
   }
 
   export function createProforma(data){
+ 
     return async function(dispatch, getState){
       dispatch(create(data))
       try{
+
+        data.mimeType = data.file ? data.file.type : null
+      
         const res = await axios.post(window.config.API_URL + `proformas`,
           data,
           {
@@ -166,7 +199,9 @@ export function fetchAll(){
         );
   
         if( res.status === 201 ){
-          dispatch(createSuccess(res.data.data))
+          if(data.mimeType) {
+            dispatch(uploadFilePDF(res.data.data, data.file))
+          }
           history.push('/proformas')
           dispatch(updateNotification('Proforma creado correctamente', 'success'))
         }else{
@@ -181,32 +216,98 @@ export function fetchAll(){
     }
   }
 
-  export function destroyById(PortId) {
+  export function uploadFilePDF(data, file) {
     return async function (dispatch, getState) {
-      dispatch(destroy(PortId))
+      dispatch(uploadFile())
+  
+      try {
+  
+        const signedUrl = data.signedUrl
+        const res = await axios.put(signedUrl, file);
+        
+        if (res.status === 200) {
+          dispatch(createSuccess(data))
+        } else {
+          dispatch(updateNotification('Hubo un error al adjuntar pdf.', 'danger'))
+        }
+      } catch (err) {
+        dispatch(updateNotification('Hubo un error al adjuntar pdf.', 'danger'))
+        dispatch(createFailed(err))
+      }
+    }
+  }
+
+  export function destroyById(ProformaId) {
+    return async function (dispatch, getState) {
+      dispatch(destroy(ProformaId))
   
       try {
         const res = await axios.delete(
-          `${window.config.API_URL}ports/${PortId}`,
+          `${window.config.API_URL}proformas/${ProformaId}`,
           {
             headers: getAuthHeaders(getState())
           }
         );
   
         if (res.status === 201) {
-          dispatch(destroySuccess({PortId}))
-          history.push('/ports')
-          dispatch(updateNotification('Puerto eliminado correctamente', 'success'))
+          dispatch(destroySuccess({ProformaId}))
+          history.push('/proformas')
+          dispatch(updateNotification('Proforma eliminado correctamente', 'success'))
         } else {
-          dispatch(destroyFailed(res, PortId))
-          dispatch(updateNotification('Hubo un error al eliminar el puerto', 'danger'))
+          dispatch(destroyFailed(res, ProformaId))
+          dispatch(updateNotification('Hubo un error al eliminar el proforma', 'danger'))
         }
   
       } catch (error) {
-        console.log('error:', error)
-        dispatch(updateNotification('Hubo un error al eliminar el puerto', 'danger'))
-        dispatch(destroyFailed(error, PortId))
+        // console.log('error:', error)
+        dispatch(updateNotification('Hubo un error al eliminar el proforma', 'danger'))
+        dispatch(destroyFailed(error, ProformaId))
       }
     }
   }
   
+  export function getLinkPDFAction(ProformaId){
+ 
+    return async function(dispatch, getState){
+      dispatch(getLinkPDF(ProformaId))
+      try{
+        const res = await axios.get(`${window.config.API_URL}proformas/${ProformaId}`,
+          {
+            headers: getAuthHeaders(getState())
+          }
+        );
+         
+        if( res.status === 201 ){
+          dispatch(getFilePDFAction(res.data))
+          // dispatch(updateNotification('Descarga completada.', 'success'))
+        }else{
+          dispatch(getFilePDFFail(res))
+          dispatch(updateNotification('---', 'danger'))
+        }
+      }catch(error){
+        dispatch(updateNotification('Hubo un error extraer PDF', 'danger'))
+        dispatch(getFilePDFFail(error))
+      }
+    }
+  }
+
+  export function getFilePDFAction(data) {
+    return async function (dispatch, getState) {
+      dispatch(getFilePDF())
+  
+      try {
+       
+        const signedUrl = data.signedUrl
+        const res = await axios.get(signedUrl);
+
+        if (res.status === 200) {
+          saveAs(res.config.url, 'Proforma_PDF.pdf')
+          dispatch(getFilePDFSuccess())
+        } else {
+          dispatch(getFilePDFFail(res.data.message))
+        }
+      } catch (err) {
+        dispatch(getFilePDFFail(err))
+      }
+    }
+  }

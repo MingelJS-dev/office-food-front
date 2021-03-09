@@ -37,7 +37,6 @@ export default function auth(state = INITIAL_STATE, action) {
 
         case FileActions.UPLOAD_FILE_SUCCESS:
         case FileActions.UPLOAD_FILE_FAIL:
-            console.log('Llega al finalizar')
             return {
                 ...state,
                 isLoading: false

@@ -167,7 +167,7 @@ function DestinationTable({ destinations, portDestination, port }) {
 
         dispatch(DestinationActions.updateById({
             id: DestId,
-            trantitionDays: value
+            trantitionDays: value || 0
         }))
     }
 

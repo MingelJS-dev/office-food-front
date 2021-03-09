@@ -32,15 +32,29 @@ export default function NewProvider() {
     }, [dispatch]);
 
     function savePort(data) {
-        // dispatch(PortActions.createPort(data))
         setCurrentPort(data)
-        dispatch(updateNotification('Datos correctos', 'success'))
+        let errorTT = false
+        let errorDestination = destinations.length === 0
+        
+        destinations.map(item => {
+            if(!item.trantitionDays) {
+                errorTT = true
+            }
+        })
+
+        if (errorDestination) {
+            dispatch(updateNotification('Hubo un error al crear puerto, los destinos son requeridos.', 'danger'))
+        } else if(errorTT) {
+            dispatch(updateNotification('Hubo un error al crear puerto, los días de transición requeridos.', 'danger'))
+        } else {
+            dispatch(PortActions.createPort({port: data, destinations: destinations}))
+        }
+            
+
     }
 
     function saveDestination(data) {
-        // dispatch(PortActions.createPort(data))
-        const arrayData = [ ...destinations, data]
-        setDestinations(arrayData)
+        setDestinations(data)
     }
 
     return (

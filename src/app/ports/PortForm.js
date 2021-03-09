@@ -34,7 +34,7 @@ export default function PortForm({ port, save, editPort }) {
         }
 
         if (!port.id && !type) {
-            validations.push(['type', 'Correo electrónico es requerido'])
+            validations.push(['type', 'Tipo es requerido'])
         }
 
         if (validations.length > 0) {
@@ -103,7 +103,7 @@ export default function PortForm({ port, save, editPort }) {
                 <label>Tipo</label>
 
                 <select
-                    className={`form-control`}
+                    className={`form-control ${errors.type ? 'is-invalid' : ''}`}
                     onChange={(e => setType(e.target.value))}
                     defaultValue={type}
                 >
@@ -112,12 +112,14 @@ export default function PortForm({ port, save, editPort }) {
                     <option value="Maritimo">Maritimo</option>
                     <option value="Terrestre">Terrestre</option>
                 </select>
+
+                <div className="invalid-feedback">{errors.type}</div>
             </div>
 
             <div className="form-group">
                 <button className={`btn btn-block btn-second-blue ${isLoading ? 'loading' : ''}`} disabled={isLoading}>
                     {
-                        !editPort && <span>Validar datos</span> || <span>Guardar</span>
+                        !editPort && <span>Guardar todo</span> || <span>Guardar</span>
                     }
                     
                     {

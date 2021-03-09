@@ -9,7 +9,7 @@ import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { Alert } from 'react-bootstrap';
-
+import SpinnerFile from '../shared/SpinnerFile.js'
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import history from '../../history.js'
@@ -22,6 +22,8 @@ import swal from 'sweetalert';
 import * as ArticleReducer from '../../reducers/proforma_products.reducer.js'
 import * as ArticleActions from '../../actions/proforma_product.actions.js'
 
+import * as ProformaActions from '../../actions/proformas.actions.js'
+import * as ProformaReducer from '../../reducers/proformas.reducer.js'
 
 const SearchBar = ({ keyword, setKeyword }) => {
     const BarStyling = { width: "20rem", background: "#F2F1F9", border: "none", padding: "0.5rem" };
@@ -42,6 +44,7 @@ function ArticleList({ proforma }) {
     const [input, setInput] = useState('');
     const [total, setTotal] = useState(0)
     let articles = useSelector(ArticleReducer.getArticles)
+    let isExporting = useSelector(ProformaReducer.getIsExporting)
     // const [searchItem, setSearchItem] = useState({});
     //   const paginationInfo = useSelector(UserReducer.getPagination)
 
@@ -81,8 +84,28 @@ function ArticleList({ proforma }) {
 
         return date + "/" + month + "/" + value.getFullYear();
     }
+
+    const destroyProforma = () => {
+        swal({
+            title: "¿Está seguro que desea eliminar la proforma?",
+            icon: "warning",
+            dangerMode: true,
+            buttons: ["Cancelar", "Eliminar"],
+        })
+            .then(ok => {
+                if (ok) {
+                    dispatch(new ProformaActions.destroyById(proforma.id))
+                }
+            });
+    }
+
+    const exportPDF = () => {
+        dispatch(new ProformaActions.getLinkPDFAction(proforma.id))
+    }
+
     return (
         <Container fluid={true} className="my-3">
+            {isExporting && <SpinnerFile isLoading={isExporting} /> }
             <Row>
                 <Header
                     title={title}
@@ -93,12 +116,30 @@ function ArticleList({ proforma }) {
                 >
                     <HeaderActions>
                         <Row>
+
+                            <Dropdown>
+                                <Dropdown.Toggle className="btn btn-sm btn-create-user m-2" id="dropdown-basic">
+                                    PDF
+                                </Dropdown.Toggle>
+
+                                <Dropdown.Menu>
+                                    <Button className="btn btn-sm btn-file m-2" onClick={() => exportPDF()} >Descargar</Button>
+                                    <Button className="btn btn-sm btn-file m-2">
+                                        Actualizar/Subir (En desarrollo)
+                                    </Button>
+                                </Dropdown.Menu>
+                            </Dropdown>
                             <button
                                 onClick={() => history.push(`/proformas/${proforma.id}/articles/new`)}
                                 className="btn btn-sm btn-create-user m-2">Agregar Artículo</button>
                             <button
                                 onClick={() => history.push(`/proformas/${proforma.id}`)}
                                 className="btn btn-sm btn-create-user m-2">Modificar proforma</button>
+
+                            <button className='btn btn-danger-custom'
+                                onClick={() => destroyProforma()}>
+                                <FontAwesomeIcon icon={faTrash} />
+                            </button>
                             {/* <Dropdown>
                                 <Dropdown.Toggle className="btn btn-sm btn-create-user m-2" id="dropdown-basic">
                                     Maestra Artículos
