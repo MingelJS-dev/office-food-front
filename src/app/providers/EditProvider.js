@@ -85,7 +85,7 @@ function createProvider(data) {
 }
 
 return (
-    <Container fluid={true} className="my-3">
+    <Container fluid={true} className="my-3 containerPage">
         <Row>
             <Header title="Editar Proveedor" items={[
                 { label: "Listado de proveedores", to: "/providers" },

@@ -15,6 +15,7 @@ import { faBars } from '@fortawesome/free-solid-svg-icons'
 import history from "./history.js";
 
 import LoginPage from "./app/login/LoginPage.js";
+import HomePage from "./app/home_page/HomePage.js";
 import MainPage from './app/main_page/MainPage.js'
 // import Header from './app/layout/Header.js'
 import Sidebar from './app/layout/Sidebar.js'
@@ -105,26 +106,25 @@ function App() {
             <FontAwesomeIcon className='fa-2x' icon={faBars} />
           </button>
           <div className="mx-auto order-0">
-            <a className="navbar-brand mx-auto">  Back Office Food Regional</a>
+            <a className="navbar-brand mx-auto headerLink"  onClick={() => history.push(`/home`)}>  Back Office Food Regional</a>
           </div>
         </nav>
         <CurrentUserContext.Provider value={currentUser}>
-          <Container fluid={true} >
-            <div className='row p-0'>
-
+          <Container fluid={true} className='p-0'>
+            <div className='p-0'>
               <Sidebar isOpen={isOpen} setOpen={setOpen} pageWrapId={"page-wrap"} outerContainerId={"App"} />
-
-              <Col id="page-wrap" className="containerPage" style={{ height: '100vh' }}>
+              <Col id="page-wrap"  className="p-0" style={{ height: '100vh' }}>
                 <Switch>
                   <Route path="/" exact>
-                    <Redirect to="/proformas" />
+                    <Redirect to="/home" />
                   </Route>
 
-                  <Route path="/proformas" exact component={MainPage} />
+                  <Route path="/home" exact component={HomePage} />
                   {
                     Permission.isAdmin(currentUser.role)
                     &&
                     <Switch>
+                       <Route path="/proformas" exact component={MainPage} />
                       <Route path="/proformas/new" exact component={NewProforma} />
                       <Route path="/proformas/:ProformaId/articles" exact component={ProformaProductsPage} />
                       <Route path="/proformas/:ProformaId" exact component={EditProforma} />
@@ -201,14 +201,23 @@ function App() {
   } else {
     return (
       <Router history={history}>
+                  <nav className="navbar navbar-expand-lg fixed-top navbar-expand-md navOffice ">
+                <div className="mx-auto order-0">
+                    <a className="navbar-brand mx-auto headerLink" onClick={() => history.push(`/home`)}>  Back Office Food Regional</a>
+                </div>
+                <div className="">
+                    <a className="navbar-brand mx-auto" onClick={() => history.push(`/login`)}>  Iniciar Sesión</a>
+                </div>
+            </nav>
         <Switch>
           <Route exact path="/">
-            <Redirect to="/login" />
+            <Redirect to="/home" />
           </Route>
+          <Route path="/home" exact component={HomePage} />
           <Route exact path="/login" component={LoginPage} />
           {/* <Route path="/users/new" exact component={NewUserPage} /> */}
           <Route path="*">
-            <Redirect to="/login" />
+            <Redirect to="/home" />
           </Route>
         </Switch>
       </Router>

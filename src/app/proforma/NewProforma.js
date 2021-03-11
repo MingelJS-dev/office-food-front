@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 
 import Container from 'react-bootstrap/Container';
@@ -34,8 +34,10 @@ import * as IncotermReducer from '../../reducers/incoterms.reducer.js'
 import * as ContianerReducer from '../../reducers/containers.reducer.js'
 
 import { updateNotification } from '../../actions/notifications.actions.js'
+import { CurrentUserContext } from '../../App.js'
 
 import Header from "../shared/SecondHeader.js"
+import * as FileActions from '../../actions/files.actions.js'
 
 export default function NewProforma() {
     const dispatch = useDispatch();
@@ -44,6 +46,8 @@ export default function NewProforma() {
     const [proforma, setProforma] = useState({});
     const [articles, setArticles] = useState([]);
     const [file, setFile] = useState(null)
+
+    const currentUser = useContext(CurrentUserContext)
 
     useEffect(() => {
         dispatch(CategoryActions.fetchAll());
@@ -82,7 +86,7 @@ export default function NewProforma() {
             setArticles(data)
             setStep(3)
         }
-      
+
     }
 
     const hiddenFileInput = React.useRef(null);
@@ -109,8 +113,20 @@ export default function NewProforma() {
         dispatch(ProformaActions.createProforma(data))
     }
 
+    const hiddenFileInputTemplate = React.useRef(null);
+
+    const handleClickTemplate = event => {
+        if (hiddenFileInputTemplate) {
+            hiddenFileInputTemplate.current.click();
+        }
+    };
+    const handleChangeTemplate = event => {
+        const fileUploaded = event.target.files[0];
+        dispatch(FileActions.getUploadLinkAction(fileUploaded, currentUser.id))
+    };
+
     return (
-        <Container fluid={true} className="my-3">
+        <Container fluid={true} className="my-3 containerPage">
 
             <ModalTemplate show={modalShow}
                 onHide={() => setModalShow(false)} />
@@ -150,9 +166,14 @@ export default function NewProforma() {
                                                         className={`btn btn-block btn-second-blue`}>
                                                         <span>Descargar template</span>
                                                     </button>
-                                                    <button className={`btn btn-block btn-second-blue`}>
+                                                    <button className={`btn btn-block btn-second-blue`} onClick={handleClickTemplate}>
                                                         <span>Subir template (En desarrollo 90%)</span>
                                                     </button>
+                                                    <input type="file"
+                                                        ref={hiddenFileInputTemplate}
+                                                        onChange={handleChangeTemplate}
+                                                        style={{ display: 'none' }}
+                                                    />
                                                 </div>
                                             </Card.Body>
                                         </Card>
@@ -338,7 +359,7 @@ function ConfirmationArticles({ articles }) {
                                 bordered
                                 hover
                                 className={`mb-0`}
-                                
+
                             >
                                 <thead>
                                     <tr>

@@ -40,7 +40,7 @@ export default function MainPage() {
     }
 
     return (
-        <Container fluid>
+        <Container fluid className="my-3 containerPage">
             {
                 proformas && proformas.length > 0 ? 
                 <ProformaList proformas={proformas} />

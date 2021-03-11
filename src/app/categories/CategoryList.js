@@ -74,7 +74,7 @@ function CategoryList({ n, nView, isSelectN, ParentId, CountryId, categories, se
         <Card className="cardJC">
             <Card.Header className="card-header-category">
                 <div className="d-flex justify-content-between">
-                    <h5 className="pt-2" >Categoría N{nView}</h5>
+                    <h5 className="pt-2" style={{color: "white"}} >Categoría N{nView}</h5>
                     <Col lg={5} className="d-flex justify-content-between">
                         <button className="btn btn-category"
                             disabled={current && !current.name}

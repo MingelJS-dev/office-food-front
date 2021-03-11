@@ -34,7 +34,7 @@ export default function NewProduct() {
     }
 
     return (
-        <Container fluid={true} className="my-3">
+        <Container fluid={true} className="my-3 containerPage">
             <Row>
                 <Header title="Nuevo Artículo" items={[
                     { label: "Listado de Artículos", to: "/products" },

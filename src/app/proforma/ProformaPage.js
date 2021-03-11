@@ -12,7 +12,7 @@ import ProformaForm from './ProformaForm'
 
 function ProformaPage() {
     return (
-        <Container fluid={true}>
+        <Container fluid={true} className="containerPage">
             <Row>
                 <Col sm={12}>
                     <Card className="card-custom">

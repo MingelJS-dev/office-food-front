@@ -58,7 +58,7 @@ export default function NewProvider() {
     }
 
     return (
-        <Container fluid={true} className="my-3">
+        <Container fluid={true} className="my-3 containerPage">
             <Row>
                 <Header title="Nuevo Puerto" items={[
                     { label: "Listado de puertos", to: "/ports" },

@@ -104,7 +104,7 @@ function ArticleList({ proforma }) {
     }
 
     return (
-        <Container fluid={true} className="my-3">
+        <Container fluid={true} className="my-3 containerPage" >
             {isExporting && <SpinnerFile isLoading={isExporting} /> }
             <Row>
                 <Header

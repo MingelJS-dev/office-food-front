@@ -36,7 +36,7 @@ export default function EditPort() {
     }
 
     return (
-        <Container fluid={true} className="my-3">
+        <Container fluid={true} className="my-3 containerPage">
             <Row>
                 <Header title="Editar Puerto" items={[
                     { label: "Listado de puertos", to: "/ports" },

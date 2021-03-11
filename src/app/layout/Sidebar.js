@@ -48,15 +48,6 @@ function ListSidebar() {
                                         <span>Ingresar Proforma</span>
                                     </NavLink>
                                 </li>
-
-                                {/* <li >
-                                    <Button
-                                        onClick={() => setModalShow(true)}
-                                        className="btn-without bm-item-list">
-                                        <span>Extraer template</span>
-                                    </Button>
-
-                                </li> */}
                                 <li>
                                     <NavLink to="/proforma" className="bm-item-list">
                                         <span>Carga masiva</span>
@@ -321,7 +312,7 @@ export default function Sidebar({ isOpen, setOpen }) {
                     <nav>
                         <ul className="nav nav-pills flex-column pt-5">
                             <li className="nav-item pb-3">
-                                <NavLink to="/test" className="nav-link btn-nav text-center">
+                                <NavLink to="/home" className="nav-link btn-nav text-center">
                                     <FontAwesomeIcon icon={faHome} />
                                     <span className='p-2' >Home</span>
                                 </NavLink>

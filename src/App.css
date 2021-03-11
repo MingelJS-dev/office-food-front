@@ -36,9 +36,7 @@
     transform: rotate(360deg);
   }
 }
-.containerPage {
-  padding-top: 6rem;
-}
+
 
 .navOffice {
 	background: rgb(1, 79, 151) !important;
@@ -64,7 +62,9 @@
   z-index: 10;
 }
 
-
+.headerLink {
+  cursor: pointer;
+}
 /* .bm-burger-bars {
   background: #002fff;
   padding-top: 50px;

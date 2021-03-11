@@ -60,7 +60,7 @@ function updateProduct(data) {
 }
 
 return (
-    <Container fluid={true} className="my-3">
+    <Container fluid={true} className="my-3 containerPage">
         <Row>
             <Header title="Editar Artículo" items={[
                 { label: "Listado de artículos", to: "/products" },
